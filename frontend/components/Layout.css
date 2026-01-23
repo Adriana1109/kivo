@@ -1,0 +1,131 @@
+/* Layout Universal Styles */
+
+/* Main Layout Container */
+.app-layout {
+  display: flex;
+  min-height: 100vh;
+  background: #ffffff;
+}
+
+/* Main Content Area */
+.main-content {
+  flex: 1;
+  margin-left: 250px;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  transition: margin-left 0.3s ease;
+}
+
+/* Cuando el sidebar está cerrado */
+.main-content.sidebar-closed {
+  margin-left: 0;
+}
+
+/* Header */
+.main-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 2rem;
+  background: #fff;
+  border-bottom: 1px solid #e5e7eb;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  height: 80px; /* Fixed height for alignment */
+  box-sizing: border-box;
+}
+
+/* Botón toggle en el header (cuando sidebar cerrado) */
+.header-toggle-btn {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.header-toggle-btn:hover {
+  transform: translateY(-2px);
+  background: #cacaca83;
+  border-radius: 20%;
+}
+
+.header-toggle-btn svg {
+  width: 33px;
+  height: 33px;
+  color: var(--text-accent);
+}
+
+.header-brand {
+  display: flex;
+  flex-direction: column;
+}
+
+.header-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text-accent);
+  margin: 0;
+  letter-spacing: -0.02em;
+}
+
+.header-subtitle {
+  font-size: 0.85rem;
+  color: #6b7280;
+  margin-top: 2px;
+}
+
+.header-actions {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.header-login-btn {
+  padding: 0.5rem 1.25rem;
+  background: var(--text-accent);
+  color: #000;
+  text-decoration: none;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
+}
+
+.header-login-btn:hover {
+  background: #e6c038;
+  transform: translateY(-1px);
+}
+
+/* Page Content */
+.page-content {
+  flex: 1;
+  padding: 0;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .main-content {
+    margin-left: 0;
+  }
+  
+  .main-header {
+    padding: 0.75rem 1rem;
+  }
+  
+  .header-title {
+    font-size: 1.25rem;
+  }
+  
+  .header-subtitle {
+    font-size: 0.75rem;
+  }
+}

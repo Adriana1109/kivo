@@ -1,0 +1,195 @@
+/* Design System - Global Variables */
+:root {
+  /* Backgrounds */
+  --bg-dark: #2b2b2b;
+  --glass-bg: rgba(6, 8, 12, 0.67);
+  --glass-bg-light: rgba(255, 255, 255, 0.05); /* For internal items */
+  --glass-border: 1px solid rgba(255, 255, 255, 0.1);
+  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  --glass-blur: blur(12px);
+  /* Typography */
+  --text-primary: #f1f5f9;
+  --text-secondary: rgba(241, 245, 249, 0.7);
+  --text-muted: rgba(241, 245, 249, 0.5);
+  --title-color: #f1f5f9; /* Standard title color */
+  
+  /* Radii */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  
+  /* Accents */
+  --text-accent: #3b82f6; /* Blue for highlights */
+  --text-accent-glow: #60a5fa; /* Light Blue for titles */
+  
+  /* Status Colors */
+  --status-green: #22c55e;
+  --status-yellow: #eab308;
+  --status-red: #ef4444;
+  --status-gray: #6c6f72; /* For 'new' or 'unknown' */
+
+  /* Buttons - Primary (Blue/Gradient) */
+  --btn-primary-bg: linear-gradient(135deg, #3b82f6 0%, #60a5fa 100%);
+  --btn-primary-text: #000000;
+  --btn-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  --btn-hover-transform: translateY(-2px);
+  
+  /* Inputs */
+  --input-bg: rgba(94, 94, 94, 0.486);
+  --input-border: 2px solid #d4e1e2;
+  --input-focus-border: #3b82f6;
+  --input-text: #d4e1e2;
+}
+
+/* Common Utility Classes based on tokens */
+.glass-panel {
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  border-radius: var(--radius-lg);
+  border: var(--glass-border);
+  box-shadow: var(--glass-shadow);
+  color: var(--text-primary);
+}
+
+.text-accent {
+  color: var(--text-accent);
+}
+
+.text-glow {
+  color: var(--text-accent-glow);
+  text-shadow: 0 6px 20px rgba(0, 0, 0, 0.582);
+  font-weight: bolder;
+}
+
+.btn-primary {
+  background: var(--btn-primary-bg);
+  color: var(--btn-primary-text);
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: var(--btn-shadow);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.btn-primary:hover {
+  transform: var(--btn-hover-transform);
+
+  box-shadow: 0 6px 20px rgba(137, 139, 5, 0.4);
+}
+
+/* Global Input Styles */
+/* Hide number input spinners globally */
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type=number] {
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+
+/* ============================================
+   Universal Action Buttons
+   ============================================ */
+
+/* Delete Button - Red danger style */
+.delete-btn {
+  background: rgba(239, 68, 68, 0.2);
+  color: var(--status-red);
+  border: 1px solid var(--status-red);
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9em;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+.delete-btn:hover {
+  background: rgba(239, 68, 68, 0.4);
+  transform: scale(1.05);
+}
+
+.delete-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Edit Button - Gold/Accent style */
+.edit-btn {
+  background: rgba(250, 187, 51, 0.2);
+  color: var(--text-accent);
+  border: 1px solid var(--text-accent);
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9em;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+.edit-btn:hover {
+  background: rgba(250, 187, 51, 0.4);
+  transform: scale(1.05);
+}
+
+.edit-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Secondary/Cancel Button */
+.btn-secondary {
+  background: transparent;
+  color: var(--text-secondary);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.btn-secondary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Success Button - Green style */
+.btn-success {
+  background: var(--status-green);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.btn-success:hover {
+  filter: brightness(1.1);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(34, 197, 94, 0.4);
+}
+
+.btn-success:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
