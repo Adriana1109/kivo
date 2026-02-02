@@ -1,0 +1,388 @@
+/* Menu / Dashboard Styles */
+
+/* Dashboard */
+.dashboard {
+  flex: 1;
+  padding: 1.5rem;
+  background: #f8fafc;
+}
+
+.dashboard-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+  gap: 1rem;
+  color: #6b7280;
+}
+
+.loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid #e5e7eb;
+  border-top-color: var(--text-accent);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Dashboard Collage Grid */
+.dashboard-collage {
+  display: grid;
+  grid-template-columns: 280px 1fr 320px;
+  grid-template-rows: auto auto;
+  gap: 1.25rem;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* Base Card Style */
+.dash-card {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 1.5rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  border: 1px solid #e5e7eb;
+  transition: all 0.2s ease;
+  text-decoration: none;
+  color: inherit;
+}
+
+.dash-card:hover {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  transform: translateY(-2px);
+}
+
+.dash-card h3 {
+  margin: 0 0 1rem 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #374151;
+}
+
+/* Card 1: Estado General */
+.estado-general {
+  grid-column: 1;
+  grid-row: 1 / 3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: white;
+  color: black;
+}
+
+.estado-general h3 {
+  color: black;
+}
+
+.estado-circle {
+  position: relative;
+  width: 160px;
+  height: 160px;
+  margin: 1rem 0;
+}
+
+.estado-circle svg {
+  transform: rotate(-90deg);
+  width: 100%;
+  height: 100%;
+}
+
+.estado-circle circle {
+  fill: none;
+  stroke-width: 8;
+  stroke-linecap: round;
+}
+
+.estado-circle .bg {
+  stroke: rgba(0, 0, 0, 0.171);
+}
+
+.estado-circle .progress {
+  transition: stroke-dasharray 0.8s ease;
+}
+
+.estado-percent {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+.estado-percent .numero {
+  font-size: 3rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.estado-percent .simbolo {
+  font-size: 1.5rem;
+  opacity: 0.8;
+}
+
+.estado-label {
+  color: rgba(0, 0, 0, 0.7);
+  font-size: 0.95rem;
+  margin: 0;
+}
+
+/* Card 2: Revisiones */
+.revisiones {
+  grid-column: 2;
+  grid-row: 1;
+}
+
+.revisiones-stats {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.revisiones-stats .stat {
+  text-align: center;
+}
+
+.revisiones-stats .stat-numero {
+  display: block;
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #1f2937;
+  line-height: 1;
+}
+
+.revisiones-stats .stat-label {
+  font-size: 0.8rem;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.revisiones-stats .stat-divider {
+  font-size: 2rem;
+  color: #d1d5db;
+  font-weight: 300;
+}
+
+.revisiones-bar {
+  height: 8px;
+  background: #e5e7eb;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.revisiones-progress {
+  height: 100%;
+  background: linear-gradient(90deg, #22c55e 0%, #4ade80 100%);
+  border-radius: 4px;
+  transition: width 0.5s ease;
+}
+
+/* Card 3: Mantenimientos Próximos */
+.mantenimientos-proximos {
+  grid-column: 3;
+  grid-row: 1 / 3;
+}
+
+.proximos-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.proximo-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid #f3f4f6;
+}
+
+.proximo-item:last-child {
+  border-bottom: none;
+}
+
+.proximo-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.proximo-nombre {
+  font-weight: 500;
+  color: #1f2937;
+  font-size: 0.95rem;
+}
+
+.proximo-maquina {
+  font-size: 0.8rem;
+  color: #4b5563;
+}
+
+.proximo-horas {
+  padding: 0.25rem 0.75rem;
+  background: #fef3c7;
+  color: #92400e;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.proximo-horas.urgente {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+.no-data {
+  color: #9ca3af;
+  text-align: center;
+  padding: 2rem 0;
+  font-size: 0.95rem;
+}
+
+/* Cards 4 & 5: Pendientes */
+.reparaciones-pendientes,
+.mantenimientos-pendientes-card {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+/* Card de mantenimientos vencidos más ancha */
+.mantenimientos-pendientes-card {
+  min-width: 280px;
+}
+
+.card-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.card-icon svg {
+  width: 28px;
+  height: 28px;
+}
+
+.card-icon.warning {
+  background: #fef3c7;
+  color: #d97706;
+}
+
+.card-icon.danger {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+.card-content h3 {
+  margin: 0 0 0.25rem 0;
+  font-size: 0.9rem;
+}
+
+.card-numero {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #1f2937;
+  line-height: 1;
+}
+
+.card-label {
+  font-size: 0.8rem;
+  color: #6b7280;
+  margin-left: 0.25rem;
+}
+
+/* Responsive */
+@media (max-width: 1200px) {
+  .dashboard-collage {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto auto;
+  }
+  
+  .estado-general {
+    grid-column: 1;
+    grid-row: 1;
+  }
+  
+  .revisiones {
+    grid-column: 2;
+    grid-row: 1;
+  }
+  
+  .mantenimientos-proximos {
+    grid-column: 1 / 3;
+    grid-row: 2;
+  }
+  
+  .reparaciones-pendientes {
+    grid-column: 1;
+    grid-row: 3;
+  }
+  
+  .mantenimientos-pendientes-card {
+    grid-column: 2;
+    grid-row: 3;
+  }
+}
+
+@media (max-width: 768px) {
+  .main-content {
+    margin-left: 70px;
+  }
+
+  .main-header {
+    padding: 1rem;
+  }
+
+  .header-title {
+    font-size: 1.25rem;
+  }
+
+  .header-subtitle {
+    display: none;
+  }
+
+  .dashboard {
+    padding: 1rem;
+  }
+
+  .dashboard-collage {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto;
+  }
+  
+  .estado-general,
+  .revisiones,
+  .mantenimientos-proximos,
+  .reparaciones-pendientes,
+  .mantenimientos-pendientes-card {
+    grid-column: 1;
+    grid-row: auto;
+  }
+  
+  .estado-circle {
+    width: 120px;
+    height: 120px;
+  }
+  
+  .estado-percent .numero {
+    font-size: 2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .main-content {
+    margin-left: 0;
+    padding-bottom: 70px;
+  }
+}
