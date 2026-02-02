@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import './Apuntes.css';
 
-import { API_URL } from "../services/api";
+import { materias as materiasService, apuntes as apuntesService } from "../services/api";
 
 /**
  * Componente Apuntes
@@ -30,16 +30,10 @@ function Apuntes() {
   // =============================
   const cargarMaterias = async () => {
     try {
-      const token = localStorage.getItem('token');
-      const res = await fetch(`${API_URL}/materias`, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-      if (res.ok) {
-        const data = await res.json();
-        setMaterias(data);
-        if (data.length > 0 && !materiaId) {
-          setMateriaId(data[0].id);
-        }
+      const data = await materiasService.list();
+      setMaterias(data);
+      if (data.length > 0 && !materiaId) {
+        setMateriaId(data[0].id);
       }
     } catch (error) {
       console.error('Error cargando materias:', error);
@@ -48,21 +42,8 @@ function Apuntes() {
 
   const cargarApuntes = async () => {
     try {
-      const token = localStorage.getItem('token');
-      let url = `${API_URL}/apuntes`;
-
-      if (filtroMateria !== 'todos') {
-        url += `?materia_id=${filtroMateria}`;
-      }
-
-      const res = await fetch(url, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-
-      if (res.ok) {
-        const data = await res.json();
-        setApuntes(data);
-      }
+      const data = await apuntesService.list(filtroMateria !== 'todos' ? filtroMateria : null);
+      setApuntes(data);
     } catch (error) {
       console.error('Error cargando apuntes:', error);
     } finally {
@@ -82,30 +63,16 @@ function Apuntes() {
     setSaving(true);
 
     try {
-      const token = localStorage.getItem('token');
-      const url = modoEdicion
-        ? `${API_URL}/apuntes/${apunteEditando.id}`
-        : `${API_URL}/apuntes`;
-
       const body = {
         materia_id: parseInt(materiaId),
         titulo: titulo.trim(),
         contenido: contenido.trim(),
-        tipo: 'texto'
       };
 
-      const res = await fetch(url, {
-        method: modoEdicion ? 'PUT' : 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`
-        },
-        body: JSON.stringify(body)
-      });
-
-      if (!res.ok) {
-        const error = await res.json();
-        throw new Error(error.error || 'Error al guardar');
+      if (modoEdicion) {
+        await apuntesService.update(apunteEditando.id, body);
+      } else {
+        await apuntesService.create(body);
       }
 
       limpiarFormulario();
@@ -122,13 +89,7 @@ function Apuntes() {
     if (!confirm('¿Seguro que deseas eliminar este apunte?')) return;
 
     try {
-      const token = localStorage.getItem('token');
-      const res = await fetch(`${API_URL}/apuntes/${id}`, {
-        method: 'DELETE',
-        headers: { Authorization: `Bearer ${token}` }
-      });
-
-      if (!res.ok) throw new Error('No se pudo eliminar');
+      await apuntesService.delete(id);
       cargarApuntes();
     } catch (error) {
       console.error('Error eliminando:', error);

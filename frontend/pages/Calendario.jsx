@@ -1,9 +1,10 @@
+import { createPortal } from "react-dom";
 import { useEffect, useState } from "react";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
-import { API_URL } from "../services/api";
+import { materias as materiasService, calendario as calendarioService } from "../services/api";
 
 import "./Calendario.css";
 
@@ -79,14 +80,8 @@ function Calendario() {
   // =============================
   const cargarMaterias = async () => {
     try {
-      const token = localStorage.getItem("token");
-      const res = await fetch(`${API_URL}/materias`, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-      if (res.ok) {
-        const data = await res.json();
-        setMaterias(data);
-      }
+      const data = await materiasService.list();
+      setMaterias(data);
     } catch (error) {
       console.error("Error cargando materias:", error);
     }
@@ -94,18 +89,10 @@ function Calendario() {
 
   const cargarEventos = async () => {
     try {
-      const token = localStorage.getItem("token");
-      let url = `${API_URL}/calendario`;
-
-      if (filtroTipo !== "todos") {
-        url += `?tipo=${filtroTipo}`;
-      }
-
-      const res = await fetch(url, {
-        headers: { Authorization: `Bearer ${token}` }
+      const data = await calendarioService.list({
+        tipo: filtroTipo !== "todos" ? filtroTipo : null
       });
 
-      const data = await res.json();
       setHistorial(data);
 
       const eventosFormateados = data.map(e => {
@@ -145,11 +132,6 @@ function Calendario() {
     }
 
     try {
-      const token = localStorage.getItem("token");
-      const url = modoEdicion
-        ? `${API_URL}/calendario/${eventoSeleccionado.id}`
-        : `${API_URL}/calendario`;
-
       const fechaCompleta = `${fechaSeleccionada}T${horaInicio}:00`;
       const fechaFinCompleta = `${fechaSeleccionada}T${horaFin}:00`;
 
@@ -161,24 +143,17 @@ function Calendario() {
         materia_id: materiaId || null
       };
 
-      const res = await fetch(url, {
-        method: modoEdicion ? "PUT" : "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`
-        },
-        body: JSON.stringify(body)
-      });
-
-      if (!res.ok) {
-        alert("Error al guardar");
-        return;
+      if (modoEdicion) {
+        await calendarioService.update(eventoSeleccionado.id, body);
+      } else {
+        await calendarioService.create(body);
       }
 
       cerrarFormulario();
       cargarEventos();
     } catch (error) {
       console.error("Error guardando evento:", error);
+      alert("Error al guardar: " + error.message);
     }
   };
 
@@ -186,14 +161,7 @@ function Calendario() {
     if (!confirm("¿Seguro que deseas eliminar este evento?")) return;
 
     try {
-      const token = localStorage.getItem("token");
-      const res = await fetch(`${API_URL}/calendario/${id}`, {
-        method: "DELETE",
-        headers: { Authorization: `Bearer ${token}` }
-      });
-
-      if (!res.ok) throw new Error("No se pudo eliminar");
-
+      await calendarioService.delete(id);
       cerrarFormulario();
       cargarEventos();
     } catch (error) {
@@ -206,13 +174,7 @@ function Calendario() {
     if (!id) return;
 
     try {
-      const token = localStorage.getItem("token");
-      const res = await fetch(`${API_URL}/calendario/${id}/toggle`, {
-        method: "PATCH",
-        headers: { Authorization: `Bearer ${token}` }
-      });
-
-      if (!res.ok) throw new Error("No se pudo actualizar");
+      await calendarioService.toggle(id);
       cargarEventos();
     } catch (error) {
       console.error(error);
@@ -222,7 +184,6 @@ function Calendario() {
 
   const moverEvento = async (info) => {
     try {
-      const token = localStorage.getItem("token");
       const eventoId = info.event.id;
 
       const body = {
@@ -230,14 +191,7 @@ function Calendario() {
         fecha_fin: info.event.end ? info.event.end.toISOString() : null
       };
 
-      await fetch(`${API_URL}/calendario/${eventoId}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`
-        },
-        body: JSON.stringify(body)
-      });
+      await calendarioService.update(eventoId, body);
     } catch (error) {
       console.error("Error moviendo evento:", error);
       info.revert();
@@ -353,8 +307,8 @@ function Calendario() {
           />
         </div>
 
-        {/* Modal de evento */}
-        {mostrarForm && (
+        {/* Modal de evento con Portal */}
+        {mostrarForm && createPortal(
           <div className="modal-overlay" onClick={cerrarFormulario}>
             <div className="modal-card" onClick={(e) => e.stopPropagation()}>
               <div className="modal-header">
@@ -445,7 +399,8 @@ function Calendario() {
                 </button>
               </div>
             </div>
-          </div>
+          </div>,
+          document.body
         )}
 
         {/* Filtros */}

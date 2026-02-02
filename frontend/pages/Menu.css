@@ -1,70 +1,7 @@
 /* Menu / Dashboard Styles */
 
-/* Dashboard */
-.dashboard {
-  flex: 1;
-  padding: 1.5rem;
-  background: #f8fafc;
-}
+/* Dashboard structure moved to App.css to be global */
 
-.dashboard-loading {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  min-height: 400px;
-  gap: 1rem;
-  color: #6b7280;
-}
-
-.loading-spinner {
-  width: 40px;
-  height: 40px;
-  border: 3px solid #e5e7eb;
-  border-top-color: var(--text-accent);
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-/* Dashboard Collage Grid */
-.dashboard-collage {
-  display: grid;
-  grid-template-columns: 280px 1fr 320px;
-  grid-template-rows: auto auto;
-  gap: 1.25rem;
-  max-width: 1400px;
-  margin: 0 auto;
-}
-
-/* Base Card Style */
-.dash-card {
-  background: #ffffff;
-  border-radius: 16px;
-  padding: 1.5rem;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-  border: 1px solid #e5e7eb;
-  transition: all 0.2s ease;
-  text-decoration: none;
-  color: inherit;
-}
-
-.dash-card:hover {
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
-  transform: translateY(-2px);
-}
-
-.dash-card h3 {
-  margin: 0 0 1rem 0;
-  font-size: 1rem;
-  font-weight: 600;
-  color: #374151;
-}
 
 /* Card 1: Estado General */
 .estado-general {
