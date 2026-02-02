@@ -18,12 +18,23 @@ app.use('/*', cors({
 // JWT Secret helper
 const getJwtSecret = (c) => c.env.JWT_SECRET || 'your-secret-key-safe-for-dev';
 
+// Root Route
+app.get('/', (c) => c.json({
+    message: 'Welcome to Kivo API 🚀',
+    endpoints: {
+        health: '/api/health',
+        auth: '/api/auth'
+    },
+    status: 'running'
+}));
+
 // Health Check
 app.get('/api/health', (c) => c.json({ status: 'ok', platform: 'Cloudflare Workers 🚀' }));
 
 // ==========================================
 // AUTH UTILS
 // ==========================================
+// WebCrypto implementation for bcrypt/hash if needed or keep existing
 const hashPassword = async (password) => {
     return await bcrypt.hash(password, 10);
 };
@@ -58,11 +69,10 @@ app.post('/api/auth/register', async (c) => {
             throw new Error('Error insertando usuario');
         }
 
-        const { sign } = await import('hono/jwt');
         const token = await sign({
             userId: result.meta.last_row_id,
             exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 7
-        }, getJwtSecret(c));
+        }, getJwtSecret(c), 'HS256');
 
         return c.json({
             message: 'Usuario registrado exitosamente',
@@ -71,7 +81,7 @@ app.post('/api/auth/register', async (c) => {
         }, 201);
     } catch (e) {
         console.error(e);
-        return c.json({ error: 'Error al registrar usuario' }, 500);
+        return c.json({ error: 'Error al registrar usuario', details: e.message, stack: e.stack }, 500);
     }
 });
 
@@ -89,7 +99,7 @@ app.post('/api/auth/login', async (c) => {
         const token = await sign({
             userId: user.id,
             exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 7
-        }, getJwtSecret(c));
+        }, getJwtSecret(c), 'HS256');
 
         return c.json({
             message: 'Login exitoso',
@@ -98,7 +108,7 @@ app.post('/api/auth/login', async (c) => {
         });
     } catch (e) {
         console.error(e);
-        return c.json({ error: 'Error al iniciar sesión' }, 500);
+        return c.json({ error: 'Error al iniciar sesión', details: e.message, stack: e.stack }, 500);
     }
 });
 
@@ -109,12 +119,28 @@ const protectedRoutes = new Hono();
 
 // Auth Middleware
 protectedRoutes.use('/*', async (c, next) => {
-    const jwtMiddleware = jwt({ secret: getJwtSecret(c) });
+    const jwtMiddleware = jwt({ secret: getJwtSecret(c), alg: 'HS256' });
     return jwtMiddleware(c, next);
 });
 
-// Helper to get User ID
-const getUserId = (c) => c.get('jwtPayload').userId;
+// ERROR HANDLER for Protected Routes
+protectedRoutes.onError((err, c) => {
+    console.error('Protected Route Error:', err);
+    return c.json({
+        error: 'Internal Server Error',
+        details: err.message,
+        stack: err.stack
+    }, 500);
+});
+
+// Helper to get User ID safely
+const getUserId = (c) => {
+    const payload = c.get('jwtPayload');
+    if (!payload || !payload.userId) {
+        throw new Error('User ID not found in token payload');
+    }
+    return payload.userId;
+};
 
 // --- AUTH ---
 protectedRoutes.get('/auth/me', async (c) => {

@@ -50,9 +50,9 @@
   - [x] 4.2 Verificar que las tablas se crearon correctamente
   - [x] 4.3 Crear usuario admin de prueba (Registro inicial vía API)
 
-- [ ] 5.0 Desplegar y Verificar
-  - [ ] 5.1 Desplegar Worker (`npx wrangler deploy`)
-  - [ ] 5.2 Actualizar URL de API en frontend
-  - [ ] 5.3 Redesplegar frontend con nueva URL
-  - [ ] 5.4 Probar login y funcionalidades
-  - [ ] 5.5 Verificar CORS funciona correctamente
+- [x] 5.0 Desplegar y Verificar
+  - [x] 5.1 Desplegar Worker (`npx wrangler deploy`)
+  - [x] 5.2 Actualizar URL de API en frontend (`https://kivo-api.adriana-chiluiza.workers.dev`)
+  - [x] 5.3 Redesplegar frontend con nueva URL
+  - [x] 5.4 Probar login y funcionalidades (Admin creado)
+  - [x] 5.5 Verificar CORS funciona correctamente
