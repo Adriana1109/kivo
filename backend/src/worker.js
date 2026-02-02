@@ -164,11 +164,11 @@ protectedRoutes.get('/materias', async (c) => {
 
 protectedRoutes.post('/materias', async (c) => {
     const userId = getUserId(c);
-    const { nombre, descripcion, color } = await c.req.json();
+    const { nombre, descripcion, color, semestre, syllabus } = await c.req.json();
 
     const result = await c.env.DB.prepare(
-        'INSERT INTO materias (user_id, nombre, descripcion, color) VALUES (?, ?, ?, ?)'
-    ).bind(userId, nombre, descripcion || null, color || '#3b82f6').run();
+        'INSERT INTO materias (user_id, nombre, descripcion, color, semestre, syllabus) VALUES (?, ?, ?, ?, ?, ?)'
+    ).bind(userId, nombre, descripcion || null, color || '#3b82f6', semestre || null, syllabus || null).run();
 
     const materia = await c.env.DB.prepare('SELECT * FROM materias WHERE id = ?').bind(result.meta.last_row_id).first();
     return c.json(materia, 201);
@@ -282,6 +282,22 @@ protectedRoutes.post('/calendario', async (c) => {
     ).bind(userId, materia_id || null, titulo, descripcion || null, fecha_inicio, fecha_fin || null, tipo || 'estudio').run();
 
     const evento = await c.env.DB.prepare('SELECT * FROM eventos_calendario WHERE id = ?').bind(result.meta.last_row_id).first();
+
+    if (!evento) {
+        // Fallback if select fails
+        return c.json({
+            id: result.meta.last_row_id,
+            user_id: userId,
+            materia_id: materia_id || null,
+            titulo,
+            descripcion: descripcion || null,
+            fecha_inicio,
+            fecha_fin: fecha_fin || null,
+            tipo: tipo || 'estudio',
+            completado: 0
+        }, 201);
+    }
+
     return c.json(evento, 201);
 });
 

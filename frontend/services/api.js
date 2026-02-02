@@ -1,5 +1,4 @@
-// API Configuration
-export const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3001";
+export const API_URL = import.meta.env.VITE_API_URL || "https://kivo-api.adriana-chiluiza.workers.dev";
 
 // Helper function for API calls
 async function apiCall(endpoint, options = {}) {
@@ -15,10 +14,29 @@ async function apiCall(endpoint, options = {}) {
   };
 
   const response = await fetch(`${API_URL}${endpoint}`, config);
-  const data = await response.json();
+
+  let data;
+  const contentType = response.headers.get("content-type");
+
+  if (contentType && contentType.includes("application/json")) {
+    try {
+      data = await response.json();
+    } catch (error) {
+      console.warn("Error parsing JSON response", error);
+      data = {};
+    }
+  } else {
+    // If not JSON, try to get text or empty object
+    const text = await response.text();
+    try {
+      data = text ? JSON.parse(text) : {};
+    } catch {
+      data = { message: text };
+    }
+  }
 
   if (!response.ok) {
-    throw new Error(data.error || 'Error en la petición');
+    throw new Error(data.error || data.message || 'Error en la petición');
   }
 
   return data;

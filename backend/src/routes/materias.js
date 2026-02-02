@@ -24,7 +24,7 @@ router.get('/', async (req, res) => {
       WHERE m.user_id = ?
       ORDER BY m.created_at DESC
     `).all(req.user.id);
-    
+
     res.json(materias);
   } catch (error) {
     console.error('Get materias error:', error);
@@ -39,25 +39,25 @@ router.get('/:id', async (req, res) => {
     const materia = dbPrepare(`
       SELECT * FROM materias WHERE id = ? AND user_id = ?
     `).get(req.params.id, req.user.id);
-    
+
     if (!materia) {
       return res.status(404).json({ error: 'Materia no encontrada' });
     }
-    
+
     // Get syllabus with units and topics
     const unidades = dbPrepare(`
       SELECT * FROM syllabus_unidades WHERE materia_id = ? ORDER BY orden
     `).all(materia.id);
-    
+
     // Get topics for each unit
     for (const unidad of unidades) {
       unidad.temas = dbPrepare(`
         SELECT * FROM syllabus_temas WHERE unidad_id = ? ORDER BY orden
       `).all(unidad.id);
     }
-    
+
     materia.syllabus = unidades;
-    
+
     res.json(materia);
   } catch (error) {
     console.error('Get materia error:', error);
@@ -68,19 +68,26 @@ router.get('/:id', async (req, res) => {
 // POST /api/materias - Create new materia
 router.post('/', async (req, res) => {
   try {
-    const { nombre, descripcion, color } = req.body;
-    
+    const { nombre, descripcion, color, semestre } = req.body;
+
     if (!nombre) {
       return res.status(400).json({ error: 'El nombre es requerido' });
     }
-    
+
     await getDatabase();
+    // Add column if not exists (Lazy Migration for local dev)
+    try {
+      dbPrepare("SELECT semestre FROM materias LIMIT 1").get();
+    } catch {
+      dbPrepare("ALTER TABLE materias ADD COLUMN semestre TEXT").run();
+    }
+
     const result = dbPrepare(`
-      INSERT INTO materias (user_id, nombre, descripcion, color) VALUES (?, ?, ?, ?)
-    `).run(req.user.id, nombre, descripcion || null, color || '#3b82f6');
-    
+      INSERT INTO materias (user_id, nombre, descripcion, color, semestre) VALUES (?, ?, ?, ?, ?)
+    `).run(req.user.id, nombre, descripcion || null, color || '#3b82f6', semestre || null);
+
     const materia = dbPrepare('SELECT * FROM materias WHERE id = ?').get(result.lastInsertRowid);
-    
+
     res.status(201).json(materia);
   } catch (error) {
     console.error('Create materia error:', error);
@@ -93,19 +100,19 @@ router.put('/:id', async (req, res) => {
   try {
     const { nombre, descripcion, color } = req.body;
     await getDatabase();
-    
+
     // Check ownership
     const existing = dbPrepare('SELECT id FROM materias WHERE id = ? AND user_id = ?')
       .get(req.params.id, req.user.id);
     if (!existing) {
       return res.status(404).json({ error: 'Materia no encontrada' });
     }
-    
+
     dbPrepare(`
       UPDATE materias SET nombre = ?, descripcion = ?, color = ?, updated_at = CURRENT_TIMESTAMP
       WHERE id = ?
     `).run(nombre, descripcion, color, req.params.id);
-    
+
     const materia = dbPrepare('SELECT * FROM materias WHERE id = ?').get(req.params.id);
     res.json(materia);
   } catch (error) {
@@ -118,14 +125,14 @@ router.put('/:id', async (req, res) => {
 router.delete('/:id', async (req, res) => {
   try {
     await getDatabase();
-    
+
     const result = dbPrepare('DELETE FROM materias WHERE id = ? AND user_id = ?')
       .run(req.params.id, req.user.id);
-    
+
     if (result.changes === 0) {
       return res.status(404).json({ error: 'Materia no encontrada' });
     }
-    
+
     res.json({ message: 'Materia eliminada' });
   } catch (error) {
     console.error('Delete materia error:', error);
@@ -138,14 +145,14 @@ router.post('/:id/unidades', async (req, res) => {
   try {
     const { nombre, orden } = req.body;
     await getDatabase();
-    
+
     // Check ownership
     const materia = dbPrepare('SELECT id FROM materias WHERE id = ? AND user_id = ?')
       .get(req.params.id, req.user.id);
     if (!materia) {
       return res.status(404).json({ error: 'Materia no encontrada' });
     }
-    
+
     // Get max orden if not provided
     let finalOrden = orden;
     if (finalOrden === undefined) {
@@ -153,11 +160,11 @@ router.post('/:id/unidades', async (req, res) => {
         .get(req.params.id);
       finalOrden = (maxOrden?.max || 0) + 1;
     }
-    
+
     const result = dbPrepare(`
       INSERT INTO syllabus_unidades (materia_id, nombre, orden) VALUES (?, ?, ?)
     `).run(req.params.id, nombre, finalOrden);
-    
+
     const unidad = dbPrepare('SELECT * FROM syllabus_unidades WHERE id = ?').get(result.lastInsertRowid);
     res.status(201).json(unidad);
   } catch (error) {
@@ -171,18 +178,18 @@ router.post('/:id/unidades/:unidadId/temas', async (req, res) => {
   try {
     const { nombre, descripcion, orden } = req.body;
     await getDatabase();
-    
+
     // Check ownership through materia
     const unidad = dbPrepare(`
       SELECT su.id FROM syllabus_unidades su
       JOIN materias m ON su.materia_id = m.id
       WHERE su.id = ? AND m.user_id = ?
     `).get(req.params.unidadId, req.user.id);
-    
+
     if (!unidad) {
       return res.status(404).json({ error: 'Unidad no encontrada' });
     }
-    
+
     // Get max orden if not provided
     let finalOrden = orden;
     if (finalOrden === undefined) {
@@ -190,11 +197,11 @@ router.post('/:id/unidades/:unidadId/temas', async (req, res) => {
         .get(req.params.unidadId);
       finalOrden = (maxOrden?.max || 0) + 1;
     }
-    
+
     const result = dbPrepare(`
       INSERT INTO syllabus_temas (unidad_id, nombre, descripcion, orden) VALUES (?, ?, ?, ?)
     `).run(req.params.unidadId, nombre, descripcion, finalOrden);
-    
+
     const tema = dbPrepare('SELECT * FROM syllabus_temas WHERE id = ?').get(result.lastInsertRowid);
     res.status(201).json(tema);
   } catch (error) {
@@ -207,7 +214,7 @@ router.post('/:id/unidades/:unidadId/temas', async (req, res) => {
 router.patch('/temas/:temaId/toggle', async (req, res) => {
   try {
     await getDatabase();
-    
+
     // Check ownership through materia
     const tema = dbPrepare(`
       SELECT st.* FROM syllabus_temas st
@@ -215,18 +222,18 @@ router.patch('/temas/:temaId/toggle', async (req, res) => {
       JOIN materias m ON su.materia_id = m.id
       WHERE st.id = ? AND m.user_id = ?
     `).get(req.params.temaId, req.user.id);
-    
+
     if (!tema) {
       return res.status(404).json({ error: 'Tema no encontrado' });
     }
-    
+
     const newVisto = tema.visto ? 0 : 1;
     const fechaVisto = newVisto ? new Date().toISOString() : null;
-    
+
     dbPrepare(`
       UPDATE syllabus_temas SET visto = ?, fecha_visto = ? WHERE id = ?
     `).run(newVisto, fechaVisto, req.params.temaId);
-    
+
     const updated = dbPrepare('SELECT * FROM syllabus_temas WHERE id = ?').get(req.params.temaId);
     res.json(updated);
   } catch (error) {

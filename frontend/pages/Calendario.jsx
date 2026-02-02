@@ -158,7 +158,7 @@ function Calendario() {
   };
 
   const eliminarEvento = async (id) => {
-    if (!confirm("¿Seguro que deseas eliminar este evento?")) return;
+    // if (!confirm("¿Seguro que deseas eliminar este evento?")) return;
 
     try {
       await calendarioService.delete(id);
@@ -166,7 +166,13 @@ function Calendario() {
       cargarEventos();
     } catch (error) {
       console.error("Error eliminando:", error);
-      alert("Error al eliminar evento");
+      // If error is 404 or "not found", just remove it from UI
+      if (error.message.includes("no encontrado") || error.message.includes("404")) {
+        cerrarFormulario();
+        cargarEventos();
+        return;
+      }
+      alert("Error al eliminar evento: " + error.message);
     }
   };
 

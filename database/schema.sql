@@ -23,6 +23,8 @@ CREATE TABLE IF NOT EXISTS materias (
     user_id INTEGER NOT NULL,
     nombre TEXT NOT NULL,
     descripcion TEXT,
+    semestre TEXT,
+    syllabus TEXT,
     color TEXT DEFAULT '#3b82f6',
     -- Color para identificar la materia
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,

@@ -10,20 +10,20 @@ router.get('/', async (req, res) => {
   try {
     await getDatabase();
     const { tipo } = req.query;
-    
+
     let query = `
       SELECT e.*, m.nombre as materia_nombre, m.color as materia_color
       FROM eventos_calendario e
       LEFT JOIN materias m ON e.materia_id = m.id
       WHERE e.user_id = ?
     `;
-    
+
     if (tipo) {
       query += ` AND e.tipo = '${tipo}'`;
     }
-    
+
     query += ' ORDER BY e.fecha_inicio';
-    
+
     const eventos = dbPrepare(query).all(req.user.id);
     res.json(eventos);
   } catch (error) {
@@ -36,13 +36,13 @@ router.get('/', async (req, res) => {
 router.post('/', async (req, res) => {
   try {
     const { materia_id, titulo, descripcion, fecha_inicio, fecha_fin, tipo } = req.body;
-    
+
     if (!titulo || !fecha_inicio) {
       return res.status(400).json({ error: 'Título y fecha de inicio son requeridos' });
     }
-    
+
     await getDatabase();
-    
+
     // If materia_id provided, verify ownership
     if (materia_id) {
       const materia = dbPrepare('SELECT id FROM materias WHERE id = ? AND user_id = ?')
@@ -51,19 +51,34 @@ router.post('/', async (req, res) => {
         return res.status(404).json({ error: 'Materia no encontrada' });
       }
     }
-    
+
     const result = dbPrepare(`
       INSERT INTO eventos_calendario (user_id, materia_id, titulo, descripcion, fecha_inicio, fecha_fin, tipo)
       VALUES (?, ?, ?, ?, ?, ?, ?)
     `).run(req.user.id, materia_id || null, titulo, descripcion || null, fecha_inicio, fecha_fin || null, tipo || 'estudio');
-    
-    const evento = dbPrepare(`
+
+    let evento = dbPrepare(`
       SELECT e.*, m.nombre as materia_nombre
       FROM eventos_calendario e
       LEFT JOIN materias m ON e.materia_id = m.id
       WHERE e.id = ?
     `).get(result.lastInsertRowid);
-    
+
+    if (!evento) {
+      // Fallback if select fails locally
+      evento = {
+        id: result.lastInsertRowid,
+        user_id: req.user.id,
+        materia_id: materia_id || null,
+        titulo,
+        descripcion: descripcion || null,
+        fecha_inicio,
+        fecha_fin: fecha_fin || null,
+        tipo: tipo || 'estudio',
+        completado: 0
+      };
+    }
+
     res.status(201).json(evento);
   } catch (error) {
     console.error('Create evento error:', error);
@@ -76,19 +91,19 @@ router.put('/:id', async (req, res) => {
   try {
     const { titulo, descripcion, fecha_inicio, fecha_fin, tipo, completado } = req.body;
     await getDatabase();
-    
+
     const existing = dbPrepare('SELECT id FROM eventos_calendario WHERE id = ? AND user_id = ?')
       .get(req.params.id, req.user.id);
     if (!existing) {
       return res.status(404).json({ error: 'Evento no encontrado' });
     }
-    
+
     dbPrepare(`
       UPDATE eventos_calendario 
       SET titulo = ?, descripcion = ?, fecha_inicio = ?, fecha_fin = ?, tipo = ?, completado = ?
       WHERE id = ?
     `).run(titulo, descripcion, fecha_inicio, fecha_fin, tipo, completado ? 1 : 0, req.params.id);
-    
+
     const evento = dbPrepare('SELECT * FROM eventos_calendario WHERE id = ?').get(req.params.id);
     res.json(evento);
   } catch (error) {
@@ -101,17 +116,17 @@ router.put('/:id', async (req, res) => {
 router.patch('/:id/toggle', async (req, res) => {
   try {
     await getDatabase();
-    
+
     const evento = dbPrepare('SELECT * FROM eventos_calendario WHERE id = ? AND user_id = ?')
       .get(req.params.id, req.user.id);
     if (!evento) {
       return res.status(404).json({ error: 'Evento no encontrado' });
     }
-    
+
     const nuevoCompletado = evento.completado ? 0 : 1;
     dbPrepare('UPDATE eventos_calendario SET completado = ? WHERE id = ?')
       .run(nuevoCompletado, req.params.id);
-    
+
     const updated = dbPrepare('SELECT * FROM eventos_calendario WHERE id = ?').get(req.params.id);
     res.json(updated);
   } catch (error) {
@@ -124,13 +139,17 @@ router.patch('/:id/toggle', async (req, res) => {
 router.delete('/:id', async (req, res) => {
   try {
     await getDatabase();
+    const id = parseInt(req.params.id, 10);
+    const userId = req.user.id;
+
     const result = dbPrepare('DELETE FROM eventos_calendario WHERE id = ? AND user_id = ?')
-      .run(req.params.id, req.user.id);
-    
+      .run(id, userId);
+
     if (result.changes === 0) {
+      console.warn(`DELETE failed: Evento ${id} no encontrado para usuario ${userId}`);
       return res.status(404).json({ error: 'Evento no encontrado' });
     }
-    
+
     res.json({ message: 'Evento eliminado' });
   } catch (error) {
     console.error('Delete evento error:', error);
