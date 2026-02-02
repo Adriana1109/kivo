@@ -23,32 +23,32 @@
 
 ## Tasks
 
-- [ ] 1.0 Configurar Wrangler y verificar cuenta
-  - [ ] 1.1 Verificar que Wrangler está instalado (`npx wrangler --version`)
-  - [ ] 1.2 Autenticarse con Cloudflare (`npx wrangler login`)
-  - [ ] 1.3 Verificar que la base D1 existe (`npx wrangler d1 list`)
-  - [ ] 1.4 Si no existe, crear la base de datos D1
+- [x] 1.0 Configurar Wrangler y verificar cuenta
+  - [x] 1.1 Verificar que Wrangler está instalado (`npx wrangler --version`)
+  - [x] 1.2 Autenticarse con Cloudflare (`npx wrangler login`)
+  - [x] 1.3 Verificar que la base D1 existe (`npx wrangler d1 list`)
+  - [x] 1.4 Si no existe, crear la base de datos D1
 
-- [ ] 2.0 Preparar Frontend para Producción
-  - [ ] 2.1 Crear archivo `.env.production` con URL de API
-  - [ ] 2.2 Actualizar `vite.config.js` para usar variables de entorno
-  - [ ] 2.3 Actualizar componentes para usar `import.meta.env.VITE_API_URL`
-  - [ ] 2.4 Ejecutar build de producción (`npm run build`)
-  - [ ] 2.5 Desplegar en Cloudflare Pages
+- [x] 2.0 Preparar Frontend para Producción
+  - [x] 2.1 Crear archivo `.env.production` con URL de API
+  - [x] 2.2 Actualizar `vite.config.js` para usar variables de entorno
+  - [x] 2.3 Actualizar componentes para usar `import.meta.env.VITE_API_URL`
+  - [x] 2.4 Ejecutar build de producción (`npm run build`)
+  - [x] 2.5 Desplegar en Cloudflare Pages (https://kivo-frontend.pages.dev)
 
-- [ ] 3.0 Migrar Backend a Cloudflare Workers
-  - [ ] 3.1 Instalar Hono y dependencias (`npm install hono`)
-  - [ ] 3.2 Crear `worker.js` con configuración de Hono
-  - [ ] 3.3 Adaptar rutas de auth (login, register)
-  - [ ] 3.4 Adaptar rutas de materias (CRUD)
-  - [ ] 3.5 Adaptar rutas de apuntes (CRUD)
-  - [ ] 3.6 Adaptar rutas de calendario (CRUD)
-  - [ ] 3.7 Actualizar middleware de autenticación para D1
+- [x] 3.0 Migrar Backend a Cloudflare Workers
+  - [x] 3.1 Instalar Hono y dependencias (`npm install hono`)
+  - [x] 3.2 Crear `worker.js` con configuración de Hono
+  - [x] 3.3 Adaptar rutas de auth (login, register)
+  - [x] 3.4 Adaptar rutas de materias (CRUD)
+  - [x] 3.5 Adaptar rutas de apuntes (CRUD)
+  - [x] 3.6 Adaptar rutas de calendario (CRUD)
+  - [x] 3.7 Actualizar middleware de autenticación para D1
 
-- [ ] 4.0 Configurar Base de Datos D1
-  - [ ] 4.1 Ejecutar schema.sql en D1 (`npx wrangler d1 execute`)
-  - [ ] 4.2 Verificar que las tablas se crearon correctamente
-  - [ ] 4.3 Crear usuario admin de prueba
+- [x] 4.0 Configurar Base de Datos D1
+  - [x] 4.1 Ejecutar schema.sql en D1 (`npx wrangler d1 execute`)
+  - [x] 4.2 Verificar que las tablas se crearon correctamente
+  - [x] 4.3 Crear usuario admin de prueba (Registro inicial vía API)
 
 - [ ] 5.0 Desplegar y Verificar
   - [ ] 5.1 Desplegar Worker (`npx wrangler deploy`)

@@ -1,10 +1,10 @@
 // API Configuration
-export const API_URL = "http://localhost:3001";
+export const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3001/api";
 
 // Helper function for API calls
 async function apiCall(endpoint, options = {}) {
   const token = localStorage.getItem('token');
-  
+
   const config = {
     headers: {
       'Content-Type': 'application/json',
@@ -13,14 +13,14 @@ async function apiCall(endpoint, options = {}) {
     },
     ...options,
   };
-  
+
   const response = await fetch(`${API_URL}${endpoint}`, config);
   const data = await response.json();
-  
+
   if (!response.ok) {
     throw new Error(data.error || 'Error en la petición');
   }
-  
+
   return data;
 }
 
@@ -32,35 +32,35 @@ export const auth = {
       body: JSON.stringify({ email, password, nombre }),
     });
   },
-  
+
   async login(email, password) {
     const data = await apiCall('/api/auth/login', {
       method: 'POST',
       body: JSON.stringify({ email, password }),
     });
-    
+
     if (data.token) {
       localStorage.setItem('token', data.token);
       localStorage.setItem('user', JSON.stringify(data.user));
     }
-    
+
     return data;
   },
-  
+
   async me() {
     return apiCall('/api/auth/me');
   },
-  
+
   logout() {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
   },
-  
+
   getStoredUser() {
     const user = localStorage.getItem('user');
     return user ? JSON.parse(user) : null;
   },
-  
+
   isAuthenticated() {
     return !!localStorage.getItem('token');
   }
@@ -71,25 +71,25 @@ export const materias = {
   async list() {
     return apiCall('/api/materias');
   },
-  
+
   async get(id) {
     return apiCall(`/api/materias/${id}`);
   },
-  
+
   async create(data) {
     return apiCall('/api/materias', {
       method: 'POST',
       body: JSON.stringify(data),
     });
   },
-  
+
   async update(id, data) {
     return apiCall(`/api/materias/${id}`, {
       method: 'PUT',
       body: JSON.stringify(data),
     });
   },
-  
+
   async delete(id) {
     return apiCall(`/api/materias/${id}`, {
       method: 'DELETE',
@@ -103,25 +103,25 @@ export const apuntes = {
     const query = materiaId ? `?materia_id=${materiaId}` : '';
     return apiCall(`/api/apuntes${query}`);
   },
-  
+
   async get(id) {
     return apiCall(`/api/apuntes/${id}`);
   },
-  
+
   async create(data) {
     return apiCall('/api/apuntes', {
       method: 'POST',
       body: JSON.stringify(data),
     });
   },
-  
+
   async update(id, data) {
     return apiCall(`/api/apuntes/${id}`, {
       method: 'PUT',
       body: JSON.stringify(data),
     });
   },
-  
+
   async delete(id) {
     return apiCall(`/api/apuntes/${id}`, {
       method: 'DELETE',
@@ -138,19 +138,19 @@ export const sesiones = {
     const query = params.toString() ? `?${params}` : '';
     return apiCall(`/api/sesiones${query}`);
   },
-  
+
   async getStats(periodo = null) {
     const query = periodo ? `?periodo=${periodo}` : '';
     return apiCall(`/api/sesiones/stats${query}`);
   },
-  
+
   async create(data) {
     return apiCall('/api/sesiones', {
       method: 'POST',
       body: JSON.stringify(data),
     });
   },
-  
+
   async delete(id) {
     return apiCall(`/api/sesiones/${id}`, {
       method: 'DELETE',
@@ -168,27 +168,27 @@ export const calendario = {
     const query = params.toString() ? `?${params}` : '';
     return apiCall(`/api/calendario${query}`);
   },
-  
+
   async create(data) {
     return apiCall('/api/calendario', {
       method: 'POST',
       body: JSON.stringify(data),
     });
   },
-  
+
   async update(id, data) {
     return apiCall(`/api/calendario/${id}`, {
       method: 'PUT',
       body: JSON.stringify(data),
     });
   },
-  
+
   async toggle(id) {
     return apiCall(`/api/calendario/${id}/toggle`, {
       method: 'PATCH',
     });
   },
-  
+
   async delete(id) {
     return apiCall(`/api/calendario/${id}`, {
       method: 'DELETE',

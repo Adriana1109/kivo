@@ -1,10 +1,10 @@
-name = "kivo-main"
+name = "kivo-api"
 compatibility_date = "2024-01-01"
 
-main = "src/index.js"
+main = "src/worker.js"
 
 
 [[d1_databases]]
 binding = "DB"
 database_name = "kivo-db"
-database_id = "99169367-d104-48ad-ab07-612185e7bb8d"
+database_id = "cb20c7c0-f99e-46ec-bd87-d223940860be"

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import './Apuntes.css';
 
-const API_URL = 'http://localhost:3001/api';
+import { API_URL } from "../services/api";
 
 /**
  * Componente Apuntes

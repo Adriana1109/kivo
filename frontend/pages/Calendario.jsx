@@ -3,6 +3,7 @@ import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
+import { API_URL } from "../services/api";
 
 import "./Calendario.css";
 
@@ -34,7 +35,7 @@ function Calendario() {
   const [filtroTipo, setFiltroTipo] = useState("todos");
   const [filtroMes, setFiltroMes] = useState("todos");
 
-  const API_URL = "http://localhost:3001/api";
+
 
   // Colores por tipo de evento
   const coloresPorTipo = {
