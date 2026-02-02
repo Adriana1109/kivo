@@ -174,6 +174,37 @@ protectedRoutes.post('/materias', async (c) => {
     return c.json(materia, 201);
 });
 
+protectedRoutes.put('/materias/:id', async (c) => {
+    const userId = getUserId(c);
+    const id = c.req.param('id');
+    const { nombre, descripcion, color, semestre, syllabus } = await c.req.json();
+
+    // Dynamically build update query
+    let query = 'UPDATE materias SET ';
+    const params = [];
+    const updates = [];
+
+    if (nombre !== undefined) { updates.push('nombre = ?'); params.push(nombre); }
+    if (descripcion !== undefined) { updates.push('descripcion = ?'); params.push(descripcion); }
+    if (color !== undefined) { updates.push('color = ?'); params.push(color); }
+    if (semestre !== undefined) { updates.push('semestre = ?'); params.push(semestre); }
+    if (syllabus !== undefined) { updates.push('syllabus = ?'); params.push(syllabus); }
+
+    updates.push('updated_at = CURRENT_TIMESTAMP');
+
+    if (updates.length > 1) { // >1 because updated_at is always there
+        query += updates.join(', ') + ' WHERE id = ? AND user_id = ?';
+        params.push(id, userId);
+
+        const result = await c.env.DB.prepare(query).bind(...params).run();
+
+        if (result.meta.changes === 0) return c.json({ error: 'Materia no encontrada' }, 404);
+    }
+
+    const materia = await c.env.DB.prepare('SELECT * FROM materias WHERE id = ?').bind(id).first();
+    return c.json(materia);
+});
+
 protectedRoutes.delete('/materias/:id', async (c) => {
     const userId = getUserId(c);
     const id = c.req.param('id');
