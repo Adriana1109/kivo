@@ -348,6 +348,20 @@ protectedRoutes.put('/calendario/:id', async (c) => {
     return c.json(evento);
 });
 
+protectedRoutes.patch('/calendario/:id/toggle', async (c) => {
+    const userId = getUserId(c);
+    const id = c.req.param('id');
+
+    const evento = await c.env.DB.prepare('SELECT * FROM eventos_calendario WHERE id = ? AND user_id = ?').bind(id, userId).first();
+    if (!evento) return c.json({ error: 'Evento no encontrado' }, 404);
+
+    const nuevoEstado = evento.completado ? 0 : 1;
+
+    await c.env.DB.prepare('UPDATE eventos_calendario SET completado = ? WHERE id = ?').bind(nuevoEstado, id).run();
+
+    return c.json({ ...evento, completado: nuevoEstado });
+});
+
 protectedRoutes.delete('/calendario/:id', async (c) => {
     const userId = getUserId(c);
     const id = c.req.param('id');
