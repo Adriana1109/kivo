@@ -221,5 +221,15 @@ export const chatbot = {
       method: 'POST',
       body: JSON.stringify({ question }),
     });
+  },
+
+  async getHistory(subjectId) {
+    return apiCall(`/api/chat/${subjectId}/history`);
+  },
+
+  async clearHistory(subjectId) {
+    return apiCall(`/api/chat/${subjectId}/history`, {
+      method: 'DELETE',
+    });
   }
 };

@@ -8,3 +8,6 @@ main = "src/worker.js"
 binding = "DB"
 database_name = "kivo-db"
 database_id = "cb20c7c0-f99e-46ec-bd87-d223940860be"
+
+[ai]
+binding = "AI"

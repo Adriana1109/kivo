@@ -34,6 +34,7 @@ Update the file after completing each sub-task, not just after completing an ent
   - [x] 2.5 Integrate `aiService.generateResponse` to get the answer from Gemini.
   - [x] 2.6 Register the new route in `backend/src/index.js`.
 
+  - [x] 6.3 Deploy Frontend (Pages) via GitHub Push / Wrangler Deploy (Fixed API URL)Interface
 - [x] 3.0 Develop Frontend Chat Interface
   - [x] 3.1 Create `frontend/src/components/Chatbot.css` for chat UI styles.
   - [x] 3.2 Create `frontend/src/components/Chatbot.jsx`.

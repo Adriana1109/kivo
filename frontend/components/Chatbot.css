@@ -271,3 +271,28 @@
     color: inherit;
     padding: 0;
 }
+
+/* Clear History Button */
+.clear-history-btn {
+    background: transparent;
+    border: none;
+    font-size: 1rem;
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 6px;
+    opacity: 0.6;
+    transition: all 0.2s;
+}
+
+.clear-history-btn:hover {
+    opacity: 1;
+    background: #fee2e2;
+}
+
+/* Loading History State */
+.loading-history {
+    text-align: center;
+    color: #9ca3af;
+    padding: 2rem;
+    font-size: 0.95rem;
+}

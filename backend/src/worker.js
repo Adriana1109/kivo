@@ -2,6 +2,7 @@ import { Hono } from 'hono';
 import { cors } from 'hono/cors';
 import { jwt } from 'hono/jwt';
 import bcrypt from 'bcryptjs';
+import { generateResponse } from './services/ai-service.js';
 
 const app = new Hono();
 
@@ -281,6 +282,49 @@ protectedRoutes.delete('/apuntes/:id', async (c) => {
 });
 
 // --- CHATBOT ---
+
+// Get chat history for a subject
+protectedRoutes.get('/chat/:subjectId/history', async (c) => {
+    try {
+        const userId = getUserId(c);
+        const subjectId = c.req.param('subjectId');
+
+        // Verify ownership
+        const materia = await c.env.DB.prepare('SELECT id FROM materias WHERE id = ? AND user_id = ?').bind(subjectId, userId).first();
+        if (!materia) {
+            return c.json({ error: 'Materia no encontrada' }, 404);
+        }
+
+        // Fetch chat history
+        const { results } = await c.env.DB.prepare(`
+            SELECT rol, mensaje, created_at 
+            FROM chat_historial 
+            WHERE user_id = ? AND materia_id = ?
+            ORDER BY created_at ASC
+        `).bind(userId, subjectId).all();
+
+        return c.json(results || []);
+    } catch (error) {
+        console.error('Chat history error:', error);
+        return c.json({ error: error.message }, 500);
+    }
+});
+
+// Clear chat history for a subject
+protectedRoutes.delete('/chat/:subjectId/history', async (c) => {
+    try {
+        const userId = getUserId(c);
+        const subjectId = c.req.param('subjectId');
+
+        await c.env.DB.prepare('DELETE FROM chat_historial WHERE user_id = ? AND materia_id = ?').bind(userId, subjectId).run();
+
+        return c.json({ message: 'Historial eliminado' });
+    } catch (error) {
+        console.error('Clear history error:', error);
+        return c.json({ error: error.message }, 500);
+    }
+});
+
 protectedRoutes.post('/chat/:subjectId/ask', async (c) => {
     try {
         const userId = getUserId(c);
@@ -299,7 +343,6 @@ protectedRoutes.post('/chat/:subjectId/ask', async (c) => {
         }
 
         // 2. Fetch Syllabus (Units + Topics)
-        // Note: Check if tables rely on JOINs that exist. Assuming syllabus_unidades/temas exist as per local Schema
         const { results: unidades } = await c.env.DB.prepare(`
         SELECT u.nombre as unidad, t.nombre as tema, t.descripcion 
         FROM syllabus_unidades u
@@ -322,7 +365,6 @@ protectedRoutes.post('/chat/:subjectId/ask', async (c) => {
                 }
             });
         } else {
-            // Fallback if no syllabus units, use simple syllabus text field from Materia if available
             if (materia.syllabus) {
                 syllabusContext += materia.syllabus;
             } else {
@@ -331,7 +373,7 @@ protectedRoutes.post('/chat/:subjectId/ask', async (c) => {
         }
 
         // 3. Fetch Notes
-        const { results: apuntes } = await c.env.DB.prepare('SELECT titulo, descripcion, contenido FROM apuntes WHERE materia_id = ?').bind(subjectId).all();
+        const { results: apuntes } = await c.env.DB.prepare('SELECT titulo, contenido FROM apuntes WHERE materia_id = ?').bind(subjectId).all();
 
         let notesContext = "\nAPUNTES (Tus notas):\n";
         if (!apuntes || apuntes.length === 0) {
@@ -340,7 +382,6 @@ protectedRoutes.post('/chat/:subjectId/ask', async (c) => {
             apuntes.forEach(note => {
                 notesContext += `\nTitulo: ${note.titulo}\n`;
                 if (note.contenido) notesContext += `Contenido: ${note.contenido}\n`;
-                if (note.descripcion) notesContext += `Descripcion: ${note.descripcion}\n`;
             });
         }
 
@@ -353,16 +394,27 @@ protectedRoutes.post('/chat/:subjectId/ask', async (c) => {
         ${notesContext}
       `;
 
-        // 4. Generate AI Response
-        // Import dynamically if needed/or top level using the updated service
-        const { generateResponse } = await import('./services/ai-service.js');
-        const aiResponse = await generateResponse(fullContext, question, c.env.GEMINI_API_KEY);
+        // 4. Generate AI Response using Cloudflare Workers AI
+        if (!c.env.AI) {
+            return c.json({ error: 'Configuration Error: AI binding is missing.' }, 500);
+        }
+
+        const aiResponse = await generateResponse(fullContext, question, c.env.AI);
+
+        // 5. Save chat messages to history
+        await c.env.DB.prepare(
+            'INSERT INTO chat_historial (user_id, materia_id, rol, mensaje) VALUES (?, ?, ?, ?)'
+        ).bind(userId, subjectId, 'user', question).run();
+
+        await c.env.DB.prepare(
+            'INSERT INTO chat_historial (user_id, materia_id, rol, mensaje) VALUES (?, ?, ?, ?)'
+        ).bind(userId, subjectId, 'assistant', aiResponse).run();
 
         return c.json({ answer: aiResponse });
 
     } catch (error) {
         console.error('Chatbot API error:', error);
-        return c.json({ error: 'Error al procesar tu pregunta con la IA.', details: error.message }, 500);
+        return c.json({ error: error.message || 'Error interno del servidor' }, 500);
     }
 });
 
