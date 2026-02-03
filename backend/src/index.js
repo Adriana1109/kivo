@@ -9,6 +9,7 @@ import materiasRoutes from './routes/materias.js';
 import apuntesRoutes from './routes/apuntes.js';
 import sesionesRoutes from './routes/sesiones.js';
 import calendarioRoutes from './routes/calendario.js';
+import chatbotRoutes from './routes/chatbot.js';
 
 // Load environment variables
 dotenv.config();
@@ -34,6 +35,7 @@ app.use('/api/materias', materiasRoutes);
 app.use('/api/apuntes', apuntesRoutes);
 app.use('/api/sesiones', sesionesRoutes);
 app.use('/api/calendario', calendarioRoutes);
+app.use('/api/chat', chatbotRoutes);
 
 // Error handling middleware
 app.use((err, req, res, next) => {

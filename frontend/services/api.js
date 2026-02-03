@@ -213,3 +213,13 @@ export const calendario = {
     });
   },
 };
+
+// Chatbot API
+export const chatbot = {
+  async ask(subjectId, question) {
+    return apiCall(`/api/chat/${subjectId}/ask`, {
+      method: 'POST',
+      body: JSON.stringify({ question }),
+    });
+  }
+};

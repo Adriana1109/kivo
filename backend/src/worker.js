@@ -280,6 +280,92 @@ protectedRoutes.delete('/apuntes/:id', async (c) => {
     return c.json({ message: 'Apunte eliminado' });
 });
 
+// --- CHATBOT ---
+protectedRoutes.post('/chat/:subjectId/ask', async (c) => {
+    try {
+        const userId = getUserId(c);
+        const subjectId = c.req.param('subjectId');
+        const { question } = await c.req.json();
+
+        if (!question) {
+            return c.json({ error: 'La pregunta es requerida' }, 400);
+        }
+
+        // 1. Verify ownership and get Subject details
+        const materia = await c.env.DB.prepare('SELECT * FROM materias WHERE id = ? AND user_id = ?').bind(subjectId, userId).first();
+
+        if (!materia) {
+            return c.json({ error: 'Materia no encontrada' }, 404);
+        }
+
+        // 2. Fetch Syllabus (Units + Topics)
+        // Note: Check if tables rely on JOINs that exist. Assuming syllabus_unidades/temas exist as per local Schema
+        const { results: unidades } = await c.env.DB.prepare(`
+        SELECT u.nombre as unidad, t.nombre as tema, t.descripcion 
+        FROM syllabus_unidades u
+        LEFT JOIN syllabus_temas t ON u.id = t.unidad_id
+        WHERE u.materia_id = ?
+        ORDER BY u.orden, t.orden
+      `).bind(subjectId).all();
+
+        // Format Syllabus Context
+        let syllabusContext = "SYLLABUS:\n";
+        let currentUnit = null;
+        if (unidades && unidades.length > 0) {
+            unidades.forEach(row => {
+                if (row.unidad !== currentUnit) {
+                    syllabusContext += `\nUnidad: ${row.unidad}\n`;
+                    currentUnit = row.unidad;
+                }
+                if (row.tema) {
+                    syllabusContext += `- ${row.tema}: ${row.descripcion || ''}\n`;
+                }
+            });
+        } else {
+            // Fallback if no syllabus units, use simple syllabus text field from Materia if available
+            if (materia.syllabus) {
+                syllabusContext += materia.syllabus;
+            } else {
+                syllabusContext += "No hay syllabus detallado disponible.\n";
+            }
+        }
+
+        // 3. Fetch Notes
+        const { results: apuntes } = await c.env.DB.prepare('SELECT titulo, descripcion, contenido FROM apuntes WHERE materia_id = ?').bind(subjectId).all();
+
+        let notesContext = "\nAPUNTES (Tus notas):\n";
+        if (!apuntes || apuntes.length === 0) {
+            notesContext += "No hay apuntes registrados para esta materia.\n";
+        } else {
+            apuntes.forEach(note => {
+                notesContext += `\nTitulo: ${note.titulo}\n`;
+                if (note.contenido) notesContext += `Contenido: ${note.contenido}\n`;
+                if (note.descripcion) notesContext += `Descripcion: ${note.descripcion}\n`;
+            });
+        }
+
+        const fullContext = `
+        Materia: ${materia.nombre}
+        Descripcion: ${materia.descripcion}
+        
+        ${syllabusContext}
+        
+        ${notesContext}
+      `;
+
+        // 4. Generate AI Response
+        // Import dynamically if needed/or top level using the updated service
+        const { generateResponse } = await import('./services/ai-service.js');
+        const aiResponse = await generateResponse(fullContext, question, c.env.GEMINI_API_KEY);
+
+        return c.json({ answer: aiResponse });
+
+    } catch (error) {
+        console.error('Chatbot API error:', error);
+        return c.json({ error: 'Error al procesar tu pregunta con la IA.', details: error.message }, 500);
+    }
+});
+
 // --- CALENDARIO ---
 protectedRoutes.get('/calendario', async (c) => {
     const userId = getUserId(c);
