@@ -17,7 +17,9 @@ function Home() {
           <div style={{ marginTop: '2rem', opacity: 0.7 }}>
             <p>🎯 Organiza tus materias y syllabus</p>
             <p>📚 Sube y gestiona tus apuntes</p>
-            <p>📅 Planifica tus sesiones de estudio</p>
+            <p>Planifica tus adrianas
+
+            </p>
             <p>🤖 Pregunta a tu asistente académico</p>
           </div>
         </div>

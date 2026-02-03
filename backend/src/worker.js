@@ -69,6 +69,7 @@ app.post('/api/auth/register', async (c) => {
             throw new Error('Error insertando usuario');
         }
 
+        const { sign } = await import('hono/jwt');
         const token = await sign({
             userId: result.meta.last_row_id,
             exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 7
