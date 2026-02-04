@@ -1,4 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
+import { createPortal } from 'react-dom';
+import { GraduationCap, BookOpen, FileText, X, Plus } from 'lucide-react';
 import { materias as materiasService } from "../services/api";
 import './Materias.css';
 
@@ -121,16 +123,16 @@ export default function Materias() {
   return (
     <main className="dashboard">
       <header className="hero">
-        <h1>🎓 Organiza tu carrera</h1>
+        <h1><GraduationCap size={36} style={{ marginBottom: '-6px', marginRight: '10px' }} /> Organiza tu carrera</h1>
         <p>Planifica, avanza y domina cada materia</p>
       </header>
 
-      <h2 className="titulo">📘 Gestión Académica</h2>
+      <h2 className="titulo"><BookOpen size={28} style={{ marginBottom: '-6px', marginRight: '10px' }} /> Gestión Académica</h2>
 
       {/* INPUT PARA AGREGAR SEMESTRE */}
       <input
         className="input-line"
-        placeholder="Nuevo semestre (ej: Semestre 1) + Enter"
+        placeholder="Nuevo semestre (ej: 1er Semestre) + Enter"
         value={nuevoSemestreNombre}
         onChange={e => setNuevoSemestreNombre(e.target.value)}
         onKeyDown={addSemestreVisual}
@@ -205,96 +207,116 @@ function BloqueSemestre({ nombre, materias, onAddMateria, onDeleteMateria, onUpd
 
 function MateriaCard({ materia, onDelete, onUpdate }) {
   const [showSyllabus, setShowSyllabus] = useState(false);
-  const [syllabusText, setSyllabusText] = useState(materia.syllabus || '');
 
-  // Update text if prop changes from DB refresh
+  // Optimistic UI: Estado local para cambio inmediato
+  const [optimisticActive, setOptimisticActive] = useState(
+    materia.activa !== undefined ? Boolean(materia.activa) : true
+  );
+
+  // Sincronizar si la DB manda un cambio real (ej: al recargar)
   useEffect(() => {
-    setSyllabusText(materia.syllabus || '');
-  }, [materia.syllabus]);
+    setOptimisticActive(materia.activa !== undefined ? Boolean(materia.activa) : true);
+  }, [materia.activa]);
 
-  const handleSaveSyllabus = () => {
-    onUpdate({ syllabus: syllabusText });
-    setShowSyllabus(false);
+  const handleToggleActive = (e) => {
+    e.stopPropagation();
+    const newState = !optimisticActive;
+    setOptimisticActive(newState); // ¡Cambio visual instantáneo!
+    onUpdate({ activa: newState ? 1 : 0 }); // La petición va por detrás
   };
 
+  const isActive = optimisticActive;
+
   return (
-    <div className="materia-card" style={{ border: `2px solid ${materia.color || '#3b82f6'}` }}>
+    <div className={`materia-card ${!isActive ? 'inactiva' : ''}`} style={{ border: `2px solid ${materia.color || '#3b82f6'}` }}>
       <div className="materia-header">
-        <h5>{materia.nombre}</h5>
-        <span className="x" onClick={onDelete}>✕</span>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+          <h5 style={{ opacity: isActive ? 1 : 0.6 }}>{materia.nombre}</h5>
+          {/* Toggle Switch */}
+          <label className="switch-toggle" title={isActive ? "Materia Activa" : "Materia Inactiva"}>
+            <input type="checkbox" checked={isActive} onChange={handleToggleActive} />
+            <span className="slider-round"></span>
+          </label>
+        </div>
+        <span className="x" onClick={onDelete} style={{ display: 'flex', alignItems: 'center' }}><X size={16} /></span>
       </div>
 
-      {/* Syllabus Section */}
-      <div className="syllabus-section" style={{ marginTop: '10px' }}>
-        {!showSyllabus && (
-          <button
-            onClick={() => setShowSyllabus(true)}
-            style={{
-              background: 'none',
-              border: '1px dashed #6366f1',
-              color: '#6366f1',
-              cursor: 'pointer',
-              fontSize: '0.8rem',
-              padding: '4px 8px',
-              borderRadius: '6px',
-              marginTop: '5px'
-            }}
-          >
-            {materia.syllabus ? '📄 Ver/Editar Syllabus' : '+ Agg Syllabus'}
-          </button>
-        )}
+      {/* Syllabus Section - Solo visible si activa o si el usuario quiere verla */}
+      <div className={`syllabus-section ${!isActive ? 'faded' : ''}`} style={{ marginTop: '10px' }}>
+        <button
+          onClick={() => setShowSyllabus(true)}
+          style={{
+            background: 'none',
+            border: `1px dashed ${isActive ? '#6366f1' : '#9ca3af'}`,
+            color: isActive ? '#6366f1' : '#9ca3af',
+            cursor: 'pointer',
+            fontSize: '0.8rem',
+            padding: '4px 8px',
+            borderRadius: '6px',
+            marginTop: '5px'
+          }}
+        >
+          {materia.syllabus ? (
+            <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <FileText size={14} /> Ver/Editar Syllabus
+            </span>
+          ) : (
+            <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <Plus size={14} /> Agg Syllabus
+            </span>
+          )}
+        </button>
 
         {showSyllabus && (
-          <div className="syllabus-editor" style={{ marginTop: '8px', animation: 'fadeIn 0.2s' }}>
-            <textarea
-              className="comentario" // Reuse styles
-              rows="5"
-              placeholder="Pega aquí el temario o syllabus..."
-              value={syllabusText}
-              onChange={(e) => setSyllabusText(e.target.value)}
-              style={{
-                width: '100%',
-                fontSize: '0.9rem',
-                padding: '8px',
-                borderRadius: '8px',
-                border: '1px solid #e5e7eb',
-                marginBottom: '8px'
-              }}
-            />
-            <div style={{ display: 'flex', gap: '8px' }}>
-              <button
-                onClick={handleSaveSyllabus}
-                style={{
-                  background: '#22c55e',
-                  color: 'white',
-                  border: 'none',
-                  padding: '6px 12px',
-                  borderRadius: '6px',
-                  cursor: 'pointer',
-                  fontSize: '0.8rem',
-                  fontWeight: '500'
-                }}
-              >
-                Guardar
-              </button>
-              <button
-                onClick={() => setShowSyllabus(false)}
-                style={{
-                  background: '#f3f4f6',
-                  color: '#374151',
-                  border: 'none',
-                  padding: '6px 12px',
-                  borderRadius: '6px',
-                  cursor: 'pointer',
-                  fontSize: '0.8rem'
-                }}
-              >
-                Cancelar
-              </button>
-            </div>
-          </div>
+          <SyllabusModal
+            materia={materia}
+            onClose={() => setShowSyllabus(false)}
+            onSave={(text) => {
+              onUpdate({ syllabus: text });
+              setShowSyllabus(false);
+            }}
+          />
         )}
       </div>
     </div>
+  );
+}
+
+function SyllabusModal({ materia, onClose, onSave }) {
+  const [text, setText] = useState(materia.syllabus || '');
+  const textareaRef = React.useRef(null);
+
+  useEffect(() => {
+    if (textareaRef.current) {
+      textareaRef.current.style.height = 'auto';
+      textareaRef.current.style.height = textareaRef.current.scrollHeight + 'px';
+    }
+  }, [text]);
+
+  return createPortal(
+    <div className="modal-overlay" onClick={onClose}>
+      <div className="modal-content syllabus-modal-content" onClick={e => e.stopPropagation()}>
+        <div className="modal-header">
+          <h3>Syllabus: {materia.nombre}</h3>
+        </div>
+
+        <div className="modal-body">
+          <textarea
+            ref={textareaRef}
+            className="syllabus-textarea"
+            placeholder="Pega aquí el temario, unidades, bibliografía..."
+            value={text}
+            onChange={(e) => setText(e.target.value)}
+            rows={1}
+          />
+        </div>
+
+        <div className="modal-actions">
+          <button className="btn-save" onClick={() => onSave(text)}>Guardar Syllabus</button>
+          <button className="btn-cancel" onClick={onClose}>Cancelar</button>
+        </div>
+      </div>
+    </div>,
+    document.body
   );
 }

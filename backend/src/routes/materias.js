@@ -11,6 +11,16 @@ router.use(authenticateToken);
 router.get('/', async (req, res) => {
   try {
     await getDatabase();
+
+    // Lazy migration for Activa column (checks if exists, if not adds it)
+    try {
+      dbPrepare("SELECT activa FROM materias LIMIT 1").get();
+    } catch {
+      try {
+        dbPrepare("ALTER TABLE materias ADD COLUMN activa INTEGER DEFAULT 1").run();
+      } catch (e) { console.log("Migration check ignored or failed", e); }
+    }
+
     const materias = dbPrepare(`
       SELECT m.*, 
         (SELECT COUNT(*) FROM syllabus_unidades WHERE materia_id = m.id) as total_unidades,
@@ -22,7 +32,7 @@ router.get('/', async (req, res) => {
          WHERE su.materia_id = m.id AND st.visto = 1) as temas_vistos
       FROM materias m
       WHERE m.user_id = ?
-      ORDER BY m.created_at DESC
+      ORDER BY m.activa DESC, m.created_at DESC
     `).all(req.user.id);
 
     res.json(materias);
@@ -68,7 +78,7 @@ router.get('/:id', async (req, res) => {
 // POST /api/materias - Create new materia
 router.post('/', async (req, res) => {
   try {
-    const { nombre, descripcion, color, semestre } = req.body;
+    const { nombre, descripcion, color, semestre, activa } = req.body;
 
     if (!nombre) {
       return res.status(400).json({ error: 'El nombre es requerido' });
@@ -82,9 +92,16 @@ router.post('/', async (req, res) => {
       dbPrepare("ALTER TABLE materias ADD COLUMN semestre TEXT").run();
     }
 
+    // Lazy migration for Activa column
+    try {
+      dbPrepare("SELECT activa FROM materias LIMIT 1").get();
+    } catch {
+      dbPrepare("ALTER TABLE materias ADD COLUMN activa INTEGER DEFAULT 1").run();
+    }
+
     const result = dbPrepare(`
-      INSERT INTO materias (user_id, nombre, descripcion, color, semestre) VALUES (?, ?, ?, ?, ?)
-    `).run(req.user.id, nombre, descripcion || null, color || '#3b82f6', semestre || null);
+      INSERT INTO materias (user_id, nombre, descripcion, color, semestre, activa) VALUES (?, ?, ?, ?, ?, ?)
+    `).run(req.user.id, nombre, descripcion || null, color || '#3b82f6', semestre || null, activa !== undefined ? activa : 1);
 
     const materia = dbPrepare('SELECT * FROM materias WHERE id = ?').get(result.lastInsertRowid);
 
@@ -98,7 +115,7 @@ router.post('/', async (req, res) => {
 // PUT /api/materias/:id - Update materia
 router.put('/:id', async (req, res) => {
   try {
-    const { nombre, descripcion, color } = req.body;
+    const { nombre, descripcion, color, activa } = req.body;
     await getDatabase();
 
     // Check ownership
@@ -108,10 +125,23 @@ router.put('/:id', async (req, res) => {
       return res.status(404).json({ error: 'Materia no encontrada' });
     }
 
-    dbPrepare(`
-      UPDATE materias SET nombre = ?, descripcion = ?, color = ?, updated_at = CURRENT_TIMESTAMP
-      WHERE id = ?
-    `).run(nombre, descripcion, color, req.params.id);
+    // Dynamic Update
+    const updates = [];
+    const params = [];
+
+    if (nombre !== undefined) { updates.push("nombre = ?"); params.push(nombre); }
+    if (descripcion !== undefined) { updates.push("descripcion = ?"); params.push(descripcion); }
+    if (color !== undefined) { updates.push("color = ?"); params.push(color); }
+    if (activa !== undefined) { updates.push("activa = ?"); params.push(activa); }
+
+    updates.push("updated_at = CURRENT_TIMESTAMP");
+
+    if (updates.length > 1) { // 1 accounts for updated_at
+      dbPrepare(`
+          UPDATE materias SET ${updates.join(", ")}
+          WHERE id = ?
+        `).run(...params, req.params.id);
+    }
 
     const materia = dbPrepare('SELECT * FROM materias WHERE id = ?').get(req.params.id);
     res.json(materia);

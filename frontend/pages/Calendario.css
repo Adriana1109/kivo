@@ -10,7 +10,7 @@
 /* ============================================
    MODAL OVERLAY Y CARD
    ============================================ */
-.modal-overlay {
+.cal-modal-overlay {
     position: fixed;
     top: 0;
     left: 0;
@@ -34,11 +34,11 @@
     }
 }
 
-.modal-card {
+.cal-modal-card {
     background: white;
     padding: 24px;
     border-radius: 16px;
-    width: 340px;
+    width: 450px;
     max-width: 90vw;
     max-height: 85vh;
     overflow-y: auto;
@@ -153,7 +153,7 @@
 /* ============================================
    BOTONES DEL MODAL
    ============================================ */
-.btn-guardar {
+.cal-btn-guardar {
     flex: 1;
     background: linear-gradient(135deg, #3b82f6, #2563eb);
     color: white;
@@ -165,12 +165,12 @@
     transition: all 0.2s;
 }
 
-.btn-guardar:hover {
+.cal-btn-guardar:hover {
     transform: translateY(-1px);
     box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
 }
 
-.btn-cancelar {
+.cal-btn-cancelar {
     flex: 1;
     background: #f3f4f6;
     color: #374151;
@@ -182,7 +182,7 @@
     transition: all 0.2s;
 }
 
-.btn-cancelar:hover {
+.cal-btn-cancelar:hover {
     background: #e5e7eb;
 }
 

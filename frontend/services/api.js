@@ -65,6 +65,19 @@ export const auth = {
     return data;
   },
 
+  async update(data) {
+    const response = await apiCall('/api/auth/update', {
+      method: 'PUT',
+      body: JSON.stringify(data),
+    });
+
+    if (response.user) {
+      localStorage.setItem('user', JSON.stringify(response.user));
+    }
+
+    return response;
+  },
+
   async me() {
     return apiCall('/api/auth/me');
   },
@@ -232,4 +245,24 @@ export const chatbot = {
       method: 'DELETE',
     });
   }
+};
+
+// Agenda Rápida API
+export const agenda = {
+  async list() {
+    return apiCall('/api/agenda');
+  },
+
+  async create(texto) {
+    return apiCall('/api/agenda', {
+      method: 'POST',
+      body: JSON.stringify({ texto }),
+    });
+  },
+
+  async delete(id) {
+    return apiCall(`/api/agenda/${id}`, {
+      method: 'DELETE',
+    });
+  },
 };

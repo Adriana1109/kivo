@@ -137,7 +137,11 @@ function Sidebar({ isOpen, toggleSidebar }) {
             <span>Chatbot</span>
           </NavLink>
 
-          {/* Configuración */}
+
+        </nav>
+
+        {/* Configuración (Pinned to bottom) */}
+        <div style={{ padding: '0.5rem 0' }}>
           <NavLink
             to="/configuracion"
             className={({ isActive }) => `sidebar-item ${isActive ? 'active' : ''}`}
@@ -149,7 +153,7 @@ function Sidebar({ isOpen, toggleSidebar }) {
             </svg>
             <span>Configuración</span>
           </NavLink>
-        </nav>
+        </div>
 
         {/* Footer */}
         <div className="sidebar-footer">

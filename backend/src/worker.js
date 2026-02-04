@@ -159,18 +159,18 @@ protectedRoutes.get('/materias', async (c) => {
       (SELECT COUNT(*) FROM syllabus_unidades WHERE materia_id = m.id) as total_unidades
     FROM materias m
     WHERE m.user_id = ?
-    ORDER BY m.created_at DESC
+    ORDER BY m.activa DESC, m.created_at DESC
   `).bind(userId).all();
     return c.json(results);
 });
 
 protectedRoutes.post('/materias', async (c) => {
     const userId = getUserId(c);
-    const { nombre, descripcion, color, semestre, syllabus } = await c.req.json();
+    const { nombre, descripcion, color, semestre, syllabus, activa } = await c.req.json();
 
     const result = await c.env.DB.prepare(
-        'INSERT INTO materias (user_id, nombre, descripcion, color, semestre, syllabus) VALUES (?, ?, ?, ?, ?, ?)'
-    ).bind(userId, nombre, descripcion || null, color || '#3b82f6', semestre || null, syllabus || null).run();
+        'INSERT INTO materias (user_id, nombre, descripcion, color, semestre, syllabus, activa) VALUES (?, ?, ?, ?, ?, ?, ?)'
+    ).bind(userId, nombre, descripcion || null, color || '#3b82f6', semestre || null, syllabus || null, activa !== undefined ? activa : 1).run();
 
     const materia = await c.env.DB.prepare('SELECT * FROM materias WHERE id = ?').bind(result.meta.last_row_id).first();
     return c.json(materia, 201);
@@ -179,7 +179,7 @@ protectedRoutes.post('/materias', async (c) => {
 protectedRoutes.put('/materias/:id', async (c) => {
     const userId = getUserId(c);
     const id = c.req.param('id');
-    const { nombre, descripcion, color, semestre, syllabus } = await c.req.json();
+    const { nombre, descripcion, color, semestre, syllabus, activa } = await c.req.json();
 
     // Dynamically build update query
     let query = 'UPDATE materias SET ';
@@ -191,6 +191,7 @@ protectedRoutes.put('/materias/:id', async (c) => {
     if (color !== undefined) { updates.push('color = ?'); params.push(color); }
     if (semestre !== undefined) { updates.push('semestre = ?'); params.push(semestre); }
     if (syllabus !== undefined) { updates.push('syllabus = ?'); params.push(syllabus); }
+    if (activa !== undefined) { updates.push('activa = ?'); params.push(activa); }
 
     updates.push('updated_at = CURRENT_TIMESTAMP');
 
@@ -223,7 +224,7 @@ protectedRoutes.get('/apuntes', async (c) => {
     const materia_id = c.req.query('materia_id');
 
     let query = `
-    SELECT a.*, m.nombre as materia_nombre, m.color as materia_color
+    SELECT a.*, m.nombre as materia_nombre, m.color as materia_color, m.semestre
     FROM apuntes a
     JOIN materias m ON a.materia_id = m.id
     WHERE a.user_id = ?
@@ -474,13 +475,29 @@ protectedRoutes.post('/calendario', async (c) => {
 protectedRoutes.put('/calendario/:id', async (c) => {
     const userId = getUserId(c);
     const id = c.req.param('id');
-    const { titulo, descripcion, fecha_inicio, fecha_fin, tipo, completado } = await c.req.json();
+    const body = await c.req.json();
 
-    await c.env.DB.prepare(`
-    UPDATE eventos_calendario 
-    SET titulo = ?, descripcion = ?, fecha_inicio = ?, fecha_fin = ?, tipo = ?, completado = ?
-    WHERE id = ? AND user_id = ?
-  `).bind(titulo, descripcion, fecha_inicio, fecha_fin, tipo, completado ? 1 : 0, id, userId).run();
+    // Build dynamic update query
+    const updates = [];
+    const params = [];
+
+    if (body.titulo !== undefined) { updates.push('titulo = ?'); params.push(body.titulo); }
+    if (body.descripcion !== undefined) { updates.push('descripcion = ?'); params.push(body.descripcion); }
+    if (body.fecha_inicio !== undefined) { updates.push('fecha_inicio = ?'); params.push(body.fecha_inicio); }
+    if (body.fecha_fin !== undefined) { updates.push('fecha_fin = ?'); params.push(body.fecha_fin); }
+    if (body.tipo !== undefined) { updates.push('tipo = ?'); params.push(body.tipo); }
+    if (body.completado !== undefined) { updates.push('completado = ?'); params.push(body.completado ? 1 : 0); }
+    if (body.materia_id !== undefined) { updates.push('materia_id = ?'); params.push(body.materia_id); }
+
+    if (updates.length === 0) {
+        return c.json({ error: 'No hay campos para actualizar' }, 400);
+    }
+
+    params.push(id, userId);
+
+    const query = `UPDATE eventos_calendario SET ${updates.join(', ')} WHERE id = ? AND user_id = ?`;
+
+    await c.env.DB.prepare(query).bind(...params).run();
 
     const evento = await c.env.DB.prepare('SELECT * FROM eventos_calendario WHERE id = ?').bind(id).first();
     if (!evento) return c.json({ error: 'Evento no encontrado' }, 404);
@@ -508,6 +525,182 @@ protectedRoutes.delete('/calendario/:id', async (c) => {
     const result = await c.env.DB.prepare('DELETE FROM eventos_calendario WHERE id = ? AND user_id = ?').bind(id, userId).run();
     if (result.meta.changes === 0) return c.json({ error: 'Evento no encontrado' }, 404);
     return c.json({ message: 'Evento eliminado' });
+});
+
+// --- AGENDA RAPIDA ---
+protectedRoutes.get('/agenda', async (c) => {
+    const userId = getUserId(c);
+
+    // Get items from last 24 hours
+    const { results } = await c.env.DB.prepare(`
+        SELECT * FROM agenda_rapida 
+        WHERE user_id = ? 
+        AND created_at > datetime('now', '-24 hours')
+        ORDER BY created_at DESC
+    `).bind(userId).all();
+
+    return c.json(results);
+});
+
+protectedRoutes.post('/agenda', async (c) => {
+    const userId = getUserId(c);
+    const { texto } = await c.req.json();
+
+    if (!texto || !texto.trim()) {
+        return c.json({ error: 'El texto es requerido' }, 400);
+    }
+
+    const result = await c.env.DB.prepare(
+        'INSERT INTO agenda_rapida (user_id, texto) VALUES (?, ?)'
+    ).bind(userId, texto.trim()).run();
+
+    const item = {
+        id: result.meta.last_row_id,
+        user_id: userId,
+        texto: texto.trim(),
+        created_at: new Date().toISOString()
+    };
+
+    return c.json(item, 201);
+});
+
+protectedRoutes.delete('/agenda/:id', async (c) => {
+    const userId = getUserId(c);
+    const id = c.req.param('id');
+
+    const result = await c.env.DB.prepare('DELETE FROM agenda_rapida WHERE id = ? AND user_id = ?').bind(id, userId).run();
+
+    if (result.meta.changes === 0) {
+        return c.json({ error: 'Item no encontrado' }, 404);
+    }
+
+    return c.json({ message: 'Item eliminado' });
+});
+
+// --- SESIONES DE ESTUDIO ---
+protectedRoutes.get('/sesiones', async (c) => {
+    const userId = getUserId(c);
+    const materia_id = c.req.query('materia_id');
+    const limit = c.req.query('limit');
+
+    let query = `
+      SELECT s.*, m.nombre as materia_nombre, m.color as materia_color,
+             t.nombre as tema_nombre
+      FROM sesiones_estudio s
+      JOIN materias m ON s.materia_id = m.id
+      LEFT JOIN syllabus_temas t ON s.tema_id = t.id
+      WHERE s.user_id = ?
+    `;
+
+    const params = [userId];
+
+    if (materia_id) {
+        query += ` AND s.materia_id = ?`;
+        params.push(parseInt(materia_id));
+    }
+
+    query += ' ORDER BY s.fecha DESC, s.created_at DESC';
+
+    if (limit) {
+        query += ` LIMIT ?`;
+        params.push(parseInt(limit));
+    }
+
+    const { results } = await c.env.DB.prepare(query).bind(...params).all();
+    return c.json(results);
+});
+
+protectedRoutes.get('/sesiones/stats', async (c) => {
+    const userId = getUserId(c);
+    const periodo = c.req.query('periodo');
+
+    let dateFilter = '';
+    // SQLite uses 'now' for current date/time strings
+    if (periodo === 'semana') {
+        dateFilter = "AND fecha >= date('now', '-7 days')";
+    } else if (periodo === 'mes') {
+        dateFilter = "AND fecha >= date('now', '-30 days')";
+    }
+
+    // 1. Stats by materia
+    const { results: porMateria } = await c.env.DB.prepare(`
+        SELECT m.id, m.nombre, m.color, 
+               COALESCE(SUM(s.duracion_minutos), 0) as minutos_totales,
+               COUNT(s.id) as total_sesiones
+        FROM materias m
+        LEFT JOIN sesiones_estudio s ON m.id = s.materia_id ${dateFilter}
+        WHERE m.user_id = ?
+        GROUP BY m.id
+        ORDER BY minutos_totales DESC
+    `).bind(userId).all();
+
+    // 2. Total overall
+    const totales = await c.env.DB.prepare(`
+        SELECT COALESCE(SUM(duracion_minutos), 0) as minutos_totales, COUNT(*) as total_sesiones
+        FROM sesiones_estudio
+        WHERE user_id = ? ${dateFilter}
+    `).bind(userId).first();
+
+    // 3. Sessions per day (last 7 days graph)
+    const { results: porDia } = await c.env.DB.prepare(`
+        SELECT fecha, SUM(duracion_minutos) as minutos
+        FROM sesiones_estudio
+        WHERE user_id = ? AND fecha >= date('now', '-7 days')
+        GROUP BY fecha
+        ORDER BY fecha
+    `).bind(userId).all();
+
+    return c.json({
+        porMateria: porMateria || [],
+        totales: {
+            horas: Math.round((totales?.minutos_totales || 0) / 60 * 10) / 10,
+            minutos: totales?.minutos_totales || 0,
+            sesiones: totales?.total_sesiones || 0
+        },
+        porDia: porDia || []
+    });
+});
+
+protectedRoutes.post('/sesiones', async (c) => {
+    const userId = getUserId(c);
+    const { materia_id, tema_id, fecha, duracion_minutos, notas } = await c.req.json();
+
+    if (!materia_id || !fecha || !duracion_minutos) {
+        return c.json({ error: 'Materia, fecha y duración son requeridos' }, 400);
+    }
+
+    // Verify ownership
+    const materia = await c.env.DB.prepare('SELECT id FROM materias WHERE id = ? AND user_id = ?').bind(materia_id, userId).first();
+    if (!materia) {
+        return c.json({ error: 'Materia no encontrada' }, 404);
+    }
+
+    const result = await c.env.DB.prepare(`
+        INSERT INTO sesiones_estudio (user_id, materia_id, tema_id, fecha, duracion_minutos, notas)
+        VALUES (?, ?, ?, ?, ?, ?)
+    `).bind(userId, materia_id, tema_id || null, fecha, duracion_minutos, notas || null).run();
+
+    const sesion = await c.env.DB.prepare(`
+        SELECT s.*, m.nombre as materia_nombre
+        FROM sesiones_estudio s
+        JOIN materias m ON s.materia_id = m.id
+        WHERE s.id = ?
+    `).bind(result.meta.last_row_id).first();
+
+    return c.json(sesion, 201);
+});
+
+protectedRoutes.delete('/sesiones/:id', async (c) => {
+    const userId = getUserId(c);
+    const id = c.req.param('id');
+
+    const result = await c.env.DB.prepare('DELETE FROM sesiones_estudio WHERE id = ? AND user_id = ?').bind(id, userId).run();
+
+    if (result.meta.changes === 0) {
+        return c.json({ error: 'Sesión no encontrada' }, 404);
+    }
+
+    return c.json({ message: 'Sesión eliminada' });
 });
 
 // Mount protected routes

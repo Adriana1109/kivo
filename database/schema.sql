@@ -138,6 +138,18 @@ CREATE TABLE IF NOT EXISTS eventos_calendario (
     SET NULL
 );
 -- ============================================
+-- TABLA: agenda_rapida (Quick Agenda)
+-- Items rápidos de agenda con expiración de 24h
+-- ============================================
+CREATE TABLE IF NOT EXISTS agenda_rapida (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER NOT NULL,
+    texto TEXT NOT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
+
+-- ============================================
 -- ÍNDICES para optimizar consultas frecuentes
 -- ============================================
 CREATE INDEX IF NOT EXISTS idx_materias_user ON materias(user_id);

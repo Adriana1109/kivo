@@ -1,3 +1,9 @@
+/**
+ * ⚠️ LEGACY / LOCALHOST TESTING ONLY ⚠️
+ * 
+ * Este archivo maneja la base de datos SQLite local (kivo.db) usando sql.js.
+ * NO SE USA EN PRODUCCIÓN (Cloudflare usa D1).
+ */
 import initSqlJs from 'sql.js';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -23,13 +29,13 @@ export async function getDatabase() {
 export async function initializeDatabase() {
   // Initialize SQL.js
   SQL = await initSqlJs();
-  
+
   // Ensure database directory exists
   const dbDir = path.dirname(dbPath);
   if (!fs.existsSync(dbDir)) {
     fs.mkdirSync(dbDir, { recursive: true });
   }
-  
+
   // Load existing database or create new one
   if (fs.existsSync(dbPath)) {
     const buffer = fs.readFileSync(dbPath);
@@ -38,7 +44,7 @@ export async function initializeDatabase() {
   } else {
     db = new SQL.Database();
     console.log('📦 Creating new database...');
-    
+
     // Execute schema
     if (fs.existsSync(schemaPath)) {
       const schema = fs.readFileSync(schemaPath, 'utf-8');
@@ -49,7 +55,7 @@ export async function initializeDatabase() {
       console.error('❌ Schema file not found:', schemaPath);
     }
   }
-  
+
   // Check if tables exist
   const result = db.exec("SELECT name FROM sqlite_master WHERE type='table' AND name='users'");
   if (result.length === 0) {
@@ -61,7 +67,7 @@ export async function initializeDatabase() {
       saveDatabase();
     }
   }
-  
+
   return db;
 }
 

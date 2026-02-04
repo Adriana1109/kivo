@@ -38,6 +38,12 @@ export function AuthProvider({ children }) {
     setIsAuthenticated(false);
   };
 
+  const updateUser = async (data) => {
+    const response = await auth.update(data);
+    setUser(response.user);
+    return response;
+  };
+
   const value = {
     user,
     isAuthenticated,
@@ -45,6 +51,7 @@ export function AuthProvider({ children }) {
     login,
     register,
     logout,
+    updateUser,
   };
 
   return (

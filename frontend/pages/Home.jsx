@@ -1,25 +1,47 @@
 import { useNavigate } from "react-router-dom";
 import './Menu.css';
-import { materias as materiasService, apuntes as apuntesService, calendario as calendarioService } from "../services/api";
+import { materias as materiasService, apuntes as apuntesService, calendario as calendarioService, agenda as agendaService } from "../services/api";
 import { useState, useEffect } from "react";
+import { User, Bell, BookOpen, FileText, Calendar, CheckCircle, Clock, ClipboardList, Plus, Book, CalendarPlus, Zap, Play, X } from "lucide-react";
 
 const hora = new Date().getHours();
 
 const frasesHorario = {
   mañana: [
     "Buenos días. Hoy es un buen día para avanzar.",
-    "Arranquemos fuerte. Tu futuro te está mirando",
-    "Un café, un plan y vamos con todo"
+    "Arranquemos fuerte. Tu futuro te está mirando.",
+    "Un café, un plan y vamos con todo.",
+    "Cada mañana es una nueva oportunidad. Aprovéchala.",
+    "El éxito empieza con el primer paso del día.",
+    "Hoy tienes 24 horas para hacer algo increíble.",
+    "La disciplina de hoy es el éxito de mañana.",
+    "Despierta con determinación, duerme con satisfacción.",
+    "Tu único límite eres tú mismo. ¡A por ello!",
+    "Hoy es el día perfecto para aprender algo nuevo."
   ],
   tarde: [
     "Buen trabajo hasta ahora. Sigamos firmes.",
     "Vas bien. No aflojes ahora.",
-    "Este bloque puede marcar la diferencia"
+    "Este bloque puede marcar la diferencia.",
+    "La mitad del camino ya está hecho. ¡Sigue!",
+    "El esfuerzo de ahora valdrá la pena después.",
+    "Mantén el ritmo. Los resultados están cerca.",
+    "Tu constancia es tu superpoder.",
+    "Cada hora de estudio te acerca a tu meta.",
+    "No pares ahora, estás creando tu futuro.",
+    "La tarde es perfecta para consolidar lo aprendido."
   ],
   noche: [
-    "Último empujón del día",
-    "Pequeños avances también cuentan",
-    "Estudia inteligente, descansa mejor"
+    "Último empujón del día.",
+    "Pequeños avances también cuentan.",
+    "Estudia inteligente, descansa mejor.",
+    "Lo que siembras hoy, lo cosecharás mañana.",
+    "Un poco más y habrás dado lo mejor de ti.",
+    "El descanso es parte del éxito. No lo olvides.",
+    "Cierra el día con una pequeña victoria.",
+    "Mañana será más fácil gracias a lo que hiciste hoy.",
+    "Tu esfuerzo nocturno vale oro.",
+    "Prepara tu mente: mañana será un gran día."
   ]
 };
 
@@ -84,18 +106,28 @@ function Home() {
   };
 
   //AGENDA
-  const agregarAgenda = () => {
-    if (!nuevoItem.trim()) return; // no agregamos vacíos
-    const updatedAgenda = [...agenda, nuevoItem.trim()];
-    setAgenda(updatedAgenda);
-    localStorage.setItem("agendaRapida", JSON.stringify(updatedAgenda));
-    setNuevoItem(""); // limpiar input
+  const agregarAgenda = async () => {
+    if (!nuevoItem.trim()) return;
+    try {
+      const data = await agendaService.create(nuevoItem.trim());
+      // Refresh list
+      const updatedList = await agendaService.list();
+      setAgenda(updatedList);
+      setNuevoItem("");
+    } catch (error) {
+      console.error("Error agregando item:", error);
+    }
   };
 
-  const eliminarAgenda = (index) => {
-    const updatedAgenda = agenda.filter((_, i) => i !== index);
-    setAgenda(updatedAgenda);
-    localStorage.setItem("agendaRapida", JSON.stringify(updatedAgenda));
+  const eliminarAgenda = async (id) => {
+    try {
+      await agendaService.delete(id);
+      // Refresh list
+      const updatedList = await agendaService.list();
+      setAgenda(updatedList);
+    } catch (error) {
+      console.error("Error eliminando item:", error);
+    }
   };
 
   // Materias
@@ -142,10 +174,15 @@ function Home() {
 
   //Agenda
   useEffect(() => {
-    const savedAgenda = localStorage.getItem("agendaRapida");
-    if (savedAgenda) {
-      setAgenda(JSON.parse(savedAgenda));
-    }
+    const cargarAgenda = async () => {
+      try {
+        const data = await agendaService.list();
+        setAgenda(data);
+      } catch (error) {
+        console.error("Error cargando agenda:", error);
+      }
+    };
+    cargarAgenda();
   }, []);
 
   //Sesion Estudio
@@ -203,17 +240,15 @@ function Home() {
 
           {/* Avatar / Panda Coach */}
           <div className="panda-coach">
-            <div className="panda-avatar-icon">👤</div>
 
             <div className="panda-text">
-              <h3>Panda Coach</h3>
               <p>{mensajeHorario}</p>
             </div>
           </div>
 
           {/* Notificaciones */}
           <div className="notification-icon">
-            🔔
+            <Bell size={24} />
           </div>
         </div>
 
@@ -221,13 +256,15 @@ function Home() {
         <div className="summary-cards-grid">
 
           <div className="summary-card">
-            <span style={{ fontSize: '2rem' }}>📚</span>
+            <BookOpen size={32} color="#3b82f6" />
             <h4>Materias</h4>
-            <p className="summary-value">{materias.length} activas</p>
+            <p className="summary-value">
+              {materias.filter(m => m.activa !== 0).length} activas
+            </p>
           </div>
 
           <div className="summary-card">
-            <span style={{ fontSize: '2rem' }}>📝</span>
+            <FileText size={32} color="#f59e0b" />
             <h4>Último Apunte</h4>
             <p className="summary-value">
               {apuntes.length > 0 ? apuntes[apuntes.length - 1].titulo : "Ninguno"}
@@ -235,7 +272,7 @@ function Home() {
           </div>
 
           <div className="summary-card">
-            <span style={{ fontSize: '2rem' }}>📅</span>
+            <Calendar size={32} color="#8b5cf6" />
             <h4>Eventos</h4>
             <p className="summary-value">
               {eventos.length > 0 ? eventos[0].titulo : "No hay eventos"}
@@ -243,7 +280,7 @@ function Home() {
           </div>
 
           <div className="summary-card">
-            <span style={{ fontSize: '2rem' }}>✅</span>
+            <CheckCircle size={32} color="#22c55e" />
             <h4>Tareas</h4>
             <p className="summary-value">
               {tareas.length > 0 ? tareas.length + " pendientes" : "No hay tareas"}
@@ -258,7 +295,7 @@ function Home() {
             <div className="modal-card" onClick={(e) => e.stopPropagation()}>
               <div className="modal-header">
                 <h3>Iniciar sesión de estudio</h3>
-                <button onClick={cerrarModalEstudio}>✕</button>
+                <button onClick={cerrarModalEstudio}><X size={20} /></button>
               </div>
 
               <div className="modal-body">
@@ -299,11 +336,11 @@ function Home() {
           {/* Estudio rápido */}
           <div className="study-box">
             <h3 style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
-              <span style={{ fontSize: '2rem' }}>⏰</span>
+              <Clock size={24} color="#ef4444" />
               Estudio rápido
             </h3>
             <button className="start-study" onClick={abrirModalEstudio}>
-              ▶ Iniciar sesión de estudio
+              <Play size={16} /> Iniciar sesión de estudio
             </button>
 
             <div className="study-info">
@@ -319,7 +356,7 @@ function Home() {
           {/* AGENDA RAPIDA */}
           <div className="agenda-box modern-agenda">
             <h3 style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
-              <span style={{ fontSize: '2rem' }}>📋</span>
+              <ClipboardList size={24} color="#3b82f6" />
               Agenda rápida
             </h3>
 
@@ -328,15 +365,15 @@ function Home() {
               {agenda.length === 0 && (
                 <li className="agenda-empty">Escribe algo para empezar...</li>
               )}
-              {agenda.map((item, index) => (
-                <li key={index} className="agenda-item">
-                  <span>• {item}</span>
+              {agenda.map((item) => (
+                <li key={item.id} className="agenda-item">
+                  <span>• {item.texto}</span>
                   <button
                     className="agenda-delete"
-                    onClick={() => eliminarAgenda(index)}
+                    onClick={() => eliminarAgenda(item.id)}
                     title="Eliminar"
                   >
-                    ✕
+                    <X size={14} />
                   </button>
                 </li>
               ))}
@@ -363,22 +400,22 @@ function Home() {
         {/* ACCIONES RÁPIDAS */}
         <div className="quick-actions-grid">
           <div className="quick-card" onClick={() => navigate("/apuntes")}>
-            <span style={{ fontSize: '2.5rem' }}>➕</span>
+            <Plus size={40} color="#3b82f6" />
             <p className="quick-text">Nuevo Apunte</p>
           </div>
 
           <div className="quick-card" onClick={() => navigate("/materias")}>
-            <span style={{ fontSize: '2.5rem' }}>📖</span>
+            <Book size={40} color="#8b5cf6" />
             <p className="quick-text">Nueva Materia</p>
           </div>
 
           <div className="quick-card" onClick={() => navigate("/calendario")}>
-            <span style={{ fontSize: '2.5rem' }}>📅</span>
+            <CalendarPlus size={40} color="#22c55e" />
             <p className="quick-text">Nuevo Evento</p>
           </div>
 
           <div className="quick-card" onClick={() => navigate("/focus")}>
-            <span style={{ fontSize: '2.5rem' }}>⚡</span>
+            <Zap size={40} color="#f59e0b" />
             <p className="quick-text">Modo Focus</p>
           </div>
         </div>

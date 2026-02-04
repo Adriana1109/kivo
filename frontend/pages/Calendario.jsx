@@ -5,6 +5,7 @@ import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import { materias as materiasService, calendario as calendarioService } from "../services/api";
+import { ClipboardList, Calendar } from "lucide-react";
 
 import "./Calendario.css";
 
@@ -287,7 +288,7 @@ function Calendario() {
   return (
     <main className="dashboard">
       <div className="dash-card">
-        <h3>📅 Calendario de Estudio</h3>
+        <h3><Calendar size={24} style={{ marginBottom: '-4px', marginRight: '8px' }} /> Calendario de Estudio</h3>
         <p className="estado-label">
           Planifica, arrastra y registra tus sesiones de estudio.
         </p>
@@ -315,14 +316,14 @@ function Calendario() {
 
         {/* Modal de evento con Portal */}
         {mostrarForm && createPortal(
-          <div className="modal-overlay" onClick={cerrarFormulario}>
-            <div className="modal-card" onClick={(e) => e.stopPropagation()}>
+          <div className="cal-modal-overlay" onClick={cerrarFormulario}>
+            <div className="cal-modal-card" onClick={(e) => e.stopPropagation()}>
               <div className="modal-header">
                 <h3>{modoEdicion ? "Editar evento" : "Nuevo evento"}</h3>
                 <button onClick={cerrarFormulario}>✕</button>
               </div>
 
-              <p className="modal-fecha">📆 {fechaSeleccionada}</p>
+              <p className="modal-fecha"><Calendar size={18} style={{ marginBottom: '-3px' }} /> {fechaSeleccionada}</p>
 
               <input
                 value={titulo}
@@ -356,12 +357,11 @@ function Calendario() {
                 onChange={(e) => setTipo(e.target.value)}
                 className="modal-input"
               >
-                <option value="estudio">📚 Estudio</option>
-                <option value="tarea">📝 Tarea</option>
-                <option value="examen">📋 Examen</option>
-                <option value="trabajo">💼 Trabajo</option>
-                <option value="reunion">👥 Reunión</option>
-                <option value="otro">📌 Otro</option>
+                <option value="tarea">Tarea</option>
+                <option value="examen">Examen</option>
+                <option value="trabajo">Trabajo</option>
+                <option value="reunion">Reunión</option>
+                <option value="otro">Otro</option>
               </select>
 
               {materias.length > 0 && (
@@ -371,7 +371,7 @@ function Calendario() {
                   className="modal-input"
                 >
                   <option value="">Sin materia</option>
-                  {materias.map(m => (
+                  {materias.filter(m => m.activa !== 0).map(m => (
                     <option key={m.id} value={m.id}>{m.nombre}</option>
                   ))}
                 </select>
@@ -389,7 +389,7 @@ function Calendario() {
               </div>
 
               <div className="modal-actions">
-                <button className="btn-guardar" onClick={guardarEvento}>
+                <button className="cal-btn-guardar" onClick={guardarEvento}>
                   {modoEdicion ? "Actualizar" : "Guardar"}
                 </button>
                 {modoEdicion && (
@@ -400,7 +400,7 @@ function Calendario() {
                     Eliminar
                   </button>
                 )}
-                <button className="btn-cancelar" onClick={cerrarFormulario}>
+                <button className="cal-btn-cancelar" onClick={cerrarFormulario}>
                   Cancelar
                 </button>
               </div>
@@ -454,7 +454,7 @@ function Calendario() {
 
         {/* Historial */}
         <div className="historial-section">
-          <h3>📋 Historial de eventos</h3>
+          <h3><ClipboardList size={22} style={{ marginBottom: '-4px' }} /> Historial de eventos</h3>
 
           <table className="historial-table">
             <thead>
@@ -495,7 +495,7 @@ function Calendario() {
           </table>
         </div>
       </div>
-    </main>
+    </main >
   );
 }
 

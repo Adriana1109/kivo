@@ -1,207 +1,201 @@
-/* ============================================
-   APUNTES - Estilos del componente
-   ============================================ */
-
-/* Contenedor principal */
-.apuntes-container {
-    width: 100%;
-    box-sizing: border-box;
+/* Layout Principal */
+.apuntes-page {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
 }
 
-/* ============================================
-   HEADER Y ACCIONES
-   ============================================ */
-.apuntes-header {
+.apuntes-header-main {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 1.5rem;
+    margin-bottom: 30px;
 }
 
-.apuntes-header h2 {
-    margin: 0;
-    font-size: 1.5rem;
-    color: #1f2937;
-}
-
-.apuntes-count {
-    background: #e0e7ff;
-    color: #4338ca;
-    padding: 4px 12px;
-    border-radius: 20px;
-    font-size: 0.85rem;
-    font-weight: 500;
-}
-
-/* ============================================
-   FORMULARIO NUEVO APUNTE
-   ============================================ */
-.apunte-form {
-    background: #f8fafc;
-    border-radius: 16px;
-    padding: 1.5rem;
-    margin-bottom: 2rem;
-    border: 1px solid #e2e8f0;
-}
-
-.apunte-form h3 {
-    margin: 0 0 1rem 0;
-    font-size: 1.1rem;
-    color: #374151;
-}
-
-.form-row {
-    display: flex;
-    gap: 1rem;
-    margin-bottom: 1rem;
-}
-
-.form-group {
-    flex: 1;
-}
-
-.form-group label {
-    display: block;
-    font-size: 0.85rem;
-    font-weight: 500;
-    color: #4b5563;
-    margin-bottom: 6px;
-}
-
-.form-input,
-.form-select,
-.form-textarea {
-    width: 100%;
-    padding: 10px 14px;
-    border: 1px solid #e5e7eb;
-    border-radius: 8px;
-    font-size: 0.95rem;
-    box-sizing: border-box;
-    transition: border-color 0.2s, box-shadow 0.2s;
-}
-
-.form-input:focus,
-.form-select:focus,
-.form-textarea:focus {
-    outline: none;
-    border-color: #3b82f6;
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
-}
-
-.form-textarea {
-    min-height: 120px;
-    resize: vertical;
-}
-
-.form-actions {
-    display: flex;
-    gap: 10px;
-    margin-top: 1rem;
-}
-
-.btn-primary {
-    flex: 1;
-    background: linear-gradient(135deg, #3b82f6, #2563eb);
-    color: white;
-    border: none;
-    padding: 12px 20px;
-    border-radius: 8px;
-    font-weight: 500;
-    font-size: 0.95rem;
-    cursor: pointer;
-    transition: all 0.2s;
+.apuntes-header-main h1 {
     display: flex;
     align-items: center;
-    justify-content: center;
-    gap: 8px;
+    gap: 10px;
+    font-size: 2rem;
+    color: #1f2937;
+    margin: 0;
 }
 
-.btn-primary:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+.apuntes-header-main p {
+    color: #6b7280;
+    margin: 5px 0 0 5px;
 }
 
-.btn-primary:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-    transform: none;
-}
-
-.btn-secondary {
-    background: #f3f4f6;
-    color: #374151;
+.btn-new-apunte {
+    background: #4f46e5;
+    color: white;
     border: none;
-    padding: 12px 20px;
-    border-radius: 8px;
-    font-weight: 500;
+    padding: 12px 24px;
+    border-radius: 12px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
     cursor: pointer;
     transition: all 0.2s;
+    box-shadow: 0 4px 6px rgba(79, 70, 229, 0.2);
 }
 
-.btn-secondary:hover {
-    background: #e5e7eb;
+.btn-new-apunte:hover {
+    background: #4338ca;
+    transform: translateY(-2px);
 }
 
-/* ============================================
-   FILTROS Y BÚSQUEDA
-   ============================================ */
-.apuntes-filtros {
-    display: flex;
-    gap: 1rem;
-    margin-bottom: 1.5rem;
-    flex-wrap: wrap;
+/* Buscador */
+.search-bar-container {
+    position: relative;
+    margin-bottom: 40px;
 }
 
-.search-input {
-    flex: 1;
-    min-width: 200px;
-    padding: 10px 14px 10px 40px;
+.search-bar-container input {
+    width: 100%;
+    padding: 15px 15px 15px 50px;
     border: 1px solid #e5e7eb;
-    border-radius: 8px;
-    font-size: 0.95rem;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%239ca3af'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z'%3E%3C/path%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: 12px center;
-    background-size: 18px;
-    box-sizing: border-box;
-}
-
-.search-input:focus {
+    border-radius: 12px;
+    font-size: 1rem;
     outline: none;
-    border-color: #3b82f6;
-}
-
-.filter-select {
-    padding: 10px 14px;
-    border: 1px solid #e5e7eb;
-    border-radius: 8px;
-    font-size: 0.95rem;
     background: white;
-    min-width: 180px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+    transition: border-color 0.2s;
 }
 
-/* ============================================
-   LISTA DE APUNTES
-   ============================================ */
-.apuntes-list {
+.search-bar-container input:focus {
+    border-color: #6366f1;
+}
+
+.search-icon {
+    position: absolute;
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #9ca3af;
+}
+
+/* Semestres y Grupos */
+.semestre-section {
+    margin-bottom: 50px;
+}
+
+.semestre-title {
+    font-size: 1.5rem;
+    color: #374151;
+    border-bottom: 2px solid #e5e7eb;
+    padding-bottom: 10px;
+    margin-bottom: 25px;
+}
+
+.materias-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 30px;
+}
+
+.materia-column {
+    background: #f9fafb;
+    border-radius: 16px;
+    padding: 20px;
+}
+
+.materia-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 12px;
+    background: white;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    margin-bottom: 15px;
+    border: 1px solid transparent;
+    /* Color set dynamically */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+/* Mini Cards */
+.apuntes-stack {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    gap: 12px;
 }
 
-.apunte-card {
+.apunte-mini-card {
     background: white;
+    padding: 15px;
     border-radius: 12px;
-    padding: 1.25rem;
     border: 1px solid #e5e7eb;
+    cursor: pointer;
     transition: all 0.2s;
-    animation: fadeInUp 0.3s ease-out;
+    position: relative;
+    overflow: hidden;
 }
 
-@keyframes fadeInUp {
+.apunte-mini-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    border-color: #6366f1;
+}
+
+.apunte-mini-card h4 {
+    margin: 0 0 8px 0;
+    color: #1f2937;
+    font-size: 1rem;
+}
+
+.mini-card-footer {
+    display: flex;
+    justify-content: space-between;
+    color: #9ca3af;
+    font-size: 0.8rem;
+}
+
+/* MODALES GENERICOS (Si no existen globales) */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    backdrop-filter: blur(4px);
+    animation: fadeIn 0.2s ease-out;
+}
+
+.modal-content {
+    background: white;
+    border-radius: 20px;
+    padding: 30px;
+    position: relative;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    display: flex;
+    flex-direction: column;
+    max-height: 90vh;
+    overflow-y: auto;
+    animation: slideUp 0.3s ease-out;
+}
+
+@keyframes fadeIn {
     from {
         opacity: 0;
-        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
     }
 
     to {
@@ -210,199 +204,196 @@
     }
 }
 
-.apunte-card:hover {
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-    border-color: #d1d5db;
+/* MODALES */
+.apunte-modal {
+    max-width: 600px;
+    width: 90%;
 }
 
-.apunte-header {
+.apunte-view-modal {
+    max-width: 800px;
+    width: 90%;
+    height: 80vh;
     display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: 0.75rem;
+    flex-direction: column;
 }
 
-.apunte-titulo {
-    font-size: 1.1rem;
-    font-weight: 600;
-    color: #1f2937;
-    margin: 0;
-}
-
-.apunte-materia {
-    display: inline-block;
-    padding: 4px 10px;
-    border-radius: 20px;
-    font-size: 0.8rem;
-    font-weight: 500;
-    background: #dbeafe;
-    color: #1d4ed8;
-}
-
-.apunte-contenido {
-    color: #4b5563;
-    font-size: 0.95rem;
-    line-height: 1.6;
-    white-space: pre-line;
-    margin: 0.75rem 0;
-}
-
-.apunte-footer {
+.view-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-top: 1rem;
-    padding-top: 0.75rem;
-    border-top: 1px solid #f3f4f6;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #e5e7eb;
+    margin-bottom: 20px;
 }
 
-.apunte-fecha {
-    font-size: 0.8rem;
-    color: #9ca3af;
-}
-
-.apunte-actions {
+.view-header .meta-info {
     display: flex;
-    gap: 8px;
+    gap: 15px;
 }
 
-.btn-icon {
+.materia-tag {
+    padding: 4px 10px;
+    border: 1px solid;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 0.85rem;
+    background: #f9fafb;
+}
+
+.date-tag {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: #6b7280;
+    font-size: 0.9rem;
+}
+
+.view-header .actions {
+    display: flex;
+    gap: 10px;
+}
+
+.view-header button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #6b7280;
+    padding: 5px;
+    transition: color 0.2s;
+}
+
+.view-header button:hover {
+    color: #1f2937;
+}
+
+.view-title {
+    font-size: 2rem;
+    margin: 0 0 20px 0;
+    color: #111827;
+}
+
+.view-content {
+    flex: 1;
+    overflow-y: auto;
+    font-size: 1.1rem;
+    line-height: 1.8;
+    white-space: pre-wrap;
+    /* Keeps paragraphs */
+}
+
+/* Modal Header Specifics */
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #f3f4f6;
+}
+
+.modal-header h3 {
+    margin: 0;
+    font-size: 1.5rem;
+    color: #111827;
+}
+
+.modal-header button {
+    background: #f3f4f6;
+    border: none;
+    border-radius: 50%;
     width: 32px;
     height: 32px;
     display: flex;
     align-items: center;
     justify-content: center;
+    cursor: pointer;
+    color: #4b5563;
+    transition: all 0.2s;
+}
+
+.modal-header button:hover {
+    background: #e5e7eb;
+    color: #1f2937;
+}
+
+/* Modal Body Inputs */
+.modal-body label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #374151;
+    font-size: 0.95rem;
+    margin-top: 20px;
+}
+
+.modal-body label:first-child {
+    margin-top: 0;
+}
+
+.modal-body input,
+.modal-body select {
+    width: 100%;
+    padding: 12px 16px;
+    border: 2px solid #e5e7eb;
+    border-radius: 12px;
+    font-size: 1rem;
+    font-family: inherit;
+    transition: border-color 0.2s;
+    box-sizing: border-box;
+    /* Important for width 100% */
+}
+
+.modal-body textarea {
+    width: 100%;
+    padding: 16px;
+    border: 2px solid #e5e7eb;
+    border-radius: 12px;
+    font-size: 1rem;
+    font-family: inherit;
+    line-height: 1.6;
+    resize: vertical;
+    min-height: 200px;
+    transition: border-color 0.2s;
+    box-sizing: border-box;
+}
+
+.modal-body input:focus,
+.modal-body select:focus,
+.modal-body textarea:focus {
+    outline: none;
+    border-color: #6366f1;
+}
+
+.modal-actions {
+    margin-top: 30px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.btn-primary {
+    background: #4f46e5;
+    color: white;
     border: none;
-    border-radius: 6px;
+    padding: 12px 30px;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 1rem;
     cursor: pointer;
     transition: all 0.2s;
-    font-size: 1rem;
+    box-shadow: 0 4px 6px rgba(79, 70, 229, 0.2);
 }
 
-.btn-icon.edit {
-    background: #e0f2fe;
-    color: #0284c7;
+.btn-primary:hover {
+    background: #4338ca;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 8px rgba(79, 70, 229, 0.3);
 }
 
-.btn-icon.edit:hover {
-    background: #bae6fd;
-}
-
-.btn-icon.delete {
-    background: #fee2e2;
-    color: #dc2626;
-}
-
-.btn-icon.delete:hover {
-    background: #fecaca;
-}
-
-/* ============================================
-   EMPTY STATE
-   ============================================ */
 .empty-state {
     text-align: center;
-    padding: 3rem 1rem;
-    color: #6b7280;
-}
-
-.empty-state-icon {
-    font-size: 3rem;
-    margin-bottom: 1rem;
-}
-
-.empty-state h3 {
-    margin: 0 0 0.5rem 0;
-    color: #374151;
-}
-
-.empty-state p {
-    margin: 0;
-    font-size: 0.95rem;
-}
-
-/* ============================================
-   LOADING STATE
-   ============================================ */
-.loading-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 3rem;
-    color: #6b7280;
-}
-
-.loading-spinner {
-    width: 40px;
-    height: 40px;
-    border: 3px solid #e5e7eb;
-    border-top-color: #3b82f6;
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
-    margin-bottom: 1rem;
-}
-
-@keyframes spin {
-    to {
-        transform: rotate(360deg);
-    }
-}
-
-/* ============================================
-   PDF PREVIEW
-   ============================================ */
-.pdf-preview {
-    margin-top: 1rem;
-    border: 1px solid #e5e7eb;
-    border-radius: 8px;
-    overflow: hidden;
-}
-
-.pdf-preview iframe {
-    width: 100%;
-    height: 300px;
-    border: none;
-}
-
-.pdf-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    color: #3b82f6;
-    font-size: 0.9rem;
-    text-decoration: none;
-}
-
-.pdf-link:hover {
-    text-decoration: underline;
-}
-
-/* ============================================
-   RESPONSIVE
-   ============================================ */
-@media (max-width: 768px) {
-    .form-row {
-        flex-direction: column;
-    }
-
-    .apuntes-filtros {
-        flex-direction: column;
-    }
-
-    .search-input,
-    .filter-select {
-        width: 100%;
-    }
-
-    .apunte-header {
-        flex-direction: column;
-        gap: 0.5rem;
-    }
-
-    .apunte-footer {
-        flex-direction: column;
-        gap: 0.75rem;
-        align-items: flex-start;
-    }
+    padding: 50px;
+    color: #9ca3af;
+    font-size: 1.2rem;
+    grid-column: 1 / -1;
 }

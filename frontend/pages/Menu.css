@@ -293,6 +293,7 @@
 
   .dashboard {
     padding: 1rem;
+    height: 100%;
   }
 
   .dashboard-collage {
@@ -353,22 +354,27 @@
   gap: 0.75rem;
 }
 
-.panda-avatar-icon {
-  font-size: 2.5rem;
-  background: #e0f2fe;
-  padding: 0.5rem;
-  border-radius: 50%;
-}
-
-.panda-text h3 {
+.panda-text {
   margin: 0;
-  font-weight: 600;
+  font-family: 'Outfit', sans-serif;
+  font-size: 2rem;
+  font-weight: 500;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: 0.02em;
+  padding: 0.5rem 1rem;
+  background-color: rgba(102, 126, 234, 0.08);
+  animation: fadeIn 0.5s ease-out;
 }
 
 .panda-text p {
   margin: 0;
-  color: #374151;
-  font-size: 0.9rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 /* NOTIFICACIÓN */

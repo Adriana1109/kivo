@@ -1,3 +1,11 @@
+/**
+ * ⚠️ LEGACY / LOCALHOST TESTING ONLY ⚠️
+ * 
+ * Este archivo inicia el servidor backend usando Express + SQLite (archivo local).
+ * NO SE USA EN PRODUCCIÓN (Cloudflare).
+ * 
+ * Para el backend real de producción, ver: src/worker.js
+ */
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
@@ -10,6 +18,7 @@ import apuntesRoutes from './routes/apuntes.js';
 import sesionesRoutes from './routes/sesiones.js';
 import calendarioRoutes from './routes/calendario.js';
 import chatbotRoutes from './routes/chatbot.js';
+import agendaRoutes from './routes/agenda.js';
 
 // Load environment variables
 dotenv.config();
@@ -36,6 +45,7 @@ app.use('/api/apuntes', apuntesRoutes);
 app.use('/api/sesiones', sesionesRoutes);
 app.use('/api/calendario', calendarioRoutes);
 app.use('/api/chat', chatbotRoutes);
+app.use('/api/agenda', agendaRoutes);
 
 // Error handling middleware
 app.use((err, req, res, next) => {
