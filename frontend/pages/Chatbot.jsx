@@ -34,7 +34,7 @@ function Chatbot() {
 
   return (
     <main className="dashboard">
-      <div className="dashboard-content" style={{ maxWidth: '1200px', margin: '0 auto', display: 'flex', gap: '2rem', height: 'calc(100vh - 100px)' }}>
+      <div className="dashboard-content" style={{ width: '100%', display: 'flex', gap: '2rem', height: 'calc(100vh - 100px)' }}>
 
         {/* Sidebar: Subject Selection */}
         <div className="sidebar-panel" style={{ width: '300px', padding: '1.5rem' }}>

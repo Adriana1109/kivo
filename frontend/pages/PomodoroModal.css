@@ -1,0 +1,43 @@
+.pomodoro-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  backdrop-filter: blur(5px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.pomodoro-box {
+  background: white;
+  padding: 30px;
+  border-radius: 16px;
+  width: 320px;
+  text-align: center;
+  box-shadow: 0 20px 40px rgba(0,0,0,.2);
+}
+
+.pomodoro-time {
+  font-size: 48px;
+  font-weight: bold;
+  margin: 20px 0;
+}
+
+.pomodoro-buttons {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+.pomodoro-buttons button {
+  padding: 8px 14px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+}
+
+.close-btn {
+  background: #ff5f5f;
+  color: white;
+}

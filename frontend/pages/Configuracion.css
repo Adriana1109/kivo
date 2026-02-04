@@ -1,0 +1,156 @@
+.config-container {
+  padding: 30px;
+}
+
+.config-header h2 {
+  font-size: 1.8rem;
+  font-weight: 600;
+}
+
+.config-header p {
+  opacity: 0.6;
+  margin-top: 6px;
+}
+
+/* GRID */
+
+.config-grid {
+  margin-top: 25px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 20px;
+}
+
+/* CARDS */
+
+.config-card {
+  background: white;
+  padding: 20px;
+  border-radius: 14px;
+  box-shadow: 0 8px 18px rgba(0,0,0,0.05);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: all 0.25s ease;
+}
+
+.config-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 25px rgba(0,0,0,0.08);
+}
+
+.config-card h3 {
+  font-size: 1.1rem;
+}
+
+.config-card p {
+  font-size: 0.85rem;
+  opacity: 0.7;
+  margin: 8px 0 15px;
+}
+
+/* BOTÓN */
+
+.config-btn {
+  border: none;
+  background: #111;
+  color: white;
+  padding: 10px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.config-btn:hover {
+  opacity: 0.85;
+}
+/* TOGGLE SWITCH */
+
+.theme-toggle {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.switch {
+  position: relative;
+  width: 48px;
+  height: 24px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  inset: 0;
+  background-color: #ccc;
+  border-radius: 20px;
+  transition: 0.3s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 18px;
+  width: 18px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  border-radius: 50%;
+  transition: 0.3s;
+}
+
+input:checked + .slider {
+  background-color: #111;
+}
+
+input:checked + .slider:before {
+  transform: translateX(24px);
+}
+
+.modal {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: white;
+  padding: 30px;
+  border-radius: 12px;
+  max-width: 400px;
+  width: 90%;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.modal-content label {
+  display: flex;
+  flex-direction: column;
+  font-weight: 500;
+}
+
+.modal-content input {
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  margin-top: 5px;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}

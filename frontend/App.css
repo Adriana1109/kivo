@@ -25,9 +25,11 @@
 /* Dashboard Container */
 .dashboard {
     flex: 1;
-    padding: 1.5rem;
-    background: #f8fafc;
-    /* min-height: 100vh;  Removed to avoid double scrollbars if handled by layout */
+    width: 100%;
+    padding: 25px;
+    background: #f5f7fb;
+    min-height: 100vh;
+    box-sizing: border-box;
 }
 
 .dashboard-loading {

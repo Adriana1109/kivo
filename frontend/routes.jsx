@@ -12,6 +12,8 @@ const Materias = lazy(() => import('./pages/Materias'));
 const Calendario = lazy(() => import('./pages/Calendario'));
 const Apuntes = lazy(() => import('./pages/Apuntes'));
 const Chatbot = lazy(() => import('./pages/Chatbot'));
+const Configuracion = lazy(() => import('./pages/Configuracion'));
+const PomodoroModal = lazy(() => import('./pages/PomodoroModal'));
 
 // Loader consistente con el diseño
 const Loader = () => (
@@ -26,7 +28,7 @@ const AppRoutes = () => {
       <Routes>
         {/* Login - Sin Layout ni protección */}
         <Route path="/login" element={<Login />} />
-        
+
         {/* Rutas Protegidas con Layout */}
         <Route element={
           <ProtectedRoute>
@@ -35,19 +37,25 @@ const AppRoutes = () => {
         }>
           {/* Home - Dashboard con estadísticas */}
           <Route path="/" element={<Home />} />
-          
+
           {/* Gestión de Materias */}
           <Route path="/materias" element={<Materias />} />
-          
+
           {/* Calendario Dinámico */}
           <Route path="/calendario" element={<Calendario />} />
-          
+
           {/* Apuntes */}
           <Route path="/apuntes" element={<Apuntes />} />
-          
+
           {/* Chatbot Académico */}
           <Route path="/chatbot" element={<Chatbot />} />
-          
+
+          {/* Modo Focus - Pomodoro */}
+          <Route path="/focus" element={<PomodoroModal />} />
+
+          {/* Configuración */}
+          <Route path="/configuracion" element={<Configuracion />} />
+
           {/* Fallback - redirigir a inicio */}
           <Route path="*" element={<Home />} />
         </Route>

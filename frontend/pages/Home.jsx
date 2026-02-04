@@ -1,56 +1,391 @@
+import { useNavigate } from "react-router-dom";
 import './Menu.css';
+import { materias as materiasService, apuntes as apuntesService, calendario as calendarioService } from "../services/api";
+import { useState, useEffect } from "react";
 
-/**
- * Página Home - Bienvenida a Kivo
- * Plataforma de Estudio Personalizada
- */
+const hora = new Date().getHours();
+
+const frasesHorario = {
+  mañana: [
+    "Buenos días. Hoy es un buen día para avanzar.",
+    "Arranquemos fuerte. Tu futuro te está mirando",
+    "Un café, un plan y vamos con todo"
+  ],
+  tarde: [
+    "Buen trabajo hasta ahora. Sigamos firmes.",
+    "Vas bien. No aflojes ahora.",
+    "Este bloque puede marcar la diferencia"
+  ],
+  noche: [
+    "Último empujón del día",
+    "Pequeños avances también cuentan",
+    "Estudia inteligente, descansa mejor"
+  ]
+};
+
+let periodo = "mañana";
+if (hora >= 12 && hora < 18) periodo = "tarde";
+if (hora >= 18) periodo = "noche";
+
+const mensajeHorario =
+  frasesHorario[periodo][
+  Math.floor(Math.random() * frasesHorario[periodo].length)
+  ];
+
+
 function Home() {
+  const navigate = useNavigate();
+  const [materias, setMaterias] = useState([]);
+  const [apuntes, setApuntes] = useState([]);
+  const [eventos, setEventos] = useState([]);
+  const tareas = eventos.filter(e => e.tipo === "tarea");
+  const [agenda, setAgenda] = useState([]);
+  const [nuevoItem, setNuevoItem] = useState("");
+  // Estados para la sesión de estudio 
+  const [mostrarModalEstudio, setMostrarModalEstudio] = useState(false);
+  const [materiaEstudio, setMateriaEstudio] = useState("");
+  const [tiempoEstudio, setTiempoEstudio] = useState(25); // default 25 minutos
+  const [ultimaSesion, setUltimaSesion] = useState(null);
+  const [temporizador, setTemporizador] = useState(0); // segundos restantes
+  const [sesionActiva, setSesionActiva] = useState(false);
+
+
+
+  //SESION DE ESTUDIO
+  const abrirModalEstudio = () => {
+    setMateriaEstudio(materias[0]?.id || "");
+    setTiempoEstudio(25);
+    setMostrarModalEstudio(true);
+  };
+
+  const cerrarModalEstudio = () => {
+    setMostrarModalEstudio(false);
+  };
+
+  const iniciarSesionEstudio = () => {
+    if (!materiaEstudio) return;
+
+    const duracionSegundos = tiempoEstudio * 60;
+    const inicio = new Date().getTime(); // timestamp en ms
+
+    setTemporizador(duracionSegundos);
+    setSesionActiva(true);
+    setMostrarModalEstudio(false);
+
+    const nuevaSesion = {
+      materia: materias.find(m => m.id === materiaEstudio)?.nombre || "Sin materia",
+      tiempo: tiempoEstudio,
+      inicio,      // guardamos la hora exacta de inicio
+      duracion: duracionSegundos
+    };
+
+    localStorage.setItem("ultimaSesionEstudio", JSON.stringify(nuevaSesion));
+    setUltimaSesion(nuevaSesion);
+  };
+
+  //AGENDA
+  const agregarAgenda = () => {
+    if (!nuevoItem.trim()) return; // no agregamos vacíos
+    const updatedAgenda = [...agenda, nuevoItem.trim()];
+    setAgenda(updatedAgenda);
+    localStorage.setItem("agendaRapida", JSON.stringify(updatedAgenda));
+    setNuevoItem(""); // limpiar input
+  };
+
+  const eliminarAgenda = (index) => {
+    const updatedAgenda = agenda.filter((_, i) => i !== index);
+    setAgenda(updatedAgenda);
+    localStorage.setItem("agendaRapida", JSON.stringify(updatedAgenda));
+  };
+
+  // Materias
+  useEffect(() => {
+    const cargarMaterias = async () => {
+      try {
+        const data = await materiasService.list();
+        setMaterias(data);
+      } catch (error) {
+        console.error("Error cargando materias:", error);
+      }
+    };
+
+    cargarMaterias();
+  }, []);
+
+  // Apuntes
+  useEffect(() => {
+    const cargarApuntes = async () => {
+      try {
+        const data = await apuntesService.list();
+        setApuntes(data);
+      } catch (error) {
+        console.error("Error cargando apuntes:", error);
+      }
+    };
+
+    cargarApuntes();
+  }, []);
+
+  // Calendario / Eventos
+  useEffect(() => {
+    const cargarEventos = async () => {
+      try {
+        const data = await calendarioService.list();
+        setEventos(data);
+      } catch (error) {
+        console.error("Error cargando eventos:", error);
+      }
+    };
+
+    cargarEventos();
+  }, []);
+
+  //Agenda
+  useEffect(() => {
+    const savedAgenda = localStorage.getItem("agendaRapida");
+    if (savedAgenda) {
+      setAgenda(JSON.parse(savedAgenda));
+    }
+  }, []);
+
+  //Sesion Estudio
+  useEffect(() => {
+    const sesionGuardada = localStorage.getItem("ultimaSesionEstudio");
+    if (sesionGuardada) {
+      setUltimaSesion(JSON.parse(sesionGuardada));
+    }
+  }, []);
+
+  //Temporizador
+  useEffect(() => {
+    if (!sesionActiva) return;
+
+    const interval = setInterval(() => {
+      setTemporizador(prev => {
+        if (prev <= 1) {
+          clearInterval(interval);
+          setSesionActiva(false);
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [sesionActiva]);
+
+  useEffect(() => {
+    const sesionGuardada = localStorage.getItem("ultimaSesionEstudio");
+    if (sesionGuardada) {
+      const sesion = JSON.parse(sesionGuardada);
+      const ahora = new Date().getTime();
+      const tiempoPasado = Math.floor((ahora - sesion.inicio) / 1000);
+      const tiempoRestante = sesion.duracion - tiempoPasado;
+
+      if (tiempoRestante > 0) {
+        setTemporizador(tiempoRestante);
+        setSesionActiva(true);
+      } else {
+        setTemporizador(0);
+        setSesionActiva(false);
+      }
+
+      setUltimaSesion(sesion);
+    }
+  }, []);
+
   return (
     <main className="dashboard">
       <div className="dashboard-collage">
-        {/* Bienvenida */}
-        <div className="dash-card estado-general" style={{ gridColumn: 'span 2' }}>
-          <h3>Bienvenido a Kivo</h3>
-          <p className="estado-label" style={{ fontSize: '1.1rem', marginTop: '1rem' }}>
-            Tu plataforma de estudio personalizada con IA
-          </p>
-          <div style={{ marginTop: '2rem', opacity: 0.7 }}>
-            <p>🎯 Organiza tus materias y syllabus</p>
-            <p>📚 Sube y gestiona tus apuntes</p>
-            <p>Planifica tus adrianas
 
-            </p>
-            <p>🤖 Pregunta a tu asistente académico</p>
+        {/* HEADER SUPERIOR */}
+        <div className="home-header">
+
+          {/* Avatar / Panda Coach */}
+          <div className="panda-coach">
+            <div className="panda-avatar-icon">👤</div>
+
+            <div className="panda-text">
+              <h3>Panda Coach</h3>
+              <p>{mensajeHorario}</p>
+            </div>
+          </div>
+
+          {/* Notificaciones */}
+          <div className="notification-icon">
+            🔔
           </div>
         </div>
 
-        {/* Card de próximos pasos */}
-        <div className="dash-card mantenimientos-proximos">
-          <h3>Próximos Pasos</h3>
-          <ul className="proximos-list" style={{ textAlign: 'left' }}>
-            <li className="proximo-item">
-              <div className="proximo-info">
-                <span className="proximo-nombre">Implementar autenticación</span>
-                <span className="proximo-maquina">Login/Register</span>
-              </div>
-            </li>
-            <li className="proximo-item">
-              <div className="proximo-info">
-                <span className="proximo-nombre">Crear gestión de materias</span>
-                <span className="proximo-maquina">CRUD + Syllabus</span>
-              </div>
-            </li>
-            <li className="proximo-item">
-              <div className="proximo-info">
-                <span className="proximo-nombre">Configurar Ollama</span>
-                <span className="proximo-maquina">Chatbot IA</span>
-              </div>
-            </li>
-          </ul>
+        {/* TARJETAS */}
+        <div className="summary-cards-grid">
+
+          <div className="summary-card">
+            <span style={{ fontSize: '2rem' }}>📚</span>
+            <h4>Materias</h4>
+            <p className="summary-value">{materias.length} activas</p>
+          </div>
+
+          <div className="summary-card">
+            <span style={{ fontSize: '2rem' }}>📝</span>
+            <h4>Último Apunte</h4>
+            <p className="summary-value">
+              {apuntes.length > 0 ? apuntes[apuntes.length - 1].titulo : "Ninguno"}
+            </p>
+          </div>
+
+          <div className="summary-card">
+            <span style={{ fontSize: '2rem' }}>📅</span>
+            <h4>Eventos</h4>
+            <p className="summary-value">
+              {eventos.length > 0 ? eventos[0].titulo : "No hay eventos"}
+            </p>
+          </div>
+
+          <div className="summary-card">
+            <span style={{ fontSize: '2rem' }}>✅</span>
+            <h4>Tareas</h4>
+            <p className="summary-value">
+              {tareas.length > 0 ? tareas.length + " pendientes" : "No hay tareas"}
+            </p>
+          </div>
+
         </div>
+
+
+        {mostrarModalEstudio && (
+          <div className="modal-overlay" onClick={cerrarModalEstudio}>
+            <div className="modal-card" onClick={(e) => e.stopPropagation()}>
+              <div className="modal-header">
+                <h3>Iniciar sesión de estudio</h3>
+                <button onClick={cerrarModalEstudio}>✕</button>
+              </div>
+
+              <div className="modal-body">
+                <label>Materia a estudiar:</label>
+                <select
+                  value={materiaEstudio}
+                  onChange={(e) => setMateriaEstudio(e.target.value)}
+                  className="modal-input"
+                >
+                  {materias.map(m => (
+                    <option key={m.id} value={m.id}>{m.nombre}</option>
+                  ))}
+                </select>
+
+                <label>Tiempo de estudio (minutos):</label>
+                <input
+                  type="number"
+                  min="5"
+                  max="180"
+                  step="5"
+                  value={tiempoEstudio}
+                  onChange={(e) => setTiempoEstudio(parseInt(e.target.value))}
+                  className="modal-input"
+                />
+              </div>
+
+              <div className="modal-actions">
+                <button className="btn-guardar" onClick={iniciarSesionEstudio}>Iniciar</button>
+                <button className="btn-cancelar" onClick={cerrarModalEstudio}>Cancelar</button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* BLOQUE CENTRAL */}
+        <div className="home-body">
+
+          {/* Estudio rápido */}
+          <div className="study-box">
+            <h3 style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+              <span style={{ fontSize: '2rem' }}>⏰</span>
+              Estudio rápido
+            </h3>
+            <button className="start-study" onClick={abrirModalEstudio}>
+              ▶ Iniciar sesión de estudio
+            </button>
+
+            <div className="study-info">
+              <p> Hoy: {ultimaSesion ? `${Math.floor(ultimaSesion.tiempo / 60)}h ${ultimaSesion.tiempo % 60}min` : "0h 0min"} </p>
+              <p> Última sesión: {ultimaSesion ? ultimaSesion.materia : "Ninguna"} </p>
+              {sesionActiva && (
+                <p> Tiempo restante: {Math.floor(temporizador / 60)}:{(temporizador % 60).toString().padStart(2, "0")} min </p>
+              )}
+            </div>
+          </div>
+
+
+          {/* AGENDA RAPIDA */}
+          <div className="agenda-box modern-agenda">
+            <h3 style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+              <span style={{ fontSize: '2rem' }}>📋</span>
+              Agenda rápida
+            </h3>
+
+            {/* Lista de items */}
+            <ul className="agenda-list">
+              {agenda.length === 0 && (
+                <li className="agenda-empty">Escribe algo para empezar...</li>
+              )}
+              {agenda.map((item, index) => (
+                <li key={index} className="agenda-item">
+                  <span>• {item}</span>
+                  <button
+                    className="agenda-delete"
+                    onClick={() => eliminarAgenda(index)}
+                    title="Eliminar"
+                  >
+                    ✕
+                  </button>
+                </li>
+              ))}
+            </ul>
+
+            {/* Input para agregar nuevo item */}
+            <div className="agenda-input-container">
+              <input
+                type="text"
+                placeholder="Escribe algo..."
+                value={nuevoItem}
+                onChange={(e) => setNuevoItem(e.target.value)}
+                onKeyDown={(e) => e.key === "Enter" && agregarAgenda()}
+                className="agenda-input"
+              />
+              <button className="agenda-add-btn" onClick={agregarAgenda}>
+                Agregar
+              </button>
+            </div>
+          </div>
+
+        </div>
+
+        {/* ACCIONES RÁPIDAS */}
+        <div className="quick-actions-grid">
+          <div className="quick-card" onClick={() => navigate("/apuntes")}>
+            <span style={{ fontSize: '2.5rem' }}>➕</span>
+            <p className="quick-text">Nuevo Apunte</p>
+          </div>
+
+          <div className="quick-card" onClick={() => navigate("/materias")}>
+            <span style={{ fontSize: '2.5rem' }}>📖</span>
+            <p className="quick-text">Nueva Materia</p>
+          </div>
+
+          <div className="quick-card" onClick={() => navigate("/calendario")}>
+            <span style={{ fontSize: '2.5rem' }}>📅</span>
+            <p className="quick-text">Nuevo Evento</p>
+          </div>
+
+          <div className="quick-card" onClick={() => navigate("/focus")}>
+            <span style={{ fontSize: '2.5rem' }}>⚡</span>
+            <p className="quick-text">Modo Focus</p>
+          </div>
+        </div>
+
+
       </div>
     </main>
   );
 }
-
 export default Home;
