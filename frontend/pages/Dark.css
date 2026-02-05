@@ -350,3 +350,25 @@ body.dark .highlight-subject {
 body.dark .empty-chat-state {
     color: var(--dark-text-muted);
 }
+
+/* ---------- Agenda Fixes ---------- */
+body.dark .agenda-item {
+    background: var(--dark-bg-hover);
+    color: var(--dark-text-main);
+    border: 1px solid var(--dark-border);
+}
+
+body.dark .agenda-delete {
+    background: #991b1b;
+    /* Darker red */
+    color: #fecaca;
+}
+
+body.dark .agenda-delete:hover {
+    background: #ef4444;
+    color: white;
+}
+
+body.dark .agenda-empty {
+    color: var(--dark-text-muted);
+}
