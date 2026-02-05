@@ -2,9 +2,9 @@ import { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
 import { Bell, User, Settings, Timer, X, Palette } from "lucide-react";
 import { useAuth } from "../hooks/useAuth";
-import { useTheme } from "../context/ThemeContext";
 import { ToastContainer, useToast } from "../components/Toast";
 import "./Configuracion.css";
+
 
 function Configuracion() {
   const { user, updateUser } = useAuth();
@@ -45,9 +45,19 @@ function Configuracion() {
   };
 
   // -- APARIENCIA --
-  const { darkMode, toggleTheme } = useTheme();
+  const [darkMode, setDarkMode] = useState(() => {
+    return localStorage.getItem("theme") === "dark";
+  });
 
-  // useEffect se movió al Context
+  useEffect(() => {
+    if (darkMode) {
+      document.body.classList.add("dark");
+      localStorage.setItem("theme", "dark");
+    } else {
+      document.body.classList.remove("dark");
+      localStorage.setItem("theme", "light");
+    }
+  }, [darkMode]);
 
   // -- PERFIL --
   const [showEditProfile, setShowEditProfile] = useState(false);
@@ -160,18 +170,18 @@ function Configuracion() {
             <div className="card-icon-wrapper green">
               <Palette size={24} />
             </div>
-            {/* <span className="part-badge coming-soon">PRÓXIMAMENTE</span> */}
+            <span className="part-badge coming-soon">PRÓXIMAMENTE</span>
             <h3>Apariencia</h3>
             <p>Tema visual del sistema</p>
             <div className="theme-toggle-row">
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                 <span>{darkMode ? "Modo Oscuro" : "Modo Claro"}</span>
               </div>
-              <label className="switch">
+              <label className="switch" style={{ opacity: 0.5, cursor: 'not-allowed' }}>
                 <input
                   type="checkbox"
                   checked={darkMode}
-                  onChange={toggleTheme}
+                  onChange={() =>  setDarkMode(prev => !prev)}
                 />
                 <span className="slider"></span>
               </label>

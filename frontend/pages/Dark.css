@@ -1,0 +1,352 @@
+/* MODO OSCURO GLOBAL - PREMIUM
+   Mejorado para un look más moderno y profesional */
+
+/* ---------- Variables para Modo Oscuro ---------- */
+body.dark {
+    --dark-bg-main: #121214;
+    /* Charcoal (Zinc-950 variant) */
+    --dark-bg-card: #1c1c1f;
+    /* Softer Dark (Zinc-900 variant) */
+    --dark-bg-hover: #2e2e33;
+    /* Zinc-800 variant */
+    --dark-border: #2e2e33;
+    --dark-text-main: #f4f4f5;
+    --dark-text-muted: #a1a1aa;
+    --dark-accent: #3b82f6;
+    --dark-modal-overlay: rgba(0, 0, 0, 0.75);
+}
+
+/* ---------- Fondo general ---------- */
+body.dark {
+    background-color: var(--dark-bg-main);
+    color: var(--dark-text-main);
+}
+
+/* ---------- Textos generales ---------- */
+body.dark h1,
+body.dark h2,
+body.dark h3,
+body.dark h4,
+body.dark h5,
+body.dark h6,
+body.dark p,
+body.dark span,
+body.dark label,
+body.dark li {
+    color: var(--dark-text-main);
+}
+
+body.dark .text-muted,
+body.dark small,
+body.dark .description {
+    color: var(--dark-text-muted);
+}
+
+/* ---------- Sidebar / Menú lateral ---------- */
+body.dark .sidebar,
+body.dark .menu {
+    background-color: #0c0c0e;
+    border-right: 1px solid var(--dark-border);
+}
+
+body.dark .sidebar a,
+body.dark .menu a {
+    color: var(--dark-text-muted);
+}
+
+body.dark .sidebar a:hover,
+body.dark .menu a:hover {
+    color: #fff;
+    background-color: var(--dark-bg-hover);
+}
+
+body.dark .sidebar a.active,
+body.dark .menu a.active {
+    background-color: rgba(59, 130, 246, 0.15);
+    color: #60a5fa;
+    border-right: 2px solid #60a5fa;
+}
+
+/* ---------- Header superior ---------- */
+body.dark header,
+body.dark .topbar {
+    background-color: rgba(9, 9, 11, 0.8);
+    border-bottom: 1px solid var(--dark-border);
+    backdrop-filter: blur(12px);
+}
+
+/* ---------- Contenedores ---------- */
+body.dark .config-container,
+body.dark .main-content,
+body.dark .content,
+body.dark .dashboard {
+    background-color: var(--dark-bg-main);
+}
+
+/* ---------- Cards (Global) ---------- */
+body.dark .card,
+body.dark .config-card,
+body.dark .dash-card,
+body.dark .summary-card,
+body.dark .bloque,
+body.dark .study-box,
+body.dark .agenda-box,
+body.dark .quick-card,
+body.dark .action-card,
+body.dark .materia-card,
+body.dark .materia-column,
+body.dark .apunte-mini-card,
+body.dark .login-card {
+    background: var(--dark-bg-card) !important;
+    color: var(--dark-text-main);
+    border: 1px solid var(--dark-border);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.1);
+}
+
+/* Card Inactiva (especifico Materias) */
+body.dark .materia-card.inactiva {
+    background: #000000 !important;
+    opacity: 0.6;
+    border-color: #3f3f46 !important;
+}
+
+/* Textos secundarios dentro de cards */
+body.dark .card p,
+body.dark .config-card p,
+body.dark .summary-card p,
+body.dark .study-info {
+    color: var(--dark-text-muted);
+}
+
+/* ---------- Botones ---------- */
+body.dark button,
+body.dark .config-btn {
+    background-color: var(--dark-bg-hover);
+    color: var(--dark-text-main);
+    border: 1px solid var(--dark-border);
+    transition: all 0.2s;
+}
+
+body.dark button:hover,
+body.dark .config-btn:hover {
+    background-color: #3f3f46;
+    border-color: #52525b;
+}
+
+/* Botones primarios */
+body.dark .btn-primary,
+body.dark button.primary,
+body.dark .config-btn.primary,
+body.dark .login-button {
+    background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+    color: white;
+    border: none;
+}
+
+/* ---------- Inputs, Selects, Textareas ---------- */
+body.dark input,
+body.dark textarea,
+body.dark select,
+body.dark .agenda-input,
+body.dark .modal-input,
+body.dark .input-line,
+body.dark .filtro-select {
+    background-color: #1a1a1c !important;
+    color: #fff !important;
+    border: 1px solid var(--dark-border);
+}
+
+body.dark input:focus,
+body.dark textarea:focus,
+body.dark select:focus {
+    border-color: var(--dark-accent);
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+}
+
+body.dark input::placeholder,
+body.dark textarea::placeholder {
+    color: #52525b;
+}
+
+/* Fix input line Materias */
+body.dark .input-line {
+    border-bottom: 2px solid var(--dark-border);
+}
+
+/* ---------- Modales ---------- */
+body.dark .modal,
+body.dark .modal-card,
+body.dark .modal-content,
+body.dark .conf-modal-card,
+body.dark .cal-modal-card {
+    background-color: #18181b !important;
+    color: var(--dark-text-main) !important;
+    border: 1px solid #27272a;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
+}
+
+body.dark .modal-overlay,
+body.dark .conf-modal-overlay,
+body.dark .cal-modal-overlay {
+    background-color: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(4px);
+}
+
+/* Modal Headers */
+body.dark .modal-header,
+body.dark .modal-actions,
+body.dark .view-header {
+    border-color: var(--dark-border);
+}
+
+/* ---------- Apuntes Page Fixes ---------- */
+body.dark .materia-badge {
+    background: var(--dark-bg-hover);
+    color: white;
+    border: 1px solid var(--dark-border);
+}
+
+body.dark .materia-tag {
+    background: var(--dark-bg-hover);
+}
+
+/* ---------- Calendario Fixes ---------- */
+body.dark .historial-table {
+    background-color: var(--dark-bg-card);
+    border: 1px solid var(--dark-border);
+    color: var(--dark-text-main);
+}
+
+body.dark .historial-table thead tr {
+    background: var(--dark-bg-hover);
+}
+
+body.dark .historial-table th {
+    color: var(--dark-text-main);
+    border-bottom: 1px solid var(--dark-border);
+}
+
+body.dark .historial-table td {
+    border-top: 1px solid var(--dark-border);
+    color: var(--dark-text-muted);
+}
+
+body.dark .historial-table tbody tr:hover {
+    background-color: var(--dark-bg-hover);
+}
+
+/* FullCalendar Specifics */
+body.dark .fc-theme-standard td,
+body.dark .fc-theme-standard th,
+body.dark .fc-scrollgrid {
+    border-color: var(--dark-border) !important;
+}
+
+body.dark .fc-daygrid-day-number,
+body.dark .fc-col-header-cell-cushion {
+    color: var(--dark-text-main) !important;
+    text-decoration: none;
+}
+
+body.dark .fc-col-header-cell {
+    background-color: var(--dark-bg-card) !important;
+}
+
+body.dark .fc-button-primary {
+    background-color: var(--dark-bg-hover);
+    border-color: var(--dark-border);
+    color: var(--dark-text-main);
+}
+
+body.dark .fc-button-active {
+    background-color: var(--dark-accent) !important;
+    color: white !important;
+}
+
+body.dark .fc-day-today {
+    background: rgba(59, 130, 246, 0.1) !important;
+}
+
+/* ---------- Login Specifics ---------- */
+body.dark .login-container {
+    background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+}
+
+body.dark .login-logo {
+    color: #60a5fa;
+}
+
+/* ---------- Scrollbar ---------- */
+body.dark ::-webkit-scrollbar {
+    width: 10px;
+}
+
+body.dark ::-webkit-scrollbar-track {
+    background: var(--dark-bg-main);
+}
+
+body.dark ::-webkit-scrollbar-thumb {
+    background: #3f3f46;
+    border-radius: 5px;
+    border: 2px solid var(--dark-bg-main);
+}
+
+body.dark ::-webkit-scrollbar-thumb:hover {
+    background: #52525b;
+}
+
+/* ---------- Iconos ---------- */
+body.dark .x:hover {
+    color: #ef4444;
+}
+
+body.dark .menu-toggle svg {
+    stroke: var(--dark-text-main);
+}
+
+/* ---------- Chatbot Fixes ---------- */
+body.dark .sidebar-panel,
+body.dark .chat-panel-container {
+    background: var(--dark-bg-card);
+    border-color: var(--dark-border);
+}
+
+body.dark .subject-btn {
+    background: var(--dark-bg-main);
+    border-color: var(--dark-border);
+    color: var(--dark-text-main);
+}
+
+body.dark .subject-btn:hover {
+    background: var(--dark-bg-hover);
+    border-color: #52525b;
+}
+
+body.dark .subject-btn.active {
+    background: rgba(59, 130, 246, 0.15);
+    border-color: var(--dark-accent);
+    color: #60a5fa;
+}
+
+body.dark .subject-dot {
+    box-shadow: 0 0 0 1px var(--dark-border);
+    border-color: var(--dark-bg-main);
+}
+
+body.dark .chat-selected-header {
+    background: var(--dark-bg-card);
+    border-bottom: 1px solid var(--dark-border);
+}
+
+body.dark .chat-selected-header h2 {
+    color: var(--dark-text-main);
+}
+
+body.dark .highlight-subject {
+    color: #60a5fa;
+}
+
+body.dark .empty-chat-state {
+    color: var(--dark-text-muted);
+}

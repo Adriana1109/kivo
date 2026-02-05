@@ -1,0 +1,92 @@
+.content-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.content-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 20px 0;
+    padding-bottom: 10px;
+}
+
+.content-header h2 {
+    color: var(--text-primary);
+    margin: 0;
+}
+
+/* ============================================
+   GLOBAL DASHBOARD STYLES
+   Moved from Menu.css to be available globally
+   ============================================ */
+
+/* Dashboard Container */
+.dashboard {
+    flex: 1;
+    width: 100%;
+    height: 100%;
+    padding: 25px;
+    background: #f5f7fb;
+    box-sizing: border-box;
+}
+
+.dashboard-loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 400px;
+    gap: 1rem;
+    color: #6b7280;
+}
+
+.loading-spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid #e5e7eb;
+    border-top-color: var(--text-accent);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Base Card Style */
+.dash-card {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 1.5rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    border: 1px solid #e5e7eb;
+    transition: all 0.2s ease;
+    text-decoration: none;
+    color: inherit;
+    position: relative;
+}
+
+.dash-card:hover {
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+    /* Transform removed to avoid modal positioning issues on some browsers, 
+     or keep if z-index is handled correctly. */
+    transform: translateY(-2px);
+}
+
+.dash-card h3 {
+    margin: 0 0 1rem 0;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #374151;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .dashboard {
+        padding: 1rem;
+    }
+}

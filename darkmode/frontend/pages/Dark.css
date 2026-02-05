@@ -1,0 +1,1354 @@
+/* MODO OSCURO GLOBAL
+   Este archivo SOLO maneja el tema oscuro */
+/* ---------- Fondo general ---------- */
+body.dark {
+  background-color: #0b0b0b; /* fondo negro general */
+  color: #ffffff;            /* texto blanco */
+}
+
+/* ---------- Textos generales ---------- */
+body.dark h1,
+body.dark h2,
+body.dark h3,
+body.dark h4,
+body.dark h5,
+body.dark h6,
+body.dark p,
+body.dark span,
+body.dark label {
+  color: #ffffff; /* todo texto en blanco */
+}
+
+/* ---------- Sidebar / Menú lateral ---------- */
+body.dark .sidebar,
+body.dark .menu {
+  background-color: #000000; /* negro sólido */
+  color: #ffffff;
+}
+
+/* Links del menú */
+body.dark .sidebar a,
+body.dark .menu a {
+  color: #ffffff; /* letras blancas */
+}
+
+/* Item activo del menú */
+body.dark .sidebar a.active,
+body.dark .menu a.active {
+  background-color: #1a1a1a;
+  color: #ffffff;
+}
+
+
+/* ---------- Header superior ---------- */
+body.dark header,
+body.dark .topbar {
+  background-color: #000000;
+  border-bottom: 1px solid #222;
+}
+
+/* ---------- Contenedor principal ---------- */
+body.dark .config-container,
+body.dark .main-content,
+body.dark .content {
+  background-color: #0b0b0b;
+}
+
+/* ---------- Cards ---------- */
+body.dark .config-card,
+body.dark .card {
+  background: linear-gradient(145deg, #111111, #0a0a0a);
+  color: #ffffff;
+  border: 1px solid #1f1f1f;
+  box-shadow: none;
+}
+
+/* Texto secundario dentro de cards */
+body.dark .config-card p,
+body.dark .card p {
+  color: #b5b5b5;
+}
+
+/* ---------- Botones ---------- */
+body.dark button,
+body.dark .config-btn {
+  background-color: #111111;
+  color: #ffffff;
+  border: 1px solid #333333;
+}
+
+/* Hover botones */
+body.dark button:hover,
+body.dark .config-btn:hover {
+  background-color: #1a1a1a;
+}
+
+/* ---------- Inputs, selects, textarea ---------- */
+body.dark input,
+body.dark textarea,
+body.dark select {
+  background-color: #000000;
+  color: #ffffff;
+  border: 1px solid #333333;
+}
+
+/* Placeholder */
+body.dark input::placeholder,
+body.dark textarea::placeholder {
+  color: #aaaaaa;
+}
+
+/* ---------- Switch / Toggle ---------- */
+body.dark .switch {
+  background-color: #333333;
+}
+
+/* ---------- Modales ---------- */
+body.dark .modal,
+body.dark .modal-card,
+body.dark .modal-content {
+  background-color: #111111;
+  color: #ffffff;
+  border: 1px solid #222222;
+}
+
+/* Fondo oscuro del modal */
+body.dark .modal-overlay {
+  background-color: rgba(0, 0, 0, 0.75);
+}
+
+/* ---------- Tablas (por si las usas) ---------- */
+body.dark table {
+  background-color: #000000;
+  color: #ffffff;
+}
+
+body.dark th,
+body.dark td {
+  border-color: #333333;
+}
+
+/* ---------- Scrollbar (opcional, pero pro) ---------- */
+body.dark ::-webkit-scrollbar {
+  width: 8px;
+}
+
+body.dark ::-webkit-scrollbar-track {
+  background: #000000;
+}
+
+body.dark ::-webkit-scrollbar-thumb {
+  background: #333333;
+  border-radius: 4px;
+}
+
+/* =====================================================
+   HOME / DASHBOARD - MODO OSCURO
+   Adaptación completa basada en Home.css
+   ===================================================== */
+
+/* ---------- Contenedor principal ---------- */
+body.dark .dashboard {
+  background: #0b0b0b; /* fondo negro general */
+  color: #ffffff;
+}
+
+/* ---------- Header del Home ---------- */
+body.dark .home-header {
+  background-color: transparent;
+}
+
+/* Texto del Panda Coach */
+body.dark .panda-text h3,
+body.dark .panda-text p {
+  color: #ffffff;
+}
+
+/* Icono del Panda */
+body.dark .panda-avatar-icon {
+  background: #111111;
+  color: #ffffff;
+}
+
+/* Icono de notificación */
+body.dark .notification-icon {
+  color: #ffffff;
+}
+
+/* ---------- Cards resumen (summary cards) ---------- */
+body.dark .summary-card {
+  background-color: #111111;
+  box-shadow: none;
+  border: 1px solid #1f1f1f;
+}
+
+body.dark .summary-card h4,
+body.dark .summary-value {
+  color: #ffffff;
+}
+
+/* ---------- Cards grandes (estado, revisiones, mantenimientos) ---------- */
+body.dark .estado-general,
+body.dark .revisiones,
+body.dark .mantenimientos-proximos,
+body.dark .reparaciones-pendientes,
+body.dark .mantenimientos-pendientes-card {
+  background: #111111;
+  color: #ffffff;
+  border: 1px solid #1f1f1f;
+}
+
+/* Textos internos de cards */
+body.dark .estado-general h3,
+body.dark .estado-label,
+body.dark .revisiones-stats .stat-numero,
+body.dark .revisiones-stats .stat-label,
+body.dark .proximo-nombre,
+body.dark .proximo-maquina,
+body.dark .card-numero,
+body.dark .card-label {
+  color: #ffffff;
+}
+
+/* Divisores */
+body.dark .proximo-item {
+  border-bottom: 1px solid #222222;
+}
+
+/* ---------- Círculo de progreso ---------- */
+body.dark .estado-circle .bg {
+  stroke: rgba(255, 255, 255, 0.15);
+}
+
+/* ---------- Iconos dentro de cards ---------- */
+body.dark .card-icon {
+  background: #1a1a1a;
+  color: #ffffff;
+}
+
+/* ---------- Bloque central ---------- */
+body.dark .home-body {
+  background: transparent;
+}
+
+/* ---------- Caja de estudio ---------- */
+body.dark .study-box {
+  background: #111111;
+  border: 1px solid #1f1f1f;
+  box-shadow: none;
+}
+
+body.dark .study-info {
+  color: #cccccc;
+}
+
+/* Botón iniciar estudio */
+body.dark .start-study {
+  background: #000000;
+  color: #ffffff;
+  border: 1px solid #333333;
+}
+
+/* ---------- Agenda ---------- */
+body.dark .agenda-box,
+body.dark .modern-agenda {
+  background: #111111;
+  border: 1px solid #1f1f1f;
+  box-shadow: none;
+}
+
+body.dark .modern-agenda h3 {
+  color: #ffffff;
+}
+
+/* Lista de agenda */
+body.dark .agenda-item {
+  background: #000000;
+  color: #ffffff;
+  border: 1px solid #222222;
+}
+
+body.dark .agenda-empty {
+  color: #9ca3af;
+}
+
+/* Inputs agenda */
+body.dark .agenda-input,
+body.dark .modal-input {
+  background: #000000;
+  color: #ffffff;
+  border: 1px solid #333333;
+}
+
+/* Botones agenda */
+body.dark .agenda-add-btn {
+  background: #111111;
+  color: #ffffff;
+  border: 1px solid #333333;
+}
+
+/* ---------- Quick actions ---------- */
+body.dark .quick-card,
+body.dark .action-card {
+  background: #111111;
+  color: #ffffff;
+  border: 1px solid #1f1f1f;
+}
+
+body.dark .quick-text,
+body.dark .action-card h4,
+body.dark .action-card p {
+  color: #ffffff;
+}
+
+/* ---------- Modales ---------- */
+body.dark .modal-card {
+  background: #111111;
+  color: #ffffff;
+  border: 1px solid #222222;
+}
+
+body.dark .modal-header h3,
+body.dark .modal-body label {
+  color: #ffffff;
+}
+
+body.dark .btn-guardar {
+  background: #000000;
+  color: #ffffff;
+  border: 1px solid #333333;
+}
+
+body.dark .btn-cancelar {
+  background: #1a1a1a;
+  color: #ffffff;
+}
+
+
+
+/* =====================================================
+   ICONO HAMBURGUESA – SOLO LINEAS BLANCAS
+   (sin fondo, sin hover, sin focus, sin active)
+   ===================================================== */
+
+/* Botón o contenedor del icono */
+body.dark button,
+body.dark .menu-toggle,
+body.dark .hamburger,
+body.dark .sidebar-toggle {
+  background: transparent !important;
+  box-shadow: none !important;
+  border: none !important;
+  outline: none !important;
+}
+
+/* Estados interactivos */
+body.dark button:hover,
+body.dark button:focus,
+body.dark button:active,
+body.dark .menu-toggle:hover,
+body.dark .menu-toggle:focus,
+body.dark .menu-toggle:active {
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+/* Pseudo-elementos (MUY IMPORTANTE) */
+body.dark button::before,
+body.dark button::after,
+body.dark .menu-toggle::before,
+body.dark .menu-toggle::after {
+  background: transparent !important;
+  box-shadow: none !important;
+  content: none !important;
+}
+
+/* SVG: solo líneas blancas */
+body.dark .menu-toggle svg,
+body.dark .menu-toggle svg path,
+body.dark button svg,
+body.dark button svg path {
+  stroke: #ffffff !important;
+  fill: none !important;
+}
+
+/* Hover / active / focus */
+body.dark .menu-toggle:hover,
+body.dark .menu-toggle:active,
+body.dark .menu-toggle:focus,
+body.dark .hamburger:hover,
+body.dark .hamburger:active,
+body.dark .hamburger:focus {
+  background: transparent !important;
+}
+
+/* =====================================================
+   ICONOS EN MODO OSCURO (CONTROLADOS)
+   ===================================================== */
+
+/* Iconos NEUTROS → blancos (menú, header, config) */
+body.dark .sidebar svg,
+body.dark .sidebar svg path,
+body.dark .main-header svg,
+body.dark .main-header svg path,
+body.dark .notification-icon svg,
+body.dark .notification-icon svg path {
+  stroke: #ffffff;
+  fill: none;
+}
+
+/* ===============================
+   FIX DEFINITIVO MODO OSCURO
+   BLOQUE SEMESTRE + TARJETA
+   =============================== */
+
+body.dark .bloque {
+  background-color: #0b0b0b;
+  color: #ffffff;
+  border: 1px solid #1f1f1f;
+}
+
+/* TARJETA BLANCA INTERNA (forzado) */
+body.dark .bloque > div,
+body.dark .bloque .card,
+body.dark .bloque .item,
+body.dark .bloque .materia,
+body.dark .bloque .materia-card {
+  background-color: #000000 !important;
+  color: #ffffff !important;
+  border: 1px solid #1f1f1f;
+}
+
+/* INPUT "Nueva materia + Enter" */
+body.dark .bloque input,
+body.dark .bloque textarea {
+  background-color: #000000 !important;
+  color: #ffffff !important;
+  border: 1px solid #333333;
+}
+
+/* Placeholder */
+body.dark .bloque input::placeholder {
+  color: #9ca3af;
+}
+
+/* Textos secundarios */
+body.dark .bloque p,
+body.dark .bloque span,
+body.dark .bloque label {
+  color: #d1d5db;
+}
+
+/* Botones / acciones */
+body.dark .bloque button {
+  background-color: #111111;
+  color: #ffffff;
+  border: 1px solid #2a2a2a;
+}
+
+body.dark .bloque button:hover {
+  background-color: #1a1a1a;
+}
+
+/* Switch */
+body.dark .bloque input[type="checkbox"] {
+  accent-color: #2563eb;
+}
+
+
+
+/* =========================================
+   MODO OSCURO – EDITOR / SYLLABUS
+   ========================================= */
+
+/* Contenedor del editor */
+body.dark .syllabus,
+body.dark .syllabus-editor,
+body.dark .editor,
+body.dark .editor-container {
+  background-color: #0b0b0b;
+  color: #ffffff;
+}
+
+/* TEXTAREA / ÁREA DE EDICIÓN (ESTE ES EL CLAVE) */
+body.dark textarea,
+body.dark .editor textarea,
+body.dark .syllabus textarea {
+  background-color: #000000 !important;
+  color: #ffffff !important;
+  border: 1px solid #2a2a2a;
+  caret-color: #ffffff; /* cursor blanco */
+}
+
+/* Placeholder del editor */
+body.dark textarea::placeholder {
+  color: #9ca3af;
+}
+
+/* Borde azul/blanco del editor */
+body.dark textarea:focus {
+  outline: none;
+  border-color: #2563eb; /* azul elegante */
+}
+
+/* Texto interno (si es editor rico) */
+body.dark .editor *,
+body.dark .syllabus-editor * {
+  color: #ffffff;
+  background-color: transparent;
+}
+
+/* Barra inferior (Guardar / Cancelar) */
+body.dark .editor-footer,
+body.dark .syllabus-footer {
+  background-color: #020617;
+  border-top: 1px solid #1f2933;
+}
+
+/* Botones */
+body.dark .editor-footer button,
+body.dark .syllabus-footer button {
+  background-color: #111827;
+  color: #ffffff;
+  border: 1px solid #374151;
+}
+
+body.dark .editor-footer button:hover {
+  background-color: #1f2937;
+}
+
+/* =====================================================
+   CONTENEDOR DEL CALENDARIO – MODO OSCURO
+   ===================================================== */
+
+body.dark .dash-card {
+  background: #000000 !important;
+  color: #ffffff;
+  border: 1px solid #1f1f1f;
+  box-shadow: none;
+}
+/* =====================================================
+   HISTORIAL – MODO OSCURO
+   ===================================================== */
+
+body.dark .historial-table {
+  background: #000000;
+  color: #ffffff;
+  box-shadow: none;
+  border: 1px solid #1f1f1f;
+}
+
+body.dark .historial-table thead tr {
+  background: #0b0b0b;
+}
+
+body.dark .historial-table th {
+  color: #ffffff;
+  border-bottom: 1px solid #222222;
+}
+
+body.dark .historial-table td {
+  color: #e5e7eb;
+  border-top: 1px solid #222222;
+}
+
+body.dark .historial-table tbody tr:hover {
+  background: #111111;
+}
+
+/* Texto "No hay eventos" */
+body.dark .historial-table td[colspan] {
+  color: #9ca3af;
+}
+
+/* =====================================================
+   FULLCALENDAR – GRILLA TOTALMENTE BLANCA (MODO OSCURO)
+   ===================================================== */
+
+/* Contorno general del calendario */
+body.dark .fc-scrollgrid,
+body.dark .fc-scrollgrid table {
+  border-color: #ffffff !important;
+}
+
+/* Líneas verticales y horizontales */
+body.dark .fc td,
+body.dark .fc th {
+  border: 1px solid #ffffff !important;
+}
+
+/* Encabezado de días (dom, lun, mar...) */
+body.dark .fc-col-header-cell {
+  border-color: #ffffff !important;
+  color: #ffffff;
+}
+
+/* Celdas del mes */
+body.dark .fc-daygrid-day {
+  border-color: #ffffff !important;
+}
+
+/* Separaciones internas */
+body.dark .fc-scrollgrid-section,
+body.dark .fc-scrollgrid-sync-table {
+  border-color: #ffffff !important;
+}
+
+/* Día de hoy (mantiene destaque sutil) */
+body.dark .fc-day-today {
+  background: rgba(59, 130, 246, 0.15) !important;
+}
+
+/* =========================================
+   FULLCALENDAR – NÚMEROS Y TEXTO EN BLANCO
+   ========================================= */
+
+/* Números de los días */
+body.dark .fc .fc-daygrid-day-number {
+  color: #ffffff !important;
+}
+
+/* Días de otros meses (los que se veían grises) */
+body.dark .fc .fc-day-other .fc-daygrid-day-number {
+  color: #ffffff !important;
+  opacity: 0.6; /* opcional, para distinguir */
+}
+
+/* Encabezados: dom, lun, mar... */
+body.dark .fc .fc-col-header-cell-cushion {
+  color: #ffffff !important;
+  font-weight: 500;
+}
+
+/* Título del mes (febrero de 2026) */
+body.dark .fc .fc-toolbar-title {
+  color: #ffffff !important;
+}
+
+/* =========================================
+   MODAL CALENDARIO – MODO OSCURO
+   ========================================= */
+
+body.dark .cal-modal-overlay {
+  background: rgba(0, 0, 0, 0.7);
+}
+
+body.dark .cal-modal-card {
+  background-color: #000000;
+  color: #ffffff;
+  border: 1px solid #1f1f1f;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.8);
+}
+
+body.dark .cal-modal-card .modal-header {
+  border-bottom: 1px solid #1f2937;
+}
+
+body.dark .cal-modal-card .modal-header h3 {
+  color: #ffffff;
+}
+
+body.dark .modal-fecha {
+  color: #d1d5db;
+}
+
+body.dark .cal-modal-card input,
+body.dark .cal-modal-card select {
+  background-color: #111827;
+  color: #ffffff;
+  border: 1px solid #374151;
+}
+
+body.dark .cal-modal-card input::placeholder {
+  color: #9ca3af;
+}
+
+body.dark .cal-modal-card input[type="time"] {
+  background-color: #000000;
+  color: #ffffff;
+}
+
+body.dark .recordatorio-field label,
+body.dark .recordatorio-field span {
+  color: #d1d5db;
+}
+
+body.dark .modal-actions {
+  border-top: 1px solid #1f2937;
+}
+
+body.dark .cal-btn-guardar {
+  background-color: #2563eb;
+  color: #ffffff;
+}
+
+body.dark .cal-btn-cancelar {
+  background-color: #111827;
+  color: #ffffff;
+  border: 1px solid #374151;
+}
+
+body.dark .btn-eliminar {
+  background-color: #7f1d1d;
+  color: #ffffff;
+}
+
+/* =========================================
+   MODAL CALENDARIO – DARK PURO (SIN AZUL)
+   ========================================= */
+
+/* Inputs y selects (quitar azul) */
+body.dark .cal-modal-card input,
+body.dark .cal-modal-card select {
+  background-color: #000000 !important;
+  color: #ffffff !important;
+  border: 1px solid #2a2a2a !important;
+}
+
+/* Focus (cuando escribes) */
+body.dark .cal-modal-card input:focus,
+body.dark .cal-modal-card select:focus {
+  outline: none;
+  border-color: #444444 !important;
+  box-shadow: none !important;
+}
+
+/* Campos de hora */
+body.dark .cal-modal-card input[type="time"] {
+  background-color: #000000 !important;
+  color: #ffffff !important;
+  border: 1px solid #2a2a2a !important;
+}
+
+/* Select desplegado */
+body.dark .cal-modal-card option {
+  background-color: #000000;
+  color: #ffffff;
+}
+
+/* Input número (recordatorio) */
+body.dark .recordatorio-field input {
+  background-color: #000000 !important;
+  color: #ffffff !important;
+  border: 1px solid #2a2a2a !important;
+}
+
+/* Botón Guardar → negro */
+body.dark .cal-btn-guardar {
+  background-color: #000000 !important;
+  color: #ffffff !important;
+  border: 1px solid #2a2a2a !important;
+}
+
+body.dark .cal-btn-guardar:hover {
+  background-color: #111111 !important;
+}
+
+/* Botón Cancelar → negro */
+body.dark .cal-btn-cancelar {
+  background-color: #000000 !important;
+  color: #ffffff !important;
+  border: 1px solid #2a2a2a !important;
+}
+
+body.dark .cal-btn-cancelar:hover {
+  background-color: #111111 !important;
+}
+
+/* =========================================
+   MODAL CALENDARIO – FOOTER NEGRO
+   ========================================= */
+
+/* Contenedor inferior (donde están Guardar / Cancelar) */
+body.dark .modal-actions {
+  background-color: #000000 !important;
+  border-top: 1px solid #2a2a2a !important;
+}
+
+/* Asegurar que no herede gradientes o azules */
+body.dark .modal-actions::before,
+body.dark .modal-actions::after {
+  background: none !important;
+}
+
+
+/*  DARK MODE – APUNTES (SOLUCIÓN DEFINITIVA)*/
+/* CONTENEDOR PRINCIPAL (el que estaba blanco) */
+body.dark .dash-card.apuntes-container {
+  background-color: #000000 !important;
+  color: #ffffff !important;
+  border: 1px solid #000000;
+  box-shadow: none;
+}
+
+/* -----------------------------------------------------
+   HEADER: "Apuntes" + contador
+   ----------------------------------------------------- */
+body.dark .apuntes-header h2 {
+  color: #ffffff;
+}
+
+/* Badge "0 apuntes" */
+body.dark .apuntes-count {
+  background-color: #3b82f6 !important; /* azul */
+  color: #ffffff !important;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+/* -----------------------------------------------------
+   FORMULARIO (Nuevo / Editar apunte)
+   <div class="apunte-form">
+   ----------------------------------------------------- */
+body.dark .apunte-form {
+  background-color: #000000 !important;
+  color: #ffffff !important;
+  border: 1px solid #1f1f1f;
+}
+
+/* Títulos y labels del formulario */
+body.dark .apunte-form h3,
+body.dark .apunte-form label {
+  color: #ffffff;
+}
+
+/* -----------------------------------------------------
+   INPUTS, SELECT Y TEXTAREA
+   ----------------------------------------------------- */
+body.dark .form-input,
+body.dark .form-select,
+body.dark .form-textarea,
+body.dark .search-input,
+body.dark .filter-select {
+  background-color: #000000 !important;
+  color: #ffffff !important;
+  border: 1px solid #333333 !important;
+}
+
+/* Placeholder */
+body.dark .form-input::placeholder,
+body.dark .form-textarea::placeholder,
+body.dark .search-input::placeholder {
+  color: #9ca3af;
+}
+
+/* -----------------------------------------------------
+   BOTONES
+   ----------------------------------------------------- */
+body.dark .btn-primary {
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  color: #ffffff;
+  border: none;
+}
+
+body.dark .btn-secondary {
+  background-color: #111111;
+  color: #ffffff;
+  border: 1px solid #333333;
+}
+
+/* -----------------------------------------------------
+   FILTROS
+   ----------------------------------------------------- */
+body.dark .apuntes-filtros {
+  background-color: #000000;
+}
+
+/* -----------------------------------------------------
+   LISTA DE APUNTES
+   ----------------------------------------------------- */
+body.dark .apunte-card {
+  background-color: #000000 !important;
+  color: #ffffff;
+  border: 1px solid #1f1f1f;
+}
+
+/* Texto del contenido */
+body.dark .apunte-contenido {
+  color: #d1d5db;
+}
+
+/* Fecha */
+body.dark .apunte-fecha {
+  color: #9ca3af;
+}
+
+/* -----------------------------------------------------
+   ESTADO VACÍO ("No hay apuntes")
+   ----------------------------------------------------- */
+body.dark .empty-state h3 {
+  color: #ffffff;
+}
+
+body.dark .empty-state p {
+  color: #9ca3af;
+}
+
+/* =========================================
+   APUNTES – MINI CARD (LA BLANCA REAL)
+   ========================================= */
+
+/* Tarjeta pequeña del apunte */
+body.dark .apunte-mini-card {
+  background-color: #000000 !important;
+  color: #ffffff !important;
+  border: 1px solid #2a2a2a !important;
+  box-shadow: none !important;
+}
+
+/* Título dentro de la mini card */
+body.dark .apunte-mini-card h4 {
+  color: #ffffff !important;
+}
+
+/* Footer / fecha */
+body.dark .apunte-mini-card .mini-card-footer,
+body.dark .apunte-mini-card span {
+  color: #9ca3af !important;
+}
+
+/* Hover */
+body.dark .apunte-mini-card:hover {
+  background-color: #111111 !important;
+}
+
+/* Badge de materia (CÁLCULO 2) */
+body.dark .materia-badge {
+  background-color: #000000 !important;
+  color: #ffffff !important;
+  border: 1px solid currentColor !important;
+}
+
+/* =========================================
+   APUNTES – ELIMINAR BLANCO EXTERNO DEFINITIVO
+   ========================================= */
+
+/* Cualquier wrapper interno del mini card */
+body.dark .apunte-mini-card > div,
+body.dark .apunte-mini-card > section,
+body.dark .apunte-mini-card > article {
+  background-color: #000000 !important;
+}
+
+/* Forzar transparencia a todos los hijos */
+body.dark .apunte-mini-card * {
+  background-color: transparent !important;
+}
+
+/* Mantener el bloque interno negro (el que ya estaba bien) */
+body.dark .apunte-mini-card .mini-card-footer,
+body.dark .apunte-mini-card .contenido,
+body.dark .apunte-mini-card .apunte-content {
+  background-color: #000000 !important;
+}
+
+/* Bordes redondeados coherentes */
+body.dark .apunte-mini-card {
+  border-radius: 16px;
+}
+
+/* Badge materia consistente */
+body.dark .materia-badge {
+  background-color: #000000 !important;
+  color: #ffffff !important;
+  border: 1px solid #000000 !important;
+}
+
+/* =========================================
+   APUNTES – CONTENEDORES PADRE (BLANCO REAL)
+   ========================================= */
+
+/* Columna de materia (la tarjeta blanca grande) */
+body.dark .materia-column {
+  background-color: #000000 !important;
+  border: 1px solid #2a2a2a !important;
+  box-shadow: none !important;
+}
+
+/* Stack que envuelve los apuntes */
+body.dark .apuntes-stack {
+  background-color: #000000 !important;
+}
+
+/* Quitar cualquier fondo heredado interno */
+body.dark .materia-column * {
+  background-color: transparent;
+}
+
+/* Mantener las mini-cards negras */
+body.dark .apunte-mini-card {
+  background-color: #000000 !important;
+  color: #ffffff !important;
+  border: 1px solid #2a2a2a !important;
+}
+
+/* Badge de materia */
+body.dark .materia-badge {
+  background-color: #000000 !important;
+  color: #ffffff !important;
+  border: 1px solid currentColor !important;
+}
+
+/* =========================================
+   DARK MODE – NEGRO PURO GLOBAL
+   ========================================= */
+
+/* Fondo general de la app */
+body.dark,
+body.dark main,
+body.dark .dashboard,
+body.dark .dashboard-content {
+  background-color: #000000 !important;
+}
+
+/* Sidebar */
+body.dark .sidebar,
+body.dark .sidebar-container {
+  background-color: #000000 !important;
+  box-shadow: none !important;
+  border-right: 1px solid #1f1f1f;
+}
+
+/* Topbar / header superior */
+body.dark .topbar,
+body.dark header,
+body.dark .app-header {
+  background-color: #000000 !important;
+  box-shadow: none !important;
+  border-bottom: 1px solid #1f1f1f;
+}
+
+/* Secciones internas que se ven gris */
+body.dark .dash-card,
+body.dark .apuntes-page,
+body.dark .apuntes-grid-layout,
+body.dark .semestre-section {
+  background-color: #000000 !important;
+  box-shadow: none !important;
+}
+
+/* Eliminar gradientes globales */
+body.dark * {
+  background-image: none !important;
+}
+
+/* Quitar overlays o capas de brillo */
+body.dark *::before,
+body.dark *::after {
+  background: none !important;
+  box-shadow: none !important;
+}
+
+/* Inputs */
+body.dark input,
+body.dark textarea,
+body.dark select {
+  background-color: #000000 !important;
+  color: #ffffff !important;
+  border: 1px solid #2a2a2a;
+}
+
+/* Scrollbar (opcional, para coherencia) */
+body.dark ::-webkit-scrollbar {
+  width: 10px;
+}
+body.dark ::-webkit-scrollbar-track {
+  background: #000000;
+}
+body.dark ::-webkit-scrollbar-thumb {
+  background: #1f1f1f;
+}
+
+/* =========================================
+   CHATBOT – DARK MODE REAL (CLASES CORRECTAS)
+   ========================================= */
+
+/* Página completa del chatbot */
+body.dark .chatbot-main,
+body.dark .chatbot-page {
+  background-color: #000000 !important;
+  color: #ffffff !important;
+}
+
+/* Sidebar de materias */
+body.dark .sidebar-panel {
+  background-color: #000000 !important;
+  color: #ffffff !important;
+  border-right: 1px solid #1f1f1f;
+}
+
+/* Header del sidebar */
+body.dark .sidebar-header h3,
+body.dark .sidebar-header p {
+  color: #ffffff !important;
+}
+
+/* Botones de materias */
+body.dark .subject-btn {
+  background-color: #000000 !important;
+  color: #ffffff !important;
+  border: 1px solid #1f1f1f;
+}
+
+body.dark .subject-btn:hover {
+  background-color: #111111 !important;
+}
+
+body.dark .subject-btn.active {
+  background-color: #111111 !important;
+  border-color: #4f46e5;
+}
+
+/* Área principal del chat */
+body.dark .chat-panel-container {
+  background-color: #000000 !important;
+  color: #ffffff !important;
+}
+
+/* Header del chat seleccionado */
+body.dark .chat-selected-header {
+  background-color: #000000 !important;
+  border-bottom: 1px solid #1f1f1f;
+}
+
+body.dark .chat-selected-header h2,
+body.dark .chat-selected-header p,
+body.dark .highlight-subject {
+  color: #ffffff !important;
+}
+
+/* Wrapper del componente del chatbot */
+body.dark .chat-component-wrapper {
+  background-color: #000000 !important;
+  color: #ffffff !important;
+}
+
+/* Estado vacío (el panda 🐼) */
+body.dark .empty-chat-state {
+  background-color: #000000 !important;
+  color: #ffffff !important;
+}
+
+body.dark .empty-chat-state h3,
+body.dark .empty-chat-state p {
+  color: #ffffff !important;
+}
+
+/* Quitar cualquier gris heredado */
+body.dark .chatbot-main *,
+body.dark .chatbot-page * {
+  background-image: none !important;
+}
+
+/* =========================================
+   CHATBOT – BORDES BLANCOS VISIBLES
+   ========================================= */
+
+/* Panel izquierdo (materias) */
+body.dark .sidebar-panel {
+  border: 2px solid #ffffff !important;
+  border-radius: 18px;
+  background-color: #000000;
+}
+
+/* Panel derecho (chat) */
+body.dark .chat-panel-container {
+  border: 2px solid #ffffff !important;
+  border-radius: 18px;
+  background-color: #000000;
+}
+
+/* Asegurar que no haya sombras que ensucien */
+body.dark .sidebar-panel,
+body.dark .chat-panel-container {
+  box-shadow: none !important;
+}
+
+/* =========================================
+   HOME – TEXTO BLANCO REAL (FIX DEFINITIVO)
+   ========================================= */
+
+/* Panda Coach – quitar gradiente y transparencia */
+body.dark .panda-text,
+body.dark .panda-text p {
+  background: none !important;
+  -webkit-text-fill-color: #ffffff !important;
+  color: #ffffff !important;
+}
+
+/* Textos de las summary cards */
+body.dark .summary-card h4,
+body.dark .summary-value {
+  color: #ffffff !important;
+  opacity: 1 !important;
+}
+
+/* Textos rápidos */
+body.dark .quick-text,
+body.dark .card-label,
+body.dark .estado-label {
+  color: #ffffff !important;
+  opacity: 1 !important;
+}
+
+/* Estudio rápido */
+body.dark .study-info {
+  color: #ffffff !important;
+  opacity: 1 !important;
+}
+
+/* Agenda */
+body.dark .agenda-empty,
+body.dark .agenda-item span {
+  color: #ffffff !important;
+  opacity: 1 !important;
+}
+
+/* =========================================
+   MATERIAS – HERO CON PALETA ORIGINAL
+   ========================================= */
+
+body.dark .hero {
+  background: linear-gradient(135deg, #6d5dfc, #ec4899) !important;
+  border-radius: 18px;
+}
+
+body.dark .hero h1,
+body.dark .hero p {
+  color: #ffffff !important;
+}
+
+body.dark .modal-content input,
+body.dark .modal-content textarea {
+  background-color: #000000 !important;
+  color: #ffffff !important;
+  border: 1px solid #2a2a2a !important;
+}
+
+body.dark .modal-content input::placeholder {
+  color: #9ca3af !important;
+}
+
+/* =========================================
+   SIDEBAR – HOVER / ACTIVE / FOCUS DARK FIX
+   ========================================= */
+
+/* Links normales */
+body.dark .sidebar a,
+body.dark .menu a {
+  background-color: transparent !important;
+  color: #ffffff !important;
+}
+
+/* Hover */
+body.dark .sidebar a:hover,
+body.dark .menu a:hover {
+  background-color: #111111 !important;
+  color: #ffffff !important;
+}
+
+/* Active (ruta actual) */
+body.dark .sidebar a.active,
+body.dark .menu a.active {
+  background-color: #1a1a1a !important;
+  color: #ffffff !important;
+}
+
+/* Focus / click */
+body.dark .sidebar a:focus,
+body.dark .menu a:focus,
+body.dark .sidebar a:active,
+body.dark .menu a:active {
+  background-color: #1a1a1a !important;
+  color: #ffffff !important;
+  outline: none !important;
+}
+
+/* Si son botones */
+body.dark .sidebar button,
+body.dark .sidebar button:hover,
+body.dark .sidebar button:active,
+body.dark .sidebar button:focus {
+  background-color: transparent !important;
+  color: #ffffff !important;
+}
+
+/* =========================================
+   CONFIGURACIÓN – MODALES EN NEGRO REAL
+   ========================================= */
+
+/* Overlay */
+body.dark .conf-modal-overlay {
+  background-color: rgba(0, 0, 0, 0.8) !important;
+}
+
+/* Card del modal */
+body.dark .conf-modal-card {
+  background-color: #000000 !important;
+  color: #ffffff !important;
+  border: 1px solid #1f1f1f !important;
+  box-shadow: none !important;
+}
+
+/* Header */
+body.dark .conf-modal-card .modal-header {
+  background-color: #000000 !important;
+  border-bottom: 1px solid #1f1f1f !important;
+}
+
+body.dark .conf-modal-card .modal-header h3 {
+  color: #ffffff !important;
+}
+
+/* Body */
+body.dark .conf-modal-card .modal-body {
+  background-color: #000000 !important;
+  color: #ffffff !important;
+}
+
+/* Inputs */
+body.dark .conf-modal-card .modal-input,
+body.dark .conf-modal-card input,
+body.dark .conf-modal-card select {
+  background-color: #000000 !important;
+  color: #ffffff !important;
+  border: 1px solid #2a2a2a !important;
+}
+
+body.dark .conf-modal-card input::placeholder {
+  color: #9ca3af !important;
+}
+
+/* Footer */
+body.dark .conf-modal-card .modal-actions {
+  background-color: #000000 !important;
+  border-top: 1px solid #1f1f1f !important;
+}
+
+/* Botones */
+body.dark .conf-modal-card .config-btn.primary {
+  background-color: #000000 !important;
+  color: #ffffff !important;
+  border: 1px solid #2a2a2a !important;
+}
+
+body.dark .conf-modal-card .config-btn.primary:hover {
+  background-color: #111111 !important;
+}
+
+body.dark .conf-modal-card .config-btn.secondary {
+  background-color: #000000 !important;
+  color: #ffffff !important;
+  border: 1px solid #2a2a2a !important;
+}
+
+body.dark .conf-modal-card .config-btn.secondary:hover {
+  background-color: #111111 !important;
+}
+
+/* Botón cerrar (X) */
+body.dark .conf-modal-card button svg {
+  stroke: #ffffff !important;
+}

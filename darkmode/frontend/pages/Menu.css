@@ -1,0 +1,706 @@
+/* Menu / Dashboard Styles */
+
+/* Dashboard structure moved to App.css to be global */
+
+
+/* Card 1: Estado General */
+.estado-general {
+  grid-column: 1;
+  grid-row: 1 / 3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: white;
+  color: black;
+}
+
+.estado-general h3 {
+  color: black;
+}
+
+.estado-circle {
+  position: relative;
+  width: 160px;
+  height: 160px;
+  margin: 1rem 0;
+}
+
+.estado-circle svg {
+  transform: rotate(-90deg);
+  width: 100%;
+  height: 100%;
+}
+
+.estado-circle circle {
+  fill: none;
+  stroke-width: 8;
+  stroke-linecap: round;
+}
+
+.estado-circle .bg {
+  stroke: rgba(0, 0, 0, 0.171);
+}
+
+.estado-circle .progress {
+  transition: stroke-dasharray 0.8s ease;
+}
+
+.estado-percent {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+.estado-percent .numero {
+  font-size: 3rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.estado-percent .simbolo {
+  font-size: 1.5rem;
+  opacity: 0.8;
+}
+
+.estado-label {
+  color: rgba(0, 0, 0, 0.7);
+  font-size: 0.95rem;
+  margin: 0;
+}
+
+/* Card 2: Revisiones */
+.revisiones {
+  grid-column: 2;
+  grid-row: 1;
+}
+
+.revisiones-stats {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.revisiones-stats .stat {
+  text-align: center;
+}
+
+.revisiones-stats .stat-numero {
+  display: block;
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #1f2937;
+  line-height: 1;
+}
+
+.revisiones-stats .stat-label {
+  font-size: 0.8rem;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.revisiones-stats .stat-divider {
+  font-size: 2rem;
+  color: #d1d5db;
+  font-weight: 300;
+}
+
+.revisiones-bar {
+  height: 8px;
+  background: #e5e7eb;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.revisiones-progress {
+  height: 100%;
+  background: linear-gradient(90deg, #22c55e 0%, #4ade80 100%);
+  border-radius: 4px;
+  transition: width 0.5s ease;
+}
+
+/* Card 3: Mantenimientos Próximos */
+.mantenimientos-proximos {
+  grid-column: 3;
+  grid-row: 1 / 3;
+}
+
+.proximos-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.proximo-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid #f3f4f6;
+}
+
+.proximo-item:last-child {
+  border-bottom: none;
+}
+
+.proximo-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.proximo-nombre {
+  font-weight: 500;
+  color: #1f2937;
+  font-size: 0.95rem;
+}
+
+.proximo-maquina {
+  font-size: 0.8rem;
+  color: #4b5563;
+}
+
+.proximo-horas {
+  padding: 0.25rem 0.75rem;
+  background: #fef3c7;
+  color: #92400e;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.proximo-horas.urgente {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+.no-data {
+  color: #9ca3af;
+  text-align: center;
+  padding: 2rem 0;
+  font-size: 0.95rem;
+}
+
+/* Cards 4 & 5: Pendientes */
+.reparaciones-pendientes,
+.mantenimientos-pendientes-card {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+/* Card de mantenimientos vencidos más ancha */
+.mantenimientos-pendientes-card {
+  min-width: 280px;
+}
+
+.card-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.card-icon svg {
+  width: 28px;
+  height: 28px;
+}
+
+.card-icon.warning {
+  background: #fef3c7;
+  color: #d97706;
+}
+
+.card-icon.danger {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+.card-content h3 {
+  margin: 0 0 0.25rem 0;
+  font-size: 0.9rem;
+}
+
+.card-numero {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #1f2937;
+  line-height: 1;
+}
+
+.card-label {
+  font-size: 0.8rem;
+  color: #6b7280;
+  margin-left: 0.25rem;
+}
+
+/* Responsive */
+@media (max-width: 1200px) {
+  .dashboard-collage {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto auto;
+  }
+
+  .estado-general {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .revisiones {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  .mantenimientos-proximos {
+    grid-column: 1 / 3;
+    grid-row: 2;
+  }
+
+  .reparaciones-pendientes {
+    grid-column: 1;
+    grid-row: 3;
+  }
+
+  .mantenimientos-pendientes-card {
+    grid-column: 2;
+    grid-row: 3;
+  }
+}
+
+@media (max-width: 768px) {
+  .main-content {
+    margin-left: 70px;
+  }
+
+  .main-header {
+    padding: 1rem;
+  }
+
+  .header-title {
+    font-size: 1.25rem;
+  }
+
+  .header-subtitle {
+    display: none;
+  }
+
+  .dashboard {
+    padding: 1rem;
+    height: 100%;
+  }
+
+  .dashboard-collage {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto;
+  }
+
+  .estado-general,
+  .revisiones,
+  .mantenimientos-proximos,
+  .reparaciones-pendientes,
+  .mantenimientos-pendientes-card {
+    grid-column: 1;
+    grid-row: auto;
+  }
+
+  .estado-circle {
+    width: 120px;
+    height: 120px;
+  }
+
+  .estado-percent .numero {
+    font-size: 2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .main-content {
+    margin-left: 0;
+    padding-bottom: 70px;
+  }
+}
+
+/* Estilos de modal movidos a Calendario.css */
+
+/* ===== NUEVO DASHBOARD ===== */
+
+/* NOTA: .dashboard está definido en App.css (global) */
+
+.dashboard-collage {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* HEADER */
+.home-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+}
+
+/* PANDA COACH */
+.panda-coach {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.panda-text {
+  margin: 0;
+  font-family: 'Outfit', sans-serif;
+  font-size: 2rem;
+  font-weight: 500;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: 0.02em;
+  padding: 0.5rem 1rem;
+  background-color: rgba(102, 126, 234, 0.08);
+  animation: fadeIn 0.5s ease-out;
+}
+
+.panda-text p {
+  margin: 0;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* NOTIFICACIÓN */
+.notification-icon {
+  cursor: pointer;
+  font-size: 1.5rem;
+}
+
+/* TARJETAS RESUMEN */
+.summary-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.summary-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #ffffff;
+  border-radius: 12px;
+  padding: 1rem;
+  text-align: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.summary-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.12);
+}
+
+.summary-card h4 {
+  margin-top: 0.5rem;
+  font-weight: 600;
+  color: #111827;
+  font-size: 1rem;
+}
+
+.summary-value {
+  margin-top: 0.25rem;
+  font-size: 0.95rem;
+  color: #374151;
+  font-weight: 500;
+}
+
+/* BLOQUE CENTRAL */
+.home-body {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+}
+
+@media (max-width: 768px) {
+  .home-body {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ESTUDIO RÁPIDO */
+.study-box {
+  background: white;
+  padding: 20px;
+  border-radius: 18px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+.start-study {
+  width: 100%;
+  padding: 14px;
+  margin: 15px 0;
+  border: none;
+  border-radius: 14px;
+  background: #4f7cff;
+  color: white;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.start-study:hover {
+  opacity: 0.9;
+}
+
+.study-info {
+  font-size: 0.9rem;
+  opacity: 0.7;
+}
+
+/* AGENDA RÁPIDA */
+.agenda-box {
+  background: white;
+  padding: 20px;
+  border-radius: 18px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+.agenda-box ul {
+  padding-left: 0;
+  list-style: none;
+}
+
+.modern-agenda h3 {
+  font-size: 1.2rem;
+  margin-bottom: 12px;
+  color: #111827;
+}
+
+.agenda-list {
+  list-style: none;
+  padding: 0;
+  margin-bottom: 15px;
+  max-height: 220px;
+  overflow-y: auto;
+}
+
+.agenda-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #f9fafb;
+  padding: 8px 12px;
+  margin-bottom: 8px;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  color: #1f2937;
+}
+
+.agenda-delete {
+  background: #ef4444;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 2px 6px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  transition: background 0.2s;
+}
+
+.agenda-delete:hover {
+  background: #dc2626;
+}
+
+.agenda-empty {
+  color: #9ca3af;
+  font-style: italic;
+  padding: 8px;
+}
+
+.agenda-input-container {
+  display: flex;
+  gap: 10px;
+}
+
+.agenda-input {
+  flex: 1;
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 1px solid #d1d5db;
+  font-size: 0.95rem;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.agenda-input:focus {
+  border-color: #3b82f6;
+}
+
+.agenda-add-btn {
+  background: #3b82f6;
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.agenda-add-btn:hover {
+  background: #2563eb;
+}
+
+/* ACCIONES RÁPIDAS */
+.quick-actions-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.quick-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #ffffff;
+  border-radius: 12px;
+  padding: 1rem;
+  aspect-ratio: 1 / 1;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s, box-shadow 0.2s;
+  cursor: pointer;
+}
+
+.quick-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.quick-text {
+  margin-top: 0.5rem;
+  font-weight: 600;
+  color: #111827;
+  text-align: center;
+  font-size: 0.95rem;
+}
+
+/* MODALES */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(17, 24, 39, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.modal-card {
+  background: #ffffff;
+  padding: 25px 20px;
+  border-radius: 12px;
+  max-width: 400px;
+  width: 90%;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+  from {
+    transform: translateY(-20px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.modal-header h3 {
+  margin: 0;
+  font-size: 1.1rem;
+  color: #111827;
+}
+
+.modal-header button {
+  background: transparent;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
+.modal-body {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.modal-body label {
+  font-size: 0.9rem;
+  color: #4b5563;
+}
+
+.modal-input {
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 1px solid #d1d5db;
+  outline: none;
+  font-size: 0.95rem;
+}
+
+.modal-input:focus {
+  border-color: #3b82f6;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.btn-guardar {
+  background: #3b82f6;
+  color: white;
+  padding: 8px 14px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+}
+
+.btn-guardar:hover {
+  background: #2563eb;
+}
+
+.btn-cancelar {
+  background: #e5e7eb;
+  color: #374151;
+  padding: 8px 14px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+}
+
+.btn-cancelar:hover {
+  background: #d1d5db;
+}

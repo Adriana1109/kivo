@@ -1,6 +1,5 @@
 import React from 'react';
 import { AuthProvider } from './hooks/useAuth';
-import { ThemeProvider } from './context/ThemeContext';
 import AppRoutes from './routes';
 import './App.css';
 import './pages/Dark.css';
@@ -42,13 +41,11 @@ class ErrorBoundary extends React.Component {
 function App() {
   return (
     <AuthProvider>
-      <ThemeProvider>
-        <ErrorBoundary>
-          <main>
-            <AppRoutes />
-          </main>
-        </ErrorBoundary>
-      </ThemeProvider>
+      <ErrorBoundary>
+        <main>
+          <AppRoutes />
+        </main>
+      </ErrorBoundary>
     </AuthProvider>
   );
 }

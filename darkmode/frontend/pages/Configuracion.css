@@ -1,0 +1,370 @@
+/* Configuracion.css */
+
+.config-header-main {
+  margin-bottom: 2rem;
+}
+
+.config-header-main h1 {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 2rem;
+  margin: 0;
+  color: #111827;
+}
+
+.config-header-main p {
+  margin: 8px 0 0 44px;
+  color: #6b7280;
+  font-size: 1.05rem;
+}
+
+/* GRID */
+.config-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+}
+
+/* CARDS */
+.config-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  /* Align left */
+  padding: 24px;
+  /* More breathing room */
+}
+
+/* Icons in Cards */
+.card-icon-wrapper {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16px;
+}
+
+.card-icon-wrapper.blue {
+  background-color: #dbeafe;
+  color: #2563eb;
+}
+
+.card-icon-wrapper.orange {
+  background-color: #ffedd5;
+  color: #f97316;
+}
+
+.card-icon-wrapper.purple {
+  background-color: #f3e8ff;
+  color: #9333ea;
+}
+
+.card-icon-wrapper.green {
+  background-color: #dcfce7;
+  color: #16a34a;
+}
+
+
+.config-card h3 {
+  font-size: 1.2rem;
+  margin: 0 0 8px 0;
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.config-card p {
+  font-size: 0.95rem;
+  color: #6b7280;
+  margin: 0 0 20px 0;
+  flex-grow: 1;
+  /* Push button to bottom */
+}
+
+
+/* BOTONES */
+.config-btn {
+  width: 100%;
+  padding: 10px 16px;
+  border-radius: 8px;
+  border: none;
+  font-weight: 500;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.config-btn.primary {
+  background-color: #3b82f6;
+  color: white;
+}
+
+.config-btn.primary:hover {
+  background-color: #2563eb;
+}
+
+.config-btn.secondary {
+  background-color: #e5e7eb;
+  color: #374151;
+}
+
+.config-btn.secondary:hover {
+  background-color: #d1d5db;
+}
+
+/* TOGGLE SWITCH - APARIENCIA */
+.theme-toggle-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin-top: auto;
+  font-weight: 500;
+  color: #374151;
+}
+
+/* Reusing standard switch code */
+.switch {
+  position: relative;
+  width: 48px;
+  height: 24px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  inset: 0;
+  background-color: #e5e7eb;
+  border-radius: 20px;
+  transition: .3s;
+}
+
+.part-badge.coming-soon {
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: #d97706;
+  background-color: #fef3c7;
+  padding: 2px 8px;
+  border-radius: 999px;
+  letter-spacing: 0.05em;
+  border: 1px solid #fcd34d;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 18px;
+  width: 18px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  border-radius: 50%;
+  transition: .3s;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+input:checked+.slider {
+  background-color: #3b82f6;
+}
+
+input:checked+.slider:before {
+  transform: translateX(24px);
+}
+
+/* MODAL STYLES */
+.conf-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: fadeIn 0.2s ease-out;
+}
+
+.conf-modal-card {
+  background: white;
+  width: 90%;
+  max-width: 500px;
+  border-radius: 16px;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  overflow: hidden;
+  animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  flex-direction: column;
+  max-height: 90vh;
+}
+
+body.dark .conf-modal-card {
+  background: #1f2937;
+  color: #f3f4f6;
+  border: 1px solid #374151;
+}
+
+.modal-header {
+  padding: 20px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+body.dark .modal-header {
+  border-bottom-color: #374151;
+}
+
+.modal-header h3 {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #111827;
+}
+
+body.dark .modal-header h3 {
+  color: #f3f4f6;
+}
+
+.modal-header button {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: #6b7280;
+  padding: 4px;
+  border-radius: 50%;
+  transition: all 0.2s;
+  display: flex;
+}
+
+.modal-header button:hover {
+  background-color: #f3f4f6;
+  color: #111827;
+}
+
+body.dark .modal-header button:hover {
+  background-color: #374151;
+  color: #e5e7eb;
+}
+
+.modal-body {
+  padding: 24px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.modal-body label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #374151;
+}
+
+body.dark .modal-body label {
+  color: #d1d5db;
+}
+
+.modal-input {
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid #d1d5db;
+  font-size: 0.95rem;
+  transition: all 0.2s;
+  outline: none;
+  background-color: #fff;
+  color: #1f2937;
+}
+
+body.dark .modal-input {
+  background-color: #374151;
+  border-color: #4b5563;
+  color: #f3f4f6;
+}
+
+.modal-input:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+}
+
+.modal-body h4 {
+  margin: 16px 0 8px 0;
+  font-size: 1rem;
+  color: #4b5563;
+  font-weight: 600;
+}
+
+body.dark .modal-body h4 {
+  color: #9ca3af;
+}
+
+/* Checkbox specific styles */
+.checkbox-label {
+  flex-direction: row !important;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 10px;
+  cursor: pointer;
+  padding: 4px 0;
+}
+
+.checkbox-label input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  border-radius: 4px;
+  accent-color: #3b82f6;
+  cursor: pointer;
+}
+
+.modal-actions {
+  padding: 20px 24px;
+  background-color: #f9fafb;
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  border-top: 1px solid #e5e7eb;
+}
+
+body.dark .modal-actions {
+  background-color: #171d2b;
+  /* Slightly darker than card */
+  border-top-color: #374151;
+}
+
+.modal-actions button {
+  width: auto;
+  min-width: 100px;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}

@@ -1,0 +1,359 @@
+/* Contenedor específico de materias */
+.materias-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.hero {
+  background: linear-gradient(135deg, #4f46e5, #ec4899);
+  color: white;
+  padding: 40px;
+  border-radius: 20px;
+  text-align: center;
+  margin-bottom: 40px;
+  box-shadow: 0 10px 25px rgba(79, 70, 229, 0.2);
+}
+
+.hero h1 {
+  font-size: 2.5rem;
+  margin: 0;
+  margin-bottom: 10px;
+}
+
+.hero p {
+  font-size: 1.1rem;
+  opacity: 0.9;
+}
+
+.titulo {
+  font-size: 1.5rem;
+  color: #1f2937;
+  margin-bottom: 20px;
+  border-bottom: 2px solid #e5e7eb;
+  padding-bottom: 10px;
+}
+
+.input-line {
+  width: 100%;
+  padding: 15px;
+  border: none;
+  border-bottom: 2px solid #e5e7eb;
+  font-size: 1.1rem;
+  outline: none;
+  background: transparent;
+  transition: border-color 0.3s;
+  margin-bottom: 30px;
+}
+
+.input-line:focus {
+  border-bottom-color: #4f46e5;
+}
+
+.input-line.small {
+  margin-bottom: 15px;
+  font-size: 0.9rem;
+  padding: 10px 0;
+}
+
+.materias-layout {
+  display: grid;
+  grid-template-columns: 1fr 300px;
+  gap: 30px;
+}
+
+.bloque {
+  background: white;
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  margin-bottom: 20px;
+}
+
+.bloque h3 {
+  margin-top: 0;
+  color: #4b5563;
+  margin-bottom: 15px;
+}
+
+.materia-card {
+  background: #f9fafb;
+  padding: 15px;
+  border-radius: 10px;
+  margin-bottom: 15px;
+  transition: transform 0.2s;
+  border: 1px solid #e5e7eb;
+  /* Default border */
+}
+
+.materia-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.materia-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.materia-header h5 {
+  margin: 0;
+  font-size: 1rem;
+  color: #111827;
+}
+
+.x {
+  color: #9ca3af;
+  cursor: pointer;
+  font-size: 1.2rem;
+  transition: color 0.2s;
+}
+
+.x:hover {
+  color: #ef4444;
+}
+
+.syllabus {
+  background: white;
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  height: fit-content;
+}
+
+.syllabus-block {
+  text-align: center;
+  padding: 20px 0;
+}
+
+.progress {
+  height: 8px;
+  background: #e5e7eb;
+  border-radius: 4px;
+  margin: 10px 0;
+  overflow: hidden;
+}
+
+.progress div {
+  height: 100%;
+  background: #4f46e5;
+  transition: width 0.5s ease;
+}
+
+.percent {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #4f46e5;
+}
+
+/* Modal Styles */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: white;
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+  max-width: 400px;
+  width: 90%;
+  text-align: center;
+  animation: modalPop 0.2s ease-out;
+}
+
+@keyframes modalPop {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.modal-content h3 {
+  margin-top: 0;
+  color: #1f2937;
+  margin-bottom: 10px;
+}
+
+.modal-content p {
+  color: #6b7280;
+  margin-bottom: 25px;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+}
+
+.btn-cancel {
+  background: #f3f4f6;
+  color: #374151;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background 0.2s;
+}
+
+.btn-cancel:hover {
+  background: #e5e7eb;
+}
+
+.btn-delete {
+  background: #ef4444;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background 0.2s;
+}
+
+.btn-delete:hover {
+  background: #dc2626;
+}
+
+@media (max-width: 768px) {
+  .materias-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Toggle Switch Styles */
+.switch-toggle {
+  position: relative;
+  display: inline-block;
+  width: 34px;
+  height: 20px;
+  margin-left: 8px;
+}
+
+.switch-toggle input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider-round {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: .4s;
+  border-radius: 34px;
+}
+
+.slider-round:before {
+  position: absolute;
+  content: "";
+  height: 14px;
+  width: 14px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  transition: .4s;
+  border-radius: 50%;
+}
+
+input:checked+.slider-round {
+  background-color: #2196F3;
+}
+
+input:checked+.slider-round:before {
+  transform: translateX(14px);
+}
+
+/* Inactive State Styles */
+.materia-card.inactiva {
+  background-color: #f3f4f6;
+  border-color: #d1d5db !important;
+  /* Force grey border */
+}
+
+.materia-card.inactiva h5 {
+  color: #6b7280;
+  text-decoration: line-through;
+}
+
+.syllabus-section.faded {
+  opacity: 0.5;
+}
+
+/* Syllabus Modal Specifics */
+.syllabus-modal-content {
+  max-width: 75%;
+  /* Wider than default */
+  width: 95%;
+  display: flex;
+  flex-direction: column;
+  max-height: 90vh;
+  /* Prevent overflowing screen */
+}
+
+.syllabus-modal-content .modal-body {
+  flex: 1;
+  overflow-y: auto;
+  /* Scroll if content is too long */
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+.syllabus-textarea {
+  width: 100%;
+  padding: 15px;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+  font-family: inherit;
+  font-size: 1rem;
+  line-height: 1.5;
+  resize: none;
+  /* Auto-resize handled by JS */
+  outline: none;
+  background: #f9fafb;
+  min-height: 150px;
+  box-sizing: border-box;
+  overflow: hidden;
+  /* Hide scrollbar */
+}
+
+.syllabus-textarea:focus {
+  border-color: #6366f1;
+  background: white;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+}
+
+.btn-save {
+  background: #4f46e5;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background 0.2s;
+}
+
+.btn-save:hover {
+  background: #4338ca;
+}

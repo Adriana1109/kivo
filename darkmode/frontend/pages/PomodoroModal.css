@@ -1,0 +1,266 @@
+.pomodoro-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  animation: fadeIn 0.3s ease-out;
+}
+
+.pomodoro-box {
+  background: white;
+  padding: 32px;
+  border-radius: 24px;
+  width: 90%;
+  max-width: 380px;
+  /* Premium Shadow */
+  box-shadow:
+    0 20px 25px -5px rgba(0, 0, 0, 0.1),
+    0 10px 10px -5px rgba(0, 0, 0, 0.04),
+    0 0 0 1px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.5s ease;
+}
+
+/* Dark Mode support implicit or explicit if .dark is properly propagated, 
+   but for Focus mode, we might want a specific dark look or adaptive one.
+   Let's make it adaptive via CSS variables commonly used or hardcoded dark/light styles properly.
+*/
+body.dark .pomodoro-box {
+  background: #1f2937;
+  color: white;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+}
+
+/* Dynamic background tint based on mode */
+.pomodoro-box.mode-focus {
+  border-top: 6px solid #3b82f6;
+}
+
+.pomodoro-box.mode-shortBreak {
+  border-top: 6px solid #10b981;
+}
+
+.pomodoro-box.mode-longBreak {
+  border-top: 6px solid #8b5cf6;
+}
+
+/* HEADER */
+.pomodoro-header {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.pomodoro-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  font-size: 1.1rem;
+  color: #374151;
+  background: #f3f4f6;
+  padding: 6px 12px;
+  border-radius: 20px;
+}
+
+body.dark .pomodoro-status {
+  background: #374151;
+  color: #f3f4f6;
+}
+
+.mode-focus .pomodoro-status {
+  color: #2563eb;
+  background: #dbeafe;
+}
+
+.mode-shortBreak .pomodoro-status {
+  color: #059669;
+  background: #d1fae5;
+}
+
+.mode-longBreak .pomodoro-status {
+  color: #7c3aed;
+  background: #ede9fe;
+}
+
+/* Close Button */
+.close-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 50%;
+  color: #9ca3af;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.close-btn:hover {
+  background: #f3f4f6;
+  color: #4b5563;
+}
+
+body.dark .close-btn:hover {
+  background: #374151;
+  color: #e5e7eb;
+}
+
+/* TIMER RING */
+.timer-display {
+  position: relative;
+  width: 280px;
+  height: 280px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 24px;
+}
+
+.progress-ring {
+  transform: rotate(-90deg);
+  transform-origin: 50% 50%;
+}
+
+.progress-ring__circle-bg {
+  stroke: #e5e7eb;
+}
+
+body.dark .progress-ring__circle-bg {
+  stroke: #374151;
+}
+
+.progress-ring__circle {
+  transition: stroke-dashoffset 0.35s;
+  stroke-linecap: round;
+}
+
+/* Color rings */
+.mode-focus .progress-ring__circle {
+  stroke: #3b82f6;
+}
+
+.mode-shortBreak .progress-ring__circle {
+  stroke: #10b981;
+}
+
+.mode-longBreak .progress-ring__circle {
+  stroke: #8b5cf6;
+}
+
+.time-text {
+  position: absolute;
+  font-size: 3.5rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: #111827;
+  letter-spacing: -2px;
+}
+
+body.dark .time-text {
+  color: #f9fafb;
+}
+
+/* STATS */
+.pomodoro-stats {
+  font-size: 0.9rem;
+  color: #6b7280;
+  margin-bottom: 32px;
+  font-weight: 500;
+}
+
+body.dark .pomodoro-stats {
+  color: #9ca3af;
+}
+
+/* CONTROLS */
+.pomodoro-controls {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.control-btn {
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Main Play/Pause Button */
+.control-btn.secondary:not(.small) {
+  width: 72px;
+  height: 72px;
+  border-radius: 24px;
+  background: #3b82f6;
+  color: white;
+  box-shadow: 0 10px 15px -3px rgba(59, 130, 246, 0.4);
+}
+
+.control-btn.secondary:not(.small):hover {
+  transform: translateY(-2px);
+  background: #2563eb;
+  box-shadow: 0 15px 20px -3px rgba(59, 130, 246, 0.5);
+}
+
+.control-btn.secondary:not(.small):active {
+  transform: translateY(0);
+}
+
+/* Variant colors for main button */
+.mode-shortBreak .control-btn.secondary:not(.small) {
+  background: #10b981;
+  box-shadow: 0 10px 15px -3px rgba(16, 185, 129, 0.4);
+}
+
+.mode-longBreak .control-btn.secondary:not(.small) {
+  background: #8b5cf6;
+  box-shadow: 0 10px 15px -3px rgba(139, 92, 246, 0.4);
+}
+
+/* Small secondary buttons (Reset, Skip) */
+.control-btn.small {
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  background: #f3f4f6;
+  color: #6b7280;
+}
+
+body.dark .control-btn.small {
+  background: #374151;
+  color: #9ca3af;
+}
+
+.control-btn.small:hover {
+  background: #e5e7eb;
+  color: #374151;
+}
+
+body.dark .control-btn.small:hover {
+  background: #4b5563;
+  color: #f3f4f6;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
